@@ -55,8 +55,13 @@ public:
 
 private:
     // Signal chain members
-    juce::dsp::Oscillator<double> osc_1_;
-    juce::dsp::Gain<float> vca_;
+    enum
+    {
+        osc_index,
+        vca_index
+    };
+    std::vector<juce::dsp::ProcessorChain<juce::dsp::Oscillator<double>, juce::dsp::Gain<float>>> synth_voices_;
+    int max_voices_ = 0;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Mhj01AudioProcessor)

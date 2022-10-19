@@ -22,6 +22,10 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
                        )
 #endif
 {
+    for (int i = 0; i < 4; i++) {
+        synth_voices_.emplace_back();
+        ++max_voices_;
+    }
 }
 
 Mhj01AudioProcessor::~Mhj01AudioProcessor()
@@ -95,10 +99,14 @@ void Mhj01AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     juce::dsp::ProcessSpec spec = { sampleRate, samplesPerBlock, 
                                   getMainBusNumOutputChannels() };
-    osc_1_.prepare(spec);
-    osc_1_.initialise([](double x) { return std::sin(x); }, 128);
+    for (auto& voice : synth_voices_) {
+        voice.prepare(spec);
+        auto& osc = voice.template get<osc_index>();
+        osc.initialise([](double x) { return std::sin(x); }, 128);
 
-    vca_.prepare(spec);
+        auto& vca = voice.template get<vca_index>();
+        vca.prepare(spec);
+    }
 }
 
 void Mhj01AudioProcessor::releaseResources()
@@ -136,8 +144,8 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-    static double frequency;
-    static float gain;
+    static double frequency[4];
+    static float gain[4];
     static int note_count;
 
     // In case we have more outputs than inputs, this code clears any output
@@ -149,44 +157,53 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
 
-        // ..do something to the data...
-    }
     for (auto m : midiMessages) {
         juce::MidiMessage midi_msg = m.getMessage();
         if (midi_msg.isNoteOn()) {
             int note_number = midi_msg.getNoteNumber();
+            // TODO: insead of denying new notes, implement voice stealing.
             ++note_count;
-            frequency = midi_msg.getMidiNoteInHertz(note_number);
-            gain = 1.0f;
+            if (note_count <= max_voices_ && note_count > 0) {
+                //frequency[note_count - 1] = midi_msg.getMidiNoteInHertz(note_number);
+                //gain[note_count - 1] = 1.0f;
+                auto& osc = synth_voices_[note_count - 1].template get<osc_index>();
+                osc.setFrequency(midi_msg.getMidiNoteInHertz(note_number), true);
+
+                auto& vca = synth_voices_[note_count - 1].template get<vca_index>();
+                vca.setGainLinear(0.5f);
+                DBG("ON");
+                DBG(note_count - 1);
+                
+            }
         }
         else if (midi_msg.isNoteOff()) {
-            if (--note_count == 0)
-                gain = 0.0f;
-        }
-        else if (midi_msg.isAllNotesOff()) {
-            gain = 0.0f;
+            // TODO: since push and release order is not same, this implementation causes bugs
+            //       Create a separate synth voice class to be able to check if active or not and
+            //       to keep track of note number.
+            --note_count;
+            if (note_count < max_voices_ && note_count >= 0) {
+                auto& vca = synth_voices_[note_count].template get<vca_index>();
+                vca.setGainLinear(0.0f);
+                DBG("OFF");
+                DBG(note_count);
+            }
         }
     }
+
 
     auto block = juce::dsp::AudioBlock<float>(buffer);
     auto contextToUse = juce::dsp::ProcessContextReplacing<float>(block);
 
-    osc_1_.setFrequency(frequency, true);
-    osc_1_.process(contextToUse);
+    //for (auto& voice : synth_voices_) {
+    //    voice.process(contextToUse);
+    //}
 
+    synth_voices_[3].process(contextToUse);
+    synth_voices_[2].process(contextToUse);
+    synth_voices_[1].process(contextToUse);
+    synth_voices_[0].process(contextToUse);
 
-    vca_.setGainLinear(gain);
-    vca_.process(contextToUse);
 }
 
 //==============================================================================
