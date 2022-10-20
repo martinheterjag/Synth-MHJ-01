@@ -8,6 +8,8 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "SynthVoice.h"
+
 
 //==============================================================================
 Mhj01AudioProcessor::Mhj01AudioProcessor()
@@ -23,7 +25,7 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
 #endif
 {
     for (int i = 0; i < 4; i++) {
-        synth_voices_.emplace_back();
+        synth_voices_.emplace_back(SynthVoice());
         ++max_voices_;
     }
 }
@@ -101,11 +103,6 @@ void Mhj01AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
                                   getMainBusNumOutputChannels() };
     for (auto& voice : synth_voices_) {
         voice.prepare(spec);
-        auto& osc = voice.template get<osc_index>();
-        osc.initialise([](double x) { return std::sin(x); }, 128);
-
-        auto& vca = voice.template get<vca_index>();
-        vca.prepare(spec);
     }
 }
 
@@ -165,16 +162,11 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             // TODO: insead of denying new notes, implement voice stealing.
             ++note_count;
             if (note_count <= max_voices_ && note_count > 0) {
-                //frequency[note_count - 1] = midi_msg.getMidiNoteInHertz(note_number);
-                //gain[note_count - 1] = 1.0f;
-                auto& osc = synth_voices_[note_count - 1].template get<osc_index>();
-                osc.setFrequency(midi_msg.getMidiNoteInHertz(note_number), true);
+                synth_voices_[note_count - 1].setOscFrequency(midi_msg.getMidiNoteInHertz(note_number));
+                synth_voices_[note_count -1].setVcaGain(1.0f);
 
-                auto& vca = synth_voices_[note_count - 1].template get<vca_index>();
-                vca.setGainLinear(0.5f);
                 DBG("ON");
                 DBG(note_count - 1);
-                
             }
         }
         else if (midi_msg.isNoteOff()) {
@@ -183,8 +175,8 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             //       to keep track of note number.
             --note_count;
             if (note_count < max_voices_ && note_count >= 0) {
-                auto& vca = synth_voices_[note_count].template get<vca_index>();
-                vca.setGainLinear(0.0f);
+                synth_voices_[note_count].setVcaGain(0.0f);
+
                 DBG("OFF");
                 DBG(note_count);
             }
@@ -203,7 +195,6 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     synth_voices_[2].process(contextToUse);
     synth_voices_[1].process(contextToUse);
     synth_voices_[0].process(contextToUse);
-
 }
 
 //==============================================================================

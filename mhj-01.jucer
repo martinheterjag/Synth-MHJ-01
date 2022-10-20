@@ -7,6 +7,8 @@
               pluginFormats="buildStandalone,buildVST3" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="djaWuV" name="mhj-01">
     <GROUP id="{275D6825-3DD5-1FE3-C777-D48A21DC91B9}" name="Source">
+      <FILE id="FqzJbT" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
+      <FILE id="IqGWB7" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="pdVrIr" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="TwALOg" name="PluginProcessor.h" compile="0" resource="0"

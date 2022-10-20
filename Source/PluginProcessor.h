@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SynthVoice.h"
 
 //==============================================================================
 /**
@@ -54,13 +55,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
-    // Signal chain members
-    enum
-    {
-        osc_index,
-        vca_index
-    };
-    std::vector<juce::dsp::ProcessorChain<juce::dsp::Oscillator<double>, juce::dsp::Gain<float>>> synth_voices_;
+
+    std::vector<SynthVoice> synth_voices_;
     int max_voices_ = 0;
 
     //==============================================================================
