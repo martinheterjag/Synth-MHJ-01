@@ -70,7 +70,15 @@ void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
                               main_bus_output_channels_ };
     signal_chain_.prepare(spec);
     auto& osc = signal_chain_.template get<osc_index>();
-    osc.initialise([](double x) { return std::sin(x); }, 128);
+    // This sets the osc to a sawtooth waveform
+    osc.initialise([](double x)
+        {
+            return juce::jmap(x,
+                double(-juce::MathConstants<double>::pi),
+                double(juce::MathConstants<double>::pi),
+                double(-1),
+                double(1));
+        }, 2);
 }
 
 void SynthVoice::releaseResources()
