@@ -30,8 +30,8 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
     g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.setFont (40.0f);
+    g.drawFittedText ("MHJ-01", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void Mhj01AudioProcessorEditor::resized()
