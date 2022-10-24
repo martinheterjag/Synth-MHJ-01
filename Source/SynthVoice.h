@@ -16,10 +16,9 @@ class SynthVoice : public juce::AudioSource
 {
 public:
     SynthVoice(juce::uint32 main_bus_output_channels);
-    SynthVoice(SynthVoice&&) noexcept {}
+    SynthVoice(const SynthVoice& other) : main_bus_output_channels_(other.main_bus_output_channels_) {};
     ~SynthVoice();
 
-    void prepare(juce::dsp::ProcessSpec spec);
     void setOscFrequency(double f_hz);
     void setVcaGain(float gain);
     void setKey(const int key);
@@ -36,9 +35,14 @@ private:
     enum
     {
         osc_index,
+        vcf_index,
         vca_index
     };
-    juce::dsp::ProcessorChain<juce::dsp::Oscillator<double>, juce::dsp::Gain<float>> signal_chain_;
+    typedef juce::dsp::ProcessorDuplicator<juce::dsp::StateVariableFilter::Filter<float>,
+                                           juce::dsp::StateVariableFilter::Parameters<float> > StereoFilter;
+    juce::dsp::ProcessorChain<juce::dsp::Oscillator<double>,
+                              StereoFilter,
+                              juce::dsp::Gain<float>> signal_chain_;
     juce::uint32 main_bus_output_channels_;
     int key_ = 999;  // init to something out of midi key range
     bool active_ = false;

@@ -25,7 +25,7 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
 #endif
 {
     for (int i = 0; i < 4; i++) {
-        synth_voices_.emplace_back(SynthVoice(getMainBusNumOutputChannels()));
+        synth_voices_.push_back(SynthVoice(getMainBusNumOutputChannels()));
         ++max_voices_;
     }
 }
