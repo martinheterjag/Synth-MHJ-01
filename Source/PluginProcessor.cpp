@@ -25,7 +25,7 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
 #endif
 {
     for (int i = 0; i < 4; i++) {
-        synth_voices_.emplace_back(SynthVoice());
+        synth_voices_.emplace_back(SynthVoice(getMainBusNumOutputChannels()));
         ++max_voices_;
     }
 }
@@ -99,11 +99,10 @@ void Mhj01AudioProcessor::changeProgramName (int index, const juce::String& newN
 //==============================================================================
 void Mhj01AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    juce::dsp::ProcessSpec spec = { sampleRate, samplesPerBlock, 
-                                  getMainBusNumOutputChannels() };
     for (auto& voice : synth_voices_) {
-        voice.prepare(spec);
+        voice_mixer_.addInputSource(&voice, false);
     }
+    voice_mixer_.prepareToPlay(samplesPerBlock, sampleRate);
 }
 
 void Mhj01AudioProcessor::releaseResources()
@@ -159,43 +158,23 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         if (midi_msg.isNoteOn()) {
             int note_number = midi_msg.getNoteNumber();
             // TODO: insead of denying new notes, implement voice stealing.
-            // TODO: A bug is seen where voices get lost (-1 returned instead of the available voice)
-            //       Needs further investigation.
             int index = getAvailableVoiceIndex();
-            DBG(index);
             if (index < 0) {
                 continue;
             }
             synth_voices_[index].setOscFrequency(midi_msg.getMidiNoteInHertz(note_number));
             synth_voices_[index].setKey(note_number);
-            synth_voices_[index].setVcaGain(1.0f);
-
-            DBG("ON");
+            synth_voices_[index].setVcaGain(0.7f);
         }
         else if (midi_msg.isNoteOff()) {
             int index = getVoiceIndexForKey(midi_msg.getNoteNumber());
-            DBG(index);
             if (index < 0) {
                 continue;
             }
             synth_voices_[index].setVcaGain(0.0f);
-
-            DBG("OFF");
         }
     }
-
-
-    auto block = juce::dsp::AudioBlock<float>(buffer);
-    auto contextToUse = juce::dsp::ProcessContextReplacing<float>(block);
-
-    //for (auto& voice : synth_voices_) {
-    //    voice.process(contextToUse);
-    //}
-
-    synth_voices_[3].process(contextToUse);
-    synth_voices_[2].process(contextToUse);
-    synth_voices_[1].process(contextToUse);
-    synth_voices_[0].process(contextToUse);
+    voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
 }
 
 //==============================================================================
@@ -229,6 +208,7 @@ int Mhj01AudioProcessor::getAvailableVoiceIndex()
         if (synth_voices_[i].isActive()) {
             continue;
         }
+        DBG("voice on " + std::to_string(i));
         return i;
     }
     return -1;  // No available voices
@@ -237,8 +217,10 @@ int Mhj01AudioProcessor::getAvailableVoiceIndex()
 int Mhj01AudioProcessor::getVoiceIndexForKey(int key)
 {
     for (int i = 0; i < max_voices_; i++) {
-        if (synth_voices_[i].getKey() == key)
+        if (synth_voices_[i].getKey() == key) {
+            DBG("voice off " + std::to_string(i));
             return i;
+        }
     }
     return -1;  // Voice with key not found
 }

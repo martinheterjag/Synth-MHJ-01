@@ -8,21 +8,16 @@
   ==============================================================================
 */
 
+#include <JuceHeader.h>
 #include "SynthVoice.h"
 
-SynthVoice::SynthVoice()
+SynthVoice::SynthVoice(juce::uint32 main_bus_output_channels)
+    : main_bus_output_channels_(main_bus_output_channels)
 {
 }
 
 SynthVoice::~SynthVoice()
 {
-}
-
-void SynthVoice::prepare(juce::dsp::ProcessSpec spec)
-{
-    signal_chain_.prepare(spec);
-    auto& osc = signal_chain_.template get<osc_index>();
-    osc.initialise([](double x) { return std::sin(x); }, 128);
 }
 
 void SynthVoice::setOscFrequency(double f_hz)
@@ -58,7 +53,34 @@ bool SynthVoice::isActive()
     return active_;
 }
 
-void SynthVoice::process(const juce::dsp::ProcessContextReplacing<float>& context)
+juce::AudioBuffer<float> SynthVoice::process(juce::AudioBuffer<float> buffer)
 {
-    signal_chain_.process(context);
+    auto block = juce::dsp::AudioBlock<float>(buffer);
+    auto out_buffer = juce::AudioBuffer<float>(buffer.getNumChannels(), buffer.getNumSamples());
+    auto out_block = juce::dsp::AudioBlock<float>(out_buffer);
+    auto contextToUse = juce::dsp::ProcessContextNonReplacing<float>(block, out_block);
+    signal_chain_.process(contextToUse);
+
+    return out_buffer;
+}
+
+void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
+{
+    juce::dsp::ProcessSpec spec = { sampleRate, samplesPerBlockExpected,
+                              main_bus_output_channels_ };
+    signal_chain_.prepare(spec);
+    auto& osc = signal_chain_.template get<osc_index>();
+    osc.initialise([](double x) { return std::sin(x); }, 128);
+}
+
+void SynthVoice::releaseResources()
+{
+    // Clean up if needed
+}
+
+void SynthVoice::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)
+{
+    auto block = juce::dsp::AudioBlock<float>(*bufferToFill.buffer);
+    auto contextToUse = juce::dsp::ProcessContextReplacing<float>(block);
+    signal_chain_.process(contextToUse);
 }

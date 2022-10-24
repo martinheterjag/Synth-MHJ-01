@@ -60,6 +60,7 @@ private:
 
     std::vector<SynthVoice> synth_voices_;
     int max_voices_ = 0;
+    juce::MixerAudioSource voice_mixer_;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Mhj01AudioProcessor)
