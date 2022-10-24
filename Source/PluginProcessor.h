@@ -55,6 +55,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    int getAvailableVoiceIndex();
+    int getVoiceIndexForKey(int key);
 
     std::vector<SynthVoice> synth_voices_;
     int max_voices_ = 0;

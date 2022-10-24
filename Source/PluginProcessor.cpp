@@ -143,7 +143,6 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     static double frequency[4];
     static float gain[4];
-    static int note_count;
 
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
@@ -160,26 +159,28 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         if (midi_msg.isNoteOn()) {
             int note_number = midi_msg.getNoteNumber();
             // TODO: insead of denying new notes, implement voice stealing.
-            ++note_count;
-            if (note_count <= max_voices_ && note_count > 0) {
-                synth_voices_[note_count - 1].setOscFrequency(midi_msg.getMidiNoteInHertz(note_number));
-                synth_voices_[note_count -1].setVcaGain(1.0f);
-
-                DBG("ON");
-                DBG(note_count - 1);
+            // TODO: A bug is seen where voices get lost (-1 returned instead of the available voice)
+            //       Needs further investigation.
+            int index = getAvailableVoiceIndex();
+            DBG(index);
+            if (index < 0) {
+                continue;
             }
+            synth_voices_[index].setOscFrequency(midi_msg.getMidiNoteInHertz(note_number));
+            synth_voices_[index].setKey(note_number);
+            synth_voices_[index].setVcaGain(1.0f);
+
+            DBG("ON");
         }
         else if (midi_msg.isNoteOff()) {
-            // TODO: since push and release order is not same, this implementation causes bugs
-            //       Create a separate synth voice class to be able to check if active or not and
-            //       to keep track of note number.
-            --note_count;
-            if (note_count < max_voices_ && note_count >= 0) {
-                synth_voices_[note_count].setVcaGain(0.0f);
-
-                DBG("OFF");
-                DBG(note_count);
+            int index = getVoiceIndexForKey(midi_msg.getNoteNumber());
+            DBG(index);
+            if (index < 0) {
+                continue;
             }
+            synth_voices_[index].setVcaGain(0.0f);
+
+            DBG("OFF");
         }
     }
 
@@ -220,6 +221,26 @@ void Mhj01AudioProcessor::setStateInformation (const void* data, int sizeInBytes
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+int Mhj01AudioProcessor::getAvailableVoiceIndex()
+{
+    for (int i = 0; i < max_voices_; i++) {
+        if (synth_voices_[i].isActive()) {
+            continue;
+        }
+        return i;
+    }
+    return -1;  // No available voices
+}
+
+int Mhj01AudioProcessor::getVoiceIndexForKey(int key)
+{
+    for (int i = 0; i < max_voices_; i++) {
+        if (synth_voices_[i].getKey() == key)
+            return i;
+    }
+    return -1;  // Voice with key not found
 }
 
 //==============================================================================

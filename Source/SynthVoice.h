@@ -22,6 +22,9 @@ public:
     void prepare(juce::dsp::ProcessSpec spec);
     void setOscFrequency(double f_hz);
     void setVcaGain(float gain);
+    void setKey(const int key);
+    int getKey();
+    bool isActive();
     void process(const juce::dsp::ProcessContextReplacing<float>& context);
 
 private:
@@ -31,4 +34,6 @@ private:
         vca_index
     };
     juce::dsp::ProcessorChain<juce::dsp::Oscillator<double>, juce::dsp::Gain<float>> signal_chain_;
+    int key_;
+    bool active_ = false;
 };
