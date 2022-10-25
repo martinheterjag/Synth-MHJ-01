@@ -20,10 +20,22 @@ SynthVoice::~SynthVoice()
 {
 }
 
-void SynthVoice::setOscFrequency(double f_hz)
+void SynthVoice::setVoiceFrequency(double f_hz)
 {
-    auto& osc = signal_chain_.template get<osc_index>();
-    osc.setFrequency(f_hz, true);
+    osc1_f_hz_ = f_hz;
+    osc2_f_hz_ = f_hz;
+}
+
+void SynthVoice::modulateOsc1Frequency(double factor)
+{
+    auto& osc1 = signal_chain_.template get<osc1_index>();
+    osc1.setFrequency(osc1_f_hz_ * factor, true);
+}
+
+void SynthVoice::modulateOsc2Frequency(double factor)
+{
+    auto& osc2 = signal_chain_.template get<osc2_index>();
+    osc2.setFrequency(osc2_f_hz_ * factor, true);
 }
 
 void SynthVoice::setVcfParameters(float cutoff_hz, float resonance)
@@ -82,9 +94,20 @@ void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
     juce::dsp::ProcessSpec spec = { sampleRate, samplesPerBlockExpected,
                               main_bus_output_channels_ };
     signal_chain_.prepare(spec);
-    auto& osc = signal_chain_.template get<osc_index>();
+    auto& osc1 = signal_chain_.template get<osc1_index>();
     // This sets the osc to a sawtooth waveform
-    osc.initialise([](double x)
+    osc1.initialise([](double x)
+        {
+            return juce::jmap(x,
+                double(-juce::MathConstants<double>::pi),
+                double(juce::MathConstants<double>::pi),
+                double(-1),
+                double(1));
+        }, 2);
+
+    auto& osc2 = signal_chain_.template get<osc2_index>();
+    // This sets the osc to a sawtooth waveform
+    osc2.initialise([](double x)
         {
             return juce::jmap(x,
                 double(-juce::MathConstants<double>::pi),

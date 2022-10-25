@@ -162,7 +162,7 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             if (index < 0) {
                 continue;
             }
-            synth_voices_[index].setOscFrequency(midi_msg.getMidiNoteInHertz(note_number));
+            synth_voices_[index].setVoiceFrequency(midi_msg.getMidiNoteInHertz(note_number));
             synth_voices_[index].setKey(note_number);
             synth_voices_[index].setVcaGain(0.7f);
         }
@@ -176,6 +176,8 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     }
     for (auto& voice : synth_voices_) {
         voice.setVcfParameters(1800.0f, 0.9f);
+        voice.modulateOsc1Frequency(0.5);
+        voice.modulateOsc2Frequency(1.9);
     }
     voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
 }
