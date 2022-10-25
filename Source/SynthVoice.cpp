@@ -50,16 +50,26 @@ void SynthVoice::setVcfParameters(float cutoff_hz, float resonance)
     vcf_state->setCutOffFrequency(sample_rate_, cutoff_hz, resonance);
 }
 
+void SynthVoice::noteOn() {
+    if (envelope1_.isActive()) {
+        envelope1_.reset();
+    }
+    envelope1_.noteOn();
+    if (envelope2_.isActive()) {
+        envelope2_.reset();
+    }
+    envelope2_.noteOn();
+}
+
+void SynthVoice::noteOff() {
+    envelope1_.noteOff();
+    envelope2_.noteOff();
+}
+
 void SynthVoice::setVcaGain(float gain)
 {
     auto& vca = signal_chain_.template get<vca_index>();
     vca.setGainLinear(gain);
-    if (gain < 0.1) {
-        active_ = false;
-    }
-    else {
-        active_ = true;
-    }
 }
 
 void SynthVoice::setKey(const int key)
@@ -74,23 +84,19 @@ int SynthVoice::getKey()
 
 bool SynthVoice::isActive()
 {
-    return active_;
-}
-
-juce::AudioBuffer<float> SynthVoice::process(juce::AudioBuffer<float> buffer)
-{
-    auto block = juce::dsp::AudioBlock<float>(buffer);
-    auto out_buffer = juce::AudioBuffer<float>(buffer.getNumChannels(), buffer.getNumSamples());
-    auto out_block = juce::dsp::AudioBlock<float>(out_buffer);
-    auto contextToUse = juce::dsp::ProcessContextNonReplacing<float>(block, out_block);
-    signal_chain_.process(contextToUse);
-
-    return out_buffer;
+    return envelope1_.isActive();
 }
 
 void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
     sample_rate_ = sampleRate;
+    envelope1_.setSampleRate(sampleRate);
+    envelope1_params_.attack = 0.1f;
+    envelope1_params_.decay = 0.4f;
+    envelope1_params_.sustain = 0.8f;
+    envelope1_params_.release = 0.8f;
+    envelope1_.setParameters(envelope1_params_);
+    envelope2_.setSampleRate(sampleRate);
     juce::dsp::ProcessSpec spec = { sampleRate, samplesPerBlockExpected,
                               main_bus_output_channels_ };
     signal_chain_.prepare(spec);
@@ -127,4 +133,5 @@ void SynthVoice::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToF
     auto block = juce::dsp::AudioBlock<float>(*bufferToFill.buffer);
     auto contextToUse = juce::dsp::ProcessContextReplacing<float>(block);
     signal_chain_.process(contextToUse);
+    envelope1_.applyEnvelopeToBuffer(*bufferToFill.buffer, 0, bufferToFill.buffer->getNumSamples());
 }

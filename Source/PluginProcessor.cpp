@@ -158,26 +158,28 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         if (midi_msg.isNoteOn()) {
             int note_number = midi_msg.getNoteNumber();
             // TODO: insead of denying new notes, implement voice stealing.
+            // TODO: Fix bug where a key can trigger more than one voice and not get turned off at key up
             int index = getAvailableVoiceIndex();
             if (index < 0) {
                 continue;
             }
             synth_voices_[index].setVoiceFrequency(midi_msg.getMidiNoteInHertz(note_number));
             synth_voices_[index].setKey(note_number);
-            synth_voices_[index].setVcaGain(0.7f);
+            synth_voices_[index].noteOn();
         }
         else if (midi_msg.isNoteOff()) {
             int index = getVoiceIndexForKey(midi_msg.getNoteNumber());
             if (index < 0) {
                 continue;
             }
-            synth_voices_[index].setVcaGain(0.0f);
+            synth_voices_[index].noteOff();
         }
     }
     for (auto& voice : synth_voices_) {
         voice.setVcfParameters(1800.0f, 0.9f);
         voice.modulateOsc1Frequency(0.5);
         voice.modulateOsc2Frequency(1.9);
+        voice.setVcaGain(0.7f);
     }
     voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
 }
