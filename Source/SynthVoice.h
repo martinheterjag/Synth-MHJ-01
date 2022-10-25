@@ -20,6 +20,7 @@ public:
     ~SynthVoice();
 
     void setOscFrequency(double f_hz);
+    void setVcfParameters(float cutoff_hz, float resonance);
     void setVcaGain(float gain);
     void setKey(const int key);
     int getKey();
@@ -46,4 +47,5 @@ private:
     juce::uint32 main_bus_output_channels_;
     int key_ = 999;  // init to something out of midi key range
     bool active_ = false;
+    double sample_rate_ = 0;
 };

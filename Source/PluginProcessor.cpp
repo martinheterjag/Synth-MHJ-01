@@ -174,6 +174,9 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             synth_voices_[index].setVcaGain(0.0f);
         }
     }
+    for (auto& voice : synth_voices_) {
+        voice.setVcfParameters(1800.0f, 0.9f);
+    }
     voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
 }
 

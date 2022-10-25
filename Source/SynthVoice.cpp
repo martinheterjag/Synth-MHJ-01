@@ -26,6 +26,18 @@ void SynthVoice::setOscFrequency(double f_hz)
     osc.setFrequency(f_hz, true);
 }
 
+void SynthVoice::setVcfParameters(float cutoff_hz, float resonance)
+{
+    if (sample_rate_ == 0) {
+        DBG("Error: Sample rate is not set 0 when setting filter cutoff, "
+            "have this SynthVoice been PreparedToPlay?");
+        return;
+    }
+    auto& vcf = signal_chain_.template get<vcf_index>();
+    auto vcf_state = vcf.state.get();
+    vcf_state->setCutOffFrequency(sample_rate_, cutoff_hz, resonance);
+}
+
 void SynthVoice::setVcaGain(float gain)
 {
     auto& vca = signal_chain_.template get<vca_index>();
@@ -66,6 +78,7 @@ juce::AudioBuffer<float> SynthVoice::process(juce::AudioBuffer<float> buffer)
 
 void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
+    sample_rate_ = sampleRate;
     juce::dsp::ProcessSpec spec = { sampleRate, samplesPerBlockExpected,
                               main_bus_output_channels_ };
     signal_chain_.prepare(spec);
