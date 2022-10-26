@@ -152,13 +152,11 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-
     for (auto m : midiMessages) {
         juce::MidiMessage midi_msg = m.getMessage();
         if (midi_msg.isNoteOn()) {
             int note_number = midi_msg.getNoteNumber();
-            // TODO: insead of denying new notes, implement voice stealing.
-            // TODO: Fix bug where a key can trigger more than one voice and not get turned off at key up
+            // TODO: instead of denying new notes, implement voice stealing.
             int index = getAvailableVoiceIndex();
             if (index < 0) {
                 continue;
@@ -168,11 +166,11 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             synth_voices_[index].noteOn();
         }
         else if (midi_msg.isNoteOff()) {
-            int index = getVoiceIndexForKey(midi_msg.getNoteNumber());
-            if (index < 0) {
-                continue;
+            // Turn off all notes that have been set to the released key.
+            for (auto& voice : synth_voices_) {
+                if (voice.getKey() == midi_msg.getNoteNumber())
+                    voice.noteOff();
             }
-            synth_voices_[index].noteOff();
         }
     }
     for (auto& voice : synth_voices_) {
@@ -219,17 +217,6 @@ int Mhj01AudioProcessor::getAvailableVoiceIndex()
         return i;
     }
     return -1;  // No available voices
-}
-
-int Mhj01AudioProcessor::getVoiceIndexForKey(int key)
-{
-    for (int i = 0; i < max_voices_; i++) {
-        if (synth_voices_[i].getKey() == key) {
-            DBG("voice off " + std::to_string(i));
-            return i;
-        }
-    }
-    return -1;  // Voice with key not found
 }
 
 //==============================================================================
