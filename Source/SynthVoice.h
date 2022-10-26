@@ -53,6 +53,7 @@ private:
     juce::ADSR envelope1_;
     juce::ADSR::Parameters envelope1_params_;
     juce::ADSR envelope2_;
+    float envelope2_output_;
     juce::ADSR::Parameters envelope2_params_;
     juce::uint32 main_bus_output_channels_;
     int key_ = 999;  // init to something out of midi key range

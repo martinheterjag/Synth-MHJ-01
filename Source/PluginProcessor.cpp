@@ -174,7 +174,7 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         }
     }
     for (auto& voice : synth_voices_) {
-        voice.setVcfParameters(1800.0f, 0.9f);
+        voice.setVcfParameters(1000.0f, 0.9f);
         voice.modulateOsc1Frequency(0.5);
         voice.modulateOsc2Frequency(1.9);
         voice.setVcaGain(0.7f);
