@@ -78,6 +78,22 @@ void SynthVoice::setVcaGain(float gain)
     vca.setGainLinear(gain);
 }
 
+void SynthVoice::setEnvelope1Parameters(float attack, float decay, float sustain, float release) {
+    envelope1_params_.attack = attack;
+    envelope1_params_.decay = decay;
+    envelope1_params_.sustain = sustain;
+    envelope1_params_.release = release;
+    envelope1_.setParameters(envelope1_params_);
+}
+
+void SynthVoice::setEnvelope2Parameters(float attack, float decay, float sustain, float release) {
+    envelope2_params_.attack = attack;
+    envelope2_params_.decay = decay;
+    envelope2_params_.sustain = sustain;
+    envelope2_params_.release = release;
+    envelope2_.setParameters(envelope2_params_);
+}
+
 void SynthVoice::setKey(const int key)
 {
     key_ = key;
@@ -97,17 +113,7 @@ void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
     sample_rate_ = sampleRate;
     envelope1_.setSampleRate(sampleRate);
-    envelope1_params_.attack = 0.1f;
-    envelope1_params_.decay = 0.4f;
-    envelope1_params_.sustain = 0.8f;
-    envelope1_params_.release = 0.8f;
-    envelope1_.setParameters(envelope1_params_);
     envelope2_.setSampleRate(sampleRate);
-    envelope2_params_.attack = 0.4f;
-    envelope2_params_.decay = 0.7f;
-    envelope2_params_.sustain = 0.2f;
-    envelope2_params_.release = 0.1f;
-    envelope2_.setParameters(envelope2_params_);
     juce::dsp::ProcessSpec spec = { sampleRate, samplesPerBlockExpected,
                               main_bus_output_channels_ };
     signal_chain_.prepare(spec);

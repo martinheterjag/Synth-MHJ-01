@@ -21,7 +21,8 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+    apvts (*this, nullptr, "Parameters", createParameters())
 #endif
 {
     for (int i = 0; i < 4; i++) {
@@ -174,10 +175,20 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         }
     }
     for (auto& voice : synth_voices_) {
-        voice.setVcfParameters(1000.0f, 0.9f);
-        voice.modulateOsc1Frequency(0.5);
-        voice.modulateOsc2Frequency(1.9);
-        voice.setVcaGain(0.7f);
+        voice.modulateOsc1Frequency(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load());
+        voice.modulateOsc2Frequency(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
+        voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load(), 
+                               apvts.getRawParameterValue("FILTER_RESONANCE")->load());
+        voice.setVcaGain(apvts.getRawParameterValue("VCA_GAIN")->load());
+
+        voice.setEnvelope1Parameters(apvts.getRawParameterValue("ENV_1_ATTACK")->load(),
+                                     apvts.getRawParameterValue("ENV_1_DECAY")->load(),
+                                     apvts.getRawParameterValue("ENV_1_SUSTAIN")->load(),
+                                     apvts.getRawParameterValue("ENV_1_RELEASE")->load());
+        voice.setEnvelope1Parameters(apvts.getRawParameterValue("ENV_2_ATTACK")->load(),
+                                     apvts.getRawParameterValue("ENV_2_DECAY")->load(),
+                                     apvts.getRawParameterValue("ENV_2_SUSTAIN")->load(),
+                                     apvts.getRawParameterValue("ENV_2_RELEASE")->load());
     }
     voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
 }
@@ -199,12 +210,20 @@ void Mhj01AudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    auto state = apvts.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void Mhj01AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+        if (xmlState->hasTagName(apvts.state.getType()))
+            apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
 int Mhj01AudioProcessor::getAvailableVoiceIndex()
@@ -217,6 +236,34 @@ int Mhj01AudioProcessor::getAvailableVoiceIndex()
         return i;
     }
     return -1;  // No available voices
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
+
+    // Signal chain parameters
+    // Frequency parameter is not in Hertz, it's multiplied with the current note frequency for each synth voice.
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY", "Frequency", 0.125f, 8.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.125f, 8.0f, 0.5f));
+
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_CUTOFF", "Cutoff", 20.0f, 20000.0f, 4500.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_RESONANCE", "Resonance", 0.0f, 1.0f, 0.7f));
+
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("VCA_GAIN", "Gain", 0.0f, 1.0f, 0.7f));
+
+    // Modulators parameters
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_ATTACK", "Attack", 0.0f, 1.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_DECAY", "Decay", 0.0f, 1.0f, 0.2f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_SUSTAIN", "Sustain", 0.0f, 1.0f, 0.2f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_RELEASE", "Release", 0.0f, 1.0f, 0.5f));
+
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_ATTACK", "Attack", 0.0f, 1.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_DECAY", "Decay", 0.0f, 1.0f, 0.2f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_SUSTAIN", "Sustain", 0.0f, 1.0f, 0.2f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_RELEASE", "Release", 0.0f, 1.0f, 0.5f));
+
+    return { parameters.begin(), parameters.end() };
 }
 
 //==============================================================================

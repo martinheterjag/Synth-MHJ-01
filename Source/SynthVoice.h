@@ -26,6 +26,8 @@ public:
     void noteOn();
     void noteOff();
     void setVcaGain(float gain);
+    void setEnvelope1Parameters(float attack, float decay, float sustain, float release);
+    void setEnvelope2Parameters(float attack, float decay, float sustain, float release);
     void setKey(const int key);
     int getKey();
     bool isActive();

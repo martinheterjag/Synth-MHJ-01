@@ -54,8 +54,11 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState apvts;
+
 private:
     int getAvailableVoiceIndex();
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
 
     std::vector<SynthVoice> synth_voices_;
     int max_voices_ = 0;
