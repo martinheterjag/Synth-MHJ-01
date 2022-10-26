@@ -25,8 +25,10 @@ public:
     void resized() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
+    juce::Slider osc1_frequency_slider_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> 
+        osc1_frequency_slider_attachment_;
+
     Mhj01AudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Mhj01AudioProcessorEditor)
