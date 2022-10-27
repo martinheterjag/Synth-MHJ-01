@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "gui/SliderComponent.h"
 
 //==============================================================================
 /**
@@ -25,9 +26,8 @@ public:
     void resized() override;
 
 private:
-    juce::Slider osc1_frequency_slider_;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> 
-        osc1_frequency_slider_attachment_;
+    SliderComponent osc1_frequency_slider_;
+    SliderComponent osc2_frequency_slider_;
 
     Mhj01AudioProcessor& audioProcessor;
 

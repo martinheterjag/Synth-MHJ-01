@@ -7,6 +7,26 @@
               pluginFormats="buildStandalone,buildVST3" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="djaWuV" name="mhj-01">
     <GROUP id="{275D6825-3DD5-1FE3-C777-D48A21DC91B9}" name="Source">
+      <GROUP id="{05F5F145-3DE8-5E83-9F4C-32035A4E3667}" name="gui">
+        <FILE id="PwquFt" name="AdsrComponent.cpp" compile="1" resource="0"
+              file="Source/gui/AdsrComponent.cpp"/>
+        <FILE id="gcXtjv" name="AdsrComponent.h" compile="0" resource="0" file="Source/gui/AdsrComponent.h"/>
+        <FILE id="v0UfnK" name="FilterComponent.cpp" compile="1" resource="0"
+              file="Source/gui/FilterComponent.cpp"/>
+        <FILE id="UmG7Nl" name="FilterComponent.h" compile="0" resource="0"
+              file="Source/gui/FilterComponent.h"/>
+        <FILE id="lXYWjo" name="OscComponent.cpp" compile="1" resource="0"
+              file="Source/gui/OscComponent.cpp"/>
+        <FILE id="GDFcAB" name="OscComponent.h" compile="0" resource="0" file="Source/gui/OscComponent.h"/>
+        <FILE id="kNOD1k" name="SliderComponent.cpp" compile="1" resource="0"
+              file="Source/gui/SliderComponent.cpp"/>
+        <FILE id="tDuCEt" name="SliderComponent.h" compile="0" resource="0"
+              file="Source/gui/SliderComponent.h"/>
+        <FILE id="kobU1b" name="SynthBlockComponent.cpp" compile="1" resource="0"
+              file="Source/gui/SynthBlockComponent.cpp"/>
+        <FILE id="i2O73w" name="SynthBlockComponent.h" compile="0" resource="0"
+              file="Source/gui/SynthBlockComponent.h"/>
+      </GROUP>
       <FILE id="FqzJbT" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
       <FILE id="IqGWB7" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="pdVrIr" name="PluginProcessor.cpp" compile="1" resource="0"

@@ -14,16 +14,14 @@ constexpr int HEIGHT = 400;
 
 //==============================================================================
 Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p),
+      osc1_frequency_slider_("Frequency"),
+      osc2_frequency_slider_("Frequency")
 {
-    constexpr int TEXT_BOX_SIZE = 25;
-
-    osc1_frequency_slider_.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    osc1_frequency_slider_.setTextBoxStyle(juce::Slider::NoTextBox, true, TEXT_BOX_SIZE, TEXT_BOX_SIZE);
+    osc1_frequency_slider_.attatchToParameter(audioProcessor.apvts, "OSC_1_FREQUENCY");
     addAndMakeVisible(osc1_frequency_slider_);
-    osc1_frequency_slider_attachment_ = 
-        std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (
-            audioProcessor.apvts, "OSC_1_FREQUENCY", osc1_frequency_slider_);
+    osc2_frequency_slider_.attatchToParameter(audioProcessor.apvts, "OSC_2_FREQUENCY");
+    addAndMakeVisible(osc2_frequency_slider_);
 
     setSize (WIDTH, HEIGHT);
 }
@@ -45,5 +43,6 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
 
 void Mhj01AudioProcessorEditor::resized()
 {
-    osc1_frequency_slider_.setBounds (100, 100, 200, 200);
+    osc1_frequency_slider_.setBounds (0, 0, 75, 115);
+    osc2_frequency_slider_.setBounds (75, 0, 75, 115);
 }
