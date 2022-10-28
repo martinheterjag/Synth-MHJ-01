@@ -244,8 +244,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
 
     // Signal chain parameters
     // Frequency parameter is not in Hertz, it's multiplied with the current note frequency for each synth voice.
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY", "Frequency", 0.125f, 8.0f, 1.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.125f, 8.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY", "Frequency", 0.25f, 2.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.25f, 2.0f, 0.5f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_CUTOFF", "Cutoff", 20.0f, 20000.0f, 4500.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_RESONANCE", "Resonance", 0.0f, 1.0f, 0.7f));
