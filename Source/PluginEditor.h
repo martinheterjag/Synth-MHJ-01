@@ -28,8 +28,7 @@ public:
 
 private:
     OscComponent osc1_;
-    SliderComponent osc1_frequency_slider_;
-    SliderComponent osc2_frequency_slider_;
+    OscComponent osc2_;
 
     Mhj01AudioProcessor& audioProcessor;
 

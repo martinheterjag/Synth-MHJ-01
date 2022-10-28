@@ -16,15 +16,11 @@ constexpr int HEIGHT = 400;
 //==============================================================================
 Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
-      osc1_("Osc 1"),
-      osc1_frequency_slider_("Frequency"),
-      osc2_frequency_slider_("Frequency")
+      osc1_("Osc 1", p.apvts, ParamIdPrefix::OSC_1),
+      osc2_("Osc 2", p.apvts, ParamIdPrefix::OSC_2)
 {
     addAndMakeVisible(osc1_);
-    osc1_frequency_slider_.attatchToParameter(audioProcessor.apvts, "OSC_1_FREQUENCY");
-    addAndMakeVisible(osc1_frequency_slider_);
-    osc2_frequency_slider_.attatchToParameter(audioProcessor.apvts, "OSC_2_FREQUENCY");
-    addAndMakeVisible(osc2_frequency_slider_);
+    addAndMakeVisible(osc2_);
 
     setSize (WIDTH, HEIGHT);
 }
@@ -46,7 +42,6 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
 
 void Mhj01AudioProcessorEditor::resized()
 {
-    osc1_.setBounds (0, 0, 404, 43);
-    osc1_frequency_slider_.setBounds (0, 0, 75, 115);
-    osc2_frequency_slider_.setBounds (75, 0, 75, 115);
+    osc1_.setBounds (0, 0, 400, 200);
+    osc2_.setBounds (0, 200, 400, 200);
 }

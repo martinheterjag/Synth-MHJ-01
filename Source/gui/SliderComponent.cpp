@@ -19,7 +19,8 @@ SliderComponent::SliderComponent(juce::String label_text) {
     slider_.setTextBoxStyle(juce::Slider::NoTextBox, true, 25, 25);
     addAndMakeVisible(slider_);
 
-    label_.setFont(15.0f);
+    label_.setFont(juce::Font(15.0f, juce::Font::FontStyleFlags::bold));
+    label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
     label_.setText(label_text, juce::dontSendNotification);
     label_.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(label_);
