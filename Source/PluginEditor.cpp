@@ -11,7 +11,7 @@
 #include "gui/OscComponent.h"
 
 constexpr int WIDTH = 1000;
-constexpr int HEIGHT = 400;
+constexpr int HEIGHT = 320;
 
 //==============================================================================
 Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
@@ -42,6 +42,6 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
 
 void Mhj01AudioProcessorEditor::resized()
 {
-    osc1_.setBounds (0, 0, 400, 200);
-    osc2_.setBounds (0, 200, 400, 200);
+    osc1_.setBounds (0, 0, 400, 160);
+    osc2_.setBounds (0, 150, 400, 160);
 }
