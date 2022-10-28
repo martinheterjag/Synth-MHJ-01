@@ -37,7 +37,7 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (40.0f);
-    g.drawFittedText ("MHJ-01", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText ("MHJ-01", getLocalBounds(), juce::Justification::bottomRight, 1);
 }
 
 void Mhj01AudioProcessorEditor::resized()
