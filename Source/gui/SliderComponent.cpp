@@ -16,6 +16,7 @@ int FONT_SIZE = 12;
 
 SliderComponent::SliderComponent(juce::String label_text) {
     slider_.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    slider_.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::gold);
     slider_.setTextBoxStyle(juce::Slider::NoTextBox, true, 25, 25);
     addAndMakeVisible(slider_);
 
