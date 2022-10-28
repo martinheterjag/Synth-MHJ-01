@@ -32,6 +32,5 @@ public:
     ~OscComponent();
     void resized() override;
 private:
-    juce::String name_;
     SliderComponent frequency_slider_;
 };
