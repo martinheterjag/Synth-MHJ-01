@@ -33,4 +33,5 @@ public:
     void resized() override;
 private:
     SliderComponent frequency_slider_;
+    SliderComponent waveform_slider_;
 };

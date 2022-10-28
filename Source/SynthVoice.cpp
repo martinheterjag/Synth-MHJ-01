@@ -94,6 +94,11 @@ void SynthVoice::setEnvelope2Parameters(float attack, float decay, float sustain
     envelope2_.setParameters(envelope2_params_);
 }
 
+void SynthVoice::setWaveform(float osc1_shape, float osc2_shape) {
+    osc1_waveform_ = std::min(std::max(osc1_shape, 0.0f), 2.0f);
+    osc2_waveform_ = std::min(std::max(osc2_shape, 0.0f), 2.0f);
+}
+
 void SynthVoice::setKey(const int key)
 {
     key_ = key;
@@ -118,26 +123,32 @@ void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
                               main_bus_output_channels_ };
     signal_chain_.prepare(spec);
     auto& osc1 = signal_chain_.template get<osc1_index>();
-    // This sets the osc to a sawtooth waveform
-    osc1.initialise([](double x)
+    osc1.initialise([this](double x)
         {
-            return juce::jmap(x,
-                double(-juce::MathConstants<double>::pi),
-                double(juce::MathConstants<double>::pi),
-                double(-1),
-                double(1));
-        }, 2);
+            // Fade between sinewave (waveform == 0) then 
+            // saw (waveform == 1) then square (waveform == 2)
+            if (this->osc1_waveform_ < 1.0)
+                return (1.0 - this->osc1_waveform_) * std::sin(x) +
+                (-1 + this->osc1_waveform_ * x / juce::MathConstants<double>::pi);
+            else
+                return (-1.0 + (2.0 - this->osc1_waveform_) * (x / juce::MathConstants<double>::pi)) +
+                (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 2.0);
+
+        });
 
     auto& osc2 = signal_chain_.template get<osc2_index>();
-    // This sets the osc to a sawtooth waveform
-    osc2.initialise([](double x)
+    osc2.initialise([this](double x)
         {
-            return juce::jmap(x,
-                double(-juce::MathConstants<double>::pi),
-                double(juce::MathConstants<double>::pi),
-                double(-1),
-                double(1));
-        }, 2);
+            // Fade between sinewave (waveform == 0) then 
+            // saw (waveform == 1) then square (waveform == 2)
+            if (this->osc2_waveform_ < 1.0)
+                return (1.0 - this->osc2_waveform_) * std::sin(x) +
+                        (-1 + this->osc2_waveform_ * x / juce::MathConstants<double>::pi);
+            else
+                return (-1.0 + (2.0 - this->osc2_waveform_) * (x / juce::MathConstants<double>::pi)) +
+                        (this->osc2_waveform_ -1.0) * (x < 0.0 ? -1.0 : 2.0);
+
+        });
 }
 
 void SynthVoice::releaseResources()

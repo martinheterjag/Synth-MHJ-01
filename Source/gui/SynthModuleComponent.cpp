@@ -15,7 +15,7 @@ SynthModuleComponent::SynthModuleComponent(juce::String name) : name_(name)
     module_label_.setFont(juce::Font(TEXT_LABEL_HEIGHT, juce::Font::FontStyleFlags::bold));
     module_label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
     module_label_.setText(name_, juce::dontSendNotification);
-    module_label_.setJustificationType(juce::Justification::centred);
+    module_label_.setJustificationType(juce::Justification::left);
     addAndMakeVisible(module_label_);
 }
 
@@ -28,5 +28,6 @@ void SynthModuleComponent::paint(juce::Graphics& g)
         .withTrimmedLeft(MODULE_BACKGROUND_TRIM_SIZE)
         .withTrimmedRight(MODULE_BACKGROUND_TRIM_SIZE);
     g.fillRoundedRectangle(rect.toFloat(), MODULE_BACKGROUND_CORNER_SIZE);
-    module_label_.setBounds(MODULE_BACKGROUND_TRIM_SIZE, MODULE_BACKGROUND_TRIM_SIZE, 100, 15);
+    module_label_.setBounds(MODULE_BACKGROUND_TRIM_SIZE + MODULE_BACKGROUND_CORNER_SIZE,
+        MODULE_BACKGROUND_TRIM_SIZE, 100, 15);
 }
