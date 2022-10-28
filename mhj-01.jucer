@@ -22,10 +22,10 @@
               file="Source/gui/SliderComponent.cpp"/>
         <FILE id="tDuCEt" name="SliderComponent.h" compile="0" resource="0"
               file="Source/gui/SliderComponent.h"/>
-        <FILE id="kobU1b" name="SynthBlockComponent.cpp" compile="1" resource="0"
-              file="Source/gui/SynthBlockComponent.cpp"/>
-        <FILE id="i2O73w" name="SynthBlockComponent.h" compile="0" resource="0"
-              file="Source/gui/SynthBlockComponent.h"/>
+        <FILE id="kobU1b" name="SynthModuleComponent.cpp" compile="1" resource="0"
+              file="Source/gui/SynthModuleComponent.cpp"/>
+        <FILE id="i2O73w" name="SynthModuleComponent.h" compile="0" resource="0"
+              file="Source/gui/SynthModuleComponent.h"/>
       </GROUP>
       <FILE id="FqzJbT" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
       <FILE id="IqGWB7" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>

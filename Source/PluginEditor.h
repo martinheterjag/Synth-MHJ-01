@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "gui/SliderComponent.h"
+#include "gui/OscComponent.h"
 
 //==============================================================================
 /**
@@ -26,6 +27,7 @@ public:
     void resized() override;
 
 private:
+    OscComponent osc1_;
     SliderComponent osc1_frequency_slider_;
     SliderComponent osc2_frequency_slider_;
 

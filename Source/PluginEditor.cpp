@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "gui/OscComponent.h"
 
 constexpr int WIDTH = 1000;
 constexpr int HEIGHT = 400;
@@ -15,9 +16,11 @@ constexpr int HEIGHT = 400;
 //==============================================================================
 Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
+      osc1_("Osc 1"),
       osc1_frequency_slider_("Frequency"),
       osc2_frequency_slider_("Frequency")
 {
+    addAndMakeVisible(osc1_);
     osc1_frequency_slider_.attatchToParameter(audioProcessor.apvts, "OSC_1_FREQUENCY");
     addAndMakeVisible(osc1_frequency_slider_);
     osc2_frequency_slider_.attatchToParameter(audioProcessor.apvts, "OSC_2_FREQUENCY");
@@ -43,6 +46,7 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
 
 void Mhj01AudioProcessorEditor::resized()
 {
+    osc1_.setBounds (0, 0, 404, 43);
     osc1_frequency_slider_.setBounds (0, 0, 75, 115);
     osc2_frequency_slider_.setBounds (75, 0, 75, 115);
 }

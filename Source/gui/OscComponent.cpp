@@ -9,3 +9,15 @@
 */
 
 #include "OscComponent.h"
+
+OscComponent::OscComponent(juce::String name) : name_(name), frequency_("Frequency")
+{
+}
+
+OscComponent::~OscComponent()
+{
+}
+
+void OscComponent::resized()
+{
+}
