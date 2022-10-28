@@ -25,7 +25,7 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
     apvts (*this, nullptr, "Parameters", createParameters())
 #endif
 {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 12; i++) {
         synth_voices_.push_back(SynthVoice(getMainBusNumOutputChannels()));
         ++max_voices_;
     }
