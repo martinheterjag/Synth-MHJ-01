@@ -22,9 +22,8 @@ FilterComponent::FilterComponent(juce::String name, juce::AudioProcessorValueTre
     resonance_slider_.attatchToParameter(apvts, "FILTER_RESONANCE");
     addAndMakeVisible(resonance_slider_);
 
-    // TODO: Implement filter depth
-    // envelope2_depth_slider_.attatchToParameter(apvts, "FLTER_ENV2_DEPTH");
-    // addAndMakeVisible(envelope2_depth_slider_);
+     envelope2_depth_slider_.attatchToParameter(apvts, "FILTER_ENV2_DEPTH");
+     addAndMakeVisible(envelope2_depth_slider_);
 }
 
 FilterComponent::~FilterComponent()

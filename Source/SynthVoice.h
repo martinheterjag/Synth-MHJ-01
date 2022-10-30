@@ -22,7 +22,7 @@ public:
     void setVoiceFrequency(double f_hz);
     void modulateOsc1Frequency(double factor);
     void modulateOsc2Frequency(double factor);
-    void setVcfParameters(float cutoff_hz, float resonance);
+    void setVcfParameters(float cutoff_hz, float resonance, float env_depth);
     void noteOn();
     void noteOff();
     void setVcaGain(float gain);

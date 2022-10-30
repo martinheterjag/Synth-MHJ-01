@@ -39,17 +39,14 @@ void SynthVoice::modulateOsc2Frequency(double factor)
     osc2.setFrequency(osc2_f_hz_ * factor, true);
 }
 
-void SynthVoice::setVcfParameters(float cutoff_hz, float resonance)
+void SynthVoice::setVcfParameters(float cutoff_hz, float resonance, float env_depth)
 {
     if (sample_rate_ == 0) {
         DBG("Error: Sample rate is not set 0 when setting filter cutoff, "
             "have this SynthVoice been PreparedToPlay?");
         return;
     }
-    // TODO: make depth a data member (consider having depth as a range in Hertz instead of a factor)
-    const float MAX_MODULATION_HZ = 10000.0f;
-    float env_depth = 0.1 ;
-    float cutoff = cutoff_hz + (envelope2_output_ * (env_depth * MAX_MODULATION_HZ));
+    float cutoff = cutoff_hz + (envelope2_output_ * (env_depth));
     cutoff = std::min(std::max(cutoff, 15.0f), 25000.0f);
     auto& vcf = signal_chain_.template get<vcf_index>();
     auto vcf_state = vcf.state.get();
