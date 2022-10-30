@@ -251,21 +251,21 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.25f, 2.0f, 0.5f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_WAVEFORM", "Waveform", 0.0f, 2.0f, 0.0f));
 
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_CUTOFF", "Cutoff", 20.0f, 20000.0f, 4500.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_RESONANCE", "Resonance", 0.0f, 1.0f, 0.7f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_CUTOFF", "Cutoff", 20.0f, 12000.0f, 4500.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_RESONANCE", "Resonance", 0.5f, 5.0f, 0.7f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("VCA_GAIN", "Gain", 0.0f, 1.0f, 0.7f));
 
     // Modulators parameters
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_ATTACK", "Attack", 0.0f, 1.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_ATTACK", "Attack", 0.001f, 1.0f, 0.001f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_DECAY", "Decay", 0.0f, 1.0f, 0.2f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_SUSTAIN", "Sustain", 0.0f, 1.0f, 0.2f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_RELEASE", "Release", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_1_RELEASE", "Release", 0.01f, 1.0f, 0.5f));
 
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_ATTACK", "Attack", 0.0f, 1.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_ATTACK", "Attack", 0.001f, 1.0f, 0.1f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_DECAY", "Decay", 0.0f, 1.0f, 0.2f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_SUSTAIN", "Sustain", 0.0f, 1.0f, 0.2f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_RELEASE", "Release", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_RELEASE", "Release", 0.01f, 1.0f, 0.5f));
 
     return { parameters.begin(), parameters.end() };
 }
