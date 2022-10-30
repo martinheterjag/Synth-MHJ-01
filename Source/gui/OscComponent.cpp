@@ -11,7 +11,7 @@
 #include "OscComponent.h"
 
 OscComponent::OscComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix)
-    : SynthModuleComponent(name), frequency_slider_("Frequency"), waveform_slider_("Waveform")
+    : SynthModuleComponent(name), frequency_slider_("Freq"), waveform_slider_("Shape")
 {
     juce::String param_id = param_id_string_map.at(param_id_prefix) + "FREQUENCY";
     frequency_slider_.attatchToParameter(apvts, param_id);

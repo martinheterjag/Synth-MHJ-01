@@ -11,8 +11,8 @@
 #include "AdsrComponent.h"
 
 AdsrComponent::AdsrComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix)
-    : SynthModuleComponent(name), attack_slider_("Attack"),
-    decay_slider_("Decay"), sustain_slider_("Sustain"), release_slider_("Release")
+    : SynthModuleComponent(name), attack_slider_("Att"),
+    decay_slider_("Dec"), sustain_slider_("Sus"), release_slider_("Rel")
 {
     attack_slider_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "ATTACK");
     addAndMakeVisible(attack_slider_);

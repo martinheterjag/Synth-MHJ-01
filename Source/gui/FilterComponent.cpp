@@ -12,9 +12,9 @@
 
 FilterComponent::FilterComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts)
     : SynthModuleComponent(name),
-      cutoff_slider_("Cutoff"),
-      resonance_slider_("Resonance"),
-      envelope2_depth_slider_("Envelope 2")
+      cutoff_slider_("Freq"),
+      resonance_slider_("Res"),
+      envelope2_depth_slider_("Env2")
 {
     cutoff_slider_.attatchToParameter(apvts, "FILTER_CUTOFF");
     addAndMakeVisible(cutoff_slider_);
