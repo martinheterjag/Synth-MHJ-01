@@ -10,9 +10,9 @@
 
 #include "SliderComponent.h"
 
-int WIDTH = 75;
-int HEIGHT = 100;
-int FONT_SIZE = 12;
+constexpr int WIDTH = 45;
+constexpr int HEIGHT = 85;
+constexpr int FONT_SIZE = 12;
 
 SliderComponent::SliderComponent(juce::String label_text) {
     slider_.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
@@ -20,7 +20,7 @@ SliderComponent::SliderComponent(juce::String label_text) {
     slider_.setTextBoxStyle(juce::Slider::NoTextBox, true, 25, 25);
     addAndMakeVisible(slider_);
 
-    label_.setFont(juce::Font(15.0f, juce::Font::FontStyleFlags::bold));
+    label_.setFont(juce::Font(FONT_SIZE, juce::Font::FontStyleFlags::bold));
     label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
     label_.setText(label_text, juce::dontSendNotification);
     label_.setJustificationType(juce::Justification::centred);

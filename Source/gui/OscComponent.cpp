@@ -27,10 +27,10 @@ OscComponent::~OscComponent()
 
 void OscComponent::resized()
 {
-    frequency_slider_.setBounds (MODULE_BACKGROUND_TRIM_SIZE + MODULE_BACKGROUND_CORNER_SIZE,
-        MODULE_BACKGROUND_TRIM_SIZE + TEXT_LABEL_HEIGHT,
-        75, 115);
-    waveform_slider_.setBounds(MODULE_BACKGROUND_TRIM_SIZE + MODULE_BACKGROUND_CORNER_SIZE + 75,
-        MODULE_BACKGROUND_TRIM_SIZE + TEXT_LABEL_HEIGHT,
-        75, 115);
+    frequency_slider_.setBounds (MODULE_PADDING,
+        MODULE_PADDING,
+        SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
+    waveform_slider_.setBounds(MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
+        MODULE_PADDING,
+        SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
 }

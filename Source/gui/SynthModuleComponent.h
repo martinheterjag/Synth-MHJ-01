@@ -12,9 +12,12 @@
 
 #include <JuceHeader.h>
 
-constexpr float MODULE_BACKGROUND_CORNER_SIZE = 15.0f;
-constexpr float MODULE_BACKGROUND_TRIM_SIZE = 10.0f;
-constexpr float TEXT_LABEL_WIDTH = 100.0f;
+constexpr float MODULE_BACKGROUND_CORNER_SIZE = 10.0f;
+constexpr float MODULE_BACKGROUND_TRIM_SIZE = 5.0f;
+constexpr float MODULE_PADDING = MODULE_BACKGROUND_CORNER_SIZE + MODULE_BACKGROUND_TRIM_SIZE;
+constexpr float SLIDER_COMPONENT_WIDTH = 45;
+constexpr float SLIDER_COMPONENT_HEIGHT = 100;
+constexpr float TEXT_LABEL_WIDTH = SLIDER_COMPONENT_WIDTH;
 constexpr float TEXT_LABEL_HEIGHT = 15.0f;
 
 enum class ParamIdPrefix {

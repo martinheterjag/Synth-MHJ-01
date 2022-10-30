@@ -48,9 +48,9 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
 
 void Mhj01AudioProcessorEditor::resized()
 {
-    osc1_.setBounds (0, 0, 300, 160);
-    osc2_.setBounds (0, 160, 300, 160);
-    filter_.setBounds (300, 160, 300, 160);
-    env1_.setBounds(300, 0, 350, 160);
-    env2_.setBounds(650, 0, 350, 160);
+    osc1_.setBounds (0, 0, 300, 130);
+    osc2_.setBounds (0, 130, 300, 130);
+    filter_.setBounds (300, 130, 300, 130);
+    env1_.setBounds(300, 0, 225, 130);
+    env2_.setBounds(525, 0, 225, 130);
 }
