@@ -56,10 +56,12 @@ void SynthVoice::setVcfParameters(float cutoff_hz, float resonance, float env_de
 void SynthVoice::noteOn() {
     if (envelope1_.isActive()) {
         envelope1_.reset();
+        envelope1_.noteOff();
     }
     envelope1_.noteOn();
     if (envelope2_.isActive()) {
         envelope2_.reset();
+        envelope2_.noteOff();
     }
     envelope2_.noteOn();
 }

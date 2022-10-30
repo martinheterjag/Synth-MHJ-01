@@ -25,7 +25,7 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
     apvts (*this, nullptr, "Parameters", createParameters())
 #endif
 {
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 8; i++) {
         synth_voices_.push_back(SynthVoice(getMainBusNumOutputChannels()));
         ++max_voices_;
     }
@@ -231,14 +231,20 @@ void Mhj01AudioProcessor::setStateInformation (const void* data, int sizeInBytes
 
 int Mhj01AudioProcessor::getAvailableVoiceIndex()
 {
-    for (int i = 0; i < max_voices_; i++) {
-        if (synth_voices_[i].isActive()) {
+    // A ring buffer based voice stealing algrithm
+    // Turn off the first note to check since it is likely to be an old one.
+    unsigned int first_voice_to_check = next_voice_ % max_voices_;
+    for (unsigned int i = 0; i < max_voices_; i++) {
+        unsigned int voice_index = (i + next_voice_) % max_voices_;
+        if (synth_voices_[voice_index].isActive()) {
             continue;
         }
-        DBG("voice on " + std::to_string(i));
-        return i;
+        ++next_voice_;
+        return voice_index;
     }
-    return -1;  // No available voices
+
+    synth_voices_[first_voice_to_check].noteOff();
+    return first_voice_to_check;
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createParameters()

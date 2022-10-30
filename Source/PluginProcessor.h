@@ -62,6 +62,7 @@ private:
 
     std::vector<SynthVoice> synth_voices_;
     int max_voices_ = 0;
+    unsigned int next_voice_ = 0;
     juce::MixerAudioSource voice_mixer_;
 
     //==============================================================================
