@@ -17,10 +17,12 @@ constexpr int HEIGHT = 320;
 Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p),
       osc1_("Osc 1", p.apvts, ParamIdPrefix::OSC_1),
-      osc2_("Osc 2", p.apvts, ParamIdPrefix::OSC_2)
+      osc2_("Osc 2", p.apvts, ParamIdPrefix::OSC_2),
+      filter_("Filter", p.apvts)
 {
     addAndMakeVisible(osc1_);
     addAndMakeVisible(osc2_);
+    addAndMakeVisible(filter_);
 
     setSize (WIDTH, HEIGHT);
 }
@@ -44,4 +46,5 @@ void Mhj01AudioProcessorEditor::resized()
 {
     osc1_.setBounds (0, 0, 400, 160);
     osc2_.setBounds (0, 150, 400, 160);
+    filter_.setBounds (400, 0, 400, 160);
 }
