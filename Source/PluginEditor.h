@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "gui/AdsrComponent.h"
 #include "gui/SliderComponent.h"
 #include "gui/FilterComponent.h"
 #include "gui/OscComponent.h"
@@ -31,6 +32,8 @@ private:
     OscComponent osc1_;
     OscComponent osc2_;
     FilterComponent filter_;
+    AdsrComponent env1_;
+    AdsrComponent env2_;
 
     Mhj01AudioProcessor& audioProcessor;
 

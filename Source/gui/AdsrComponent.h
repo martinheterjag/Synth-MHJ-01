@@ -9,3 +9,20 @@
 */
 
 #pragma once
+
+#include <JuceHeader.h>
+#include "SynthModuleComponent.h"
+#include "SliderComponent.h"
+
+class AdsrComponent : public SynthModuleComponent {
+public:
+    AdsrComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts,
+                  ParamIdPrefix param_id_prefix);
+    ~AdsrComponent();
+    void resized() override;
+private:
+    SliderComponent attack_slider_;
+    SliderComponent decay_slider_;
+    SliderComponent sustain_slider_;
+    SliderComponent release_slider_;
+};

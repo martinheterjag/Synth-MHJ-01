@@ -14,15 +14,19 @@ constexpr int WIDTH = 1000;
 constexpr int HEIGHT = 320;
 
 //==============================================================================
-Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p),
+Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
+    : AudioProcessorEditor(&p), audioProcessor(p),
       osc1_("Osc 1", p.apvts, ParamIdPrefix::OSC_1),
       osc2_("Osc 2", p.apvts, ParamIdPrefix::OSC_2),
-      filter_("Filter", p.apvts)
+      filter_("Filter", p.apvts),
+      env1_("Env 1", p.apvts, ParamIdPrefix::ENV_1),
+      env2_("Env 2", p.apvts, ParamIdPrefix::ENV_2)
 {
     addAndMakeVisible(osc1_);
     addAndMakeVisible(osc2_);
     addAndMakeVisible(filter_);
+    addAndMakeVisible(env1_);
+    addAndMakeVisible(env2_);
 
     setSize (WIDTH, HEIGHT);
 }
@@ -44,7 +48,9 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
 
 void Mhj01AudioProcessorEditor::resized()
 {
-    osc1_.setBounds (0, 0, 400, 160);
-    osc2_.setBounds (0, 150, 400, 160);
-    filter_.setBounds (400, 0, 400, 160);
+    osc1_.setBounds (0, 0, 300, 160);
+    osc2_.setBounds (0, 160, 300, 160);
+    filter_.setBounds (300, 160, 300, 160);
+    env1_.setBounds(300, 0, 350, 160);
+    env2_.setBounds(650, 0, 350, 160);
 }

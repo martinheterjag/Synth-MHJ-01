@@ -10,8 +10,6 @@
 
 #include "OscComponent.h"
 
-
-
 OscComponent::OscComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix)
     : SynthModuleComponent(name), frequency_slider_("Frequency"), waveform_slider_("Waveform")
 {
