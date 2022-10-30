@@ -34,6 +34,8 @@ private:
     FilterComponent filter_;
     AdsrComponent env1_;
     AdsrComponent env2_;
+    // General controls, individual controls that are not grouped
+    SliderComponent volume_knob_;
 
     Mhj01AudioProcessor& audioProcessor;
 

@@ -11,7 +11,7 @@
 #include "gui/OscComponent.h"
 
 constexpr int WIDTH = 1000;
-constexpr int HEIGHT = 320;
+constexpr int HEIGHT = 330;
 
 //==============================================================================
 Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
@@ -20,13 +20,16 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
       osc2_("Osc 2", p.apvts, ParamIdPrefix::OSC_2),
       filter_("Filter", p.apvts),
       env1_("Env 1", p.apvts, ParamIdPrefix::ENV_1),
-      env2_("Env 2", p.apvts, ParamIdPrefix::ENV_2)
+      env2_("Env 2", p.apvts, ParamIdPrefix::ENV_2),
+      volume_knob_("Volume", SliderComponent::Style::KNOB)
 {
     addAndMakeVisible(osc1_);
     addAndMakeVisible(osc2_);
     addAndMakeVisible(filter_);
     addAndMakeVisible(env1_);
     addAndMakeVisible(env2_);
+    volume_knob_.attatchToParameter(p.apvts, "VCA_GAIN");
+    addAndMakeVisible(volume_knob_);
 
     setSize (WIDTH, HEIGHT);
 }
@@ -53,4 +56,5 @@ void Mhj01AudioProcessorEditor::resized()
     filter_.setBounds (300, 130, 300, 130);
     env1_.setBounds(300, 0, 225, 130);
     env2_.setBounds(525, 0, 225, 130);
+    volume_knob_.setBounds(15, 260, 60, 60);
 }
