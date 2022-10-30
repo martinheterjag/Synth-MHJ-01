@@ -188,7 +188,7 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
                                      apvts.getRawParameterValue("ENV_1_DECAY")->load(),
                                      apvts.getRawParameterValue("ENV_1_SUSTAIN")->load(),
                                      apvts.getRawParameterValue("ENV_1_RELEASE")->load());
-        voice.setEnvelope1Parameters(apvts.getRawParameterValue("ENV_2_ATTACK")->load(),
+        voice.setEnvelope2Parameters(apvts.getRawParameterValue("ENV_2_ATTACK")->load(),
                                      apvts.getRawParameterValue("ENV_2_DECAY")->load(),
                                      apvts.getRawParameterValue("ENV_2_SUSTAIN")->load(),
                                      apvts.getRawParameterValue("ENV_2_RELEASE")->load());
