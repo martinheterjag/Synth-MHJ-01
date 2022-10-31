@@ -104,6 +104,9 @@ void Mhj01AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
         voice_mixer_.addInputSource(&voice, false);
     }
     voice_mixer_.prepareToPlay(samplesPerBlock, sampleRate);
+    juce::dsp::ProcessSpec spec = { sampleRate, static_cast<juce::uint32>(samplesPerBlock),
+                                    static_cast<juce::uint32>(getMainBusNumOutputChannels()) };
+    mod_.prepare(spec);
 }
 
 void Mhj01AudioProcessor::releaseResources()
@@ -174,12 +177,13 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             }
         }
     }
+    mod_.process(apvts);
     for (auto& voice : synth_voices_) {
         voice.modulateOsc1Frequency(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load());
         voice.modulateOsc2Frequency(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
         voice.setWaveform(apvts.getRawParameterValue("OSC_1_WAVEFORM")->load(), 
                           apvts.getRawParameterValue("OSC_2_WAVEFORM")->load());
-        voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load(), 
+        voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() * mod_.getLfo1Output(),
                                apvts.getRawParameterValue("FILTER_RESONANCE")->load(),
                                apvts.getRawParameterValue("FILTER_ENV2_DEPTH")->load());
         voice.setVcaGain(apvts.getRawParameterValue("VCA_GAIN")->load());
@@ -274,6 +278,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_DECAY", "Decay", 0.0f, 1.0f, 0.2f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_SUSTAIN", "Sustain", 0.0f, 1.0f, 0.2f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_RELEASE", "Release", 0.01f, 1.0f, 0.5f));
+
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LFO_1_FREQUENCY", "Frequency", 0.01f, 10.0f, 1.0f));
+    // parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LFO_1_WAVEFORM", "Waveform", Waveform::SINE, Waveform::SQUARE, Waveform::SINE));
 
     return { parameters.begin(), parameters.end() };
 }

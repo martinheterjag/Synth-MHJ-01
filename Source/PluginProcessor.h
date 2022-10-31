@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Modulation.h"
 #include "SynthVoice.h"
 
 //==============================================================================
@@ -64,6 +65,7 @@ private:
     int max_voices_ = 0;
     unsigned int next_voice_ = 0;
     juce::MixerAudioSource voice_mixer_;
+    Modulation mod_;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Mhj01AudioProcessor)

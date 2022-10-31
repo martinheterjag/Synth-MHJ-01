@@ -14,7 +14,7 @@ LfoComponent::LfoComponent(juce::String name, juce::AudioProcessorValueTreeState
     : SynthModuleComponent(name), frequency_slider_("Freq"),
     waveform_selector_("Waveform")
 {
-    // frequency_slider_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "FREQUENCY");
+    frequency_slider_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "FREQUENCY");
     addAndMakeVisible(frequency_slider_);
     waveform_selector_.addItemList({ "sine", "saw", "square", "triangle" }, 1);
     waveform_selector_.setSelectedId(1);
