@@ -24,14 +24,18 @@ enum class ParamIdPrefix {
     OSC_1,
     OSC_2,
     ENV_1,
-    ENV_2
+    ENV_2,
+    LFO_1,
+    LFO_2
 };
 
 const std::map<ParamIdPrefix, const juce::String> param_id_string_map = {
     {ParamIdPrefix::OSC_1, "OSC_1_"},
     {ParamIdPrefix::OSC_2, "OSC_2_"},
     {ParamIdPrefix::ENV_1, "ENV_1_"},
-    {ParamIdPrefix::ENV_2, "ENV_2_"}
+    {ParamIdPrefix::ENV_2, "ENV_2_"},
+    {ParamIdPrefix::LFO_1, "LFO_1_"},
+    {ParamIdPrefix::LFO_2, "LFO_2_"}
 };
 
 class SynthModuleComponent : public juce::Component {

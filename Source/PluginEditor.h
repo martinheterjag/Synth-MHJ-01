@@ -11,9 +11,10 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "gui/AdsrComponent.h"
-#include "gui/SliderComponent.h"
 #include "gui/FilterComponent.h"
+#include "gui/LfoComponent.h"
 #include "gui/OscComponent.h"
+#include "gui/SliderComponent.h"
 
 //==============================================================================
 /**
@@ -34,6 +35,7 @@ private:
     FilterComponent filter_;
     AdsrComponent env1_;
     AdsrComponent env2_;
+    LfoComponent lfo1_;
     // General controls, individual controls that are not grouped
     SliderComponent volume_knob_;
 

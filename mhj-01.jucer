@@ -15,6 +15,13 @@
               file="Source/gui/FilterComponent.cpp"/>
         <FILE id="UmG7Nl" name="FilterComponent.h" compile="0" resource="0"
               file="Source/gui/FilterComponent.h"/>
+        <FILE id="OZK19a" name="LfoComponent.cpp" compile="1" resource="0"
+              file="Source/gui/LfoComponent.cpp"/>
+        <FILE id="dyOFQq" name="LfoComponent.h" compile="0" resource="0" file="Source/gui/LfoComponent.h"/>
+        <FILE id="sByDbE" name="ModulationComponent.cpp" compile="1" resource="0"
+              file="Source/gui/ModulationComponent.cpp"/>
+        <FILE id="hb2v3Q" name="ModulationComponent.h" compile="0" resource="0"
+              file="Source/gui/ModulationComponent.h"/>
         <FILE id="lXYWjo" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/gui/OscComponent.cpp"/>
         <FILE id="GDFcAB" name="OscComponent.h" compile="0" resource="0" file="Source/gui/OscComponent.h"/>
@@ -27,8 +34,8 @@
         <FILE id="i2O73w" name="SynthModuleComponent.h" compile="0" resource="0"
               file="Source/gui/SynthModuleComponent.h"/>
       </GROUP>
-      <FILE id="FqzJbT" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
-      <FILE id="IqGWB7" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <FILE id="FhjKXW" name="Modulation.cpp" compile="1" resource="0" file="Source/Modulation.cpp"/>
+      <FILE id="xPvJca" name="Modulation.h" compile="0" resource="0" file="Source/Modulation.h"/>
       <FILE id="pdVrIr" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="TwALOg" name="PluginProcessor.h" compile="0" resource="0"
@@ -36,6 +43,8 @@
       <FILE id="oshdGe" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="RhF0eV" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="FqzJbT" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
+      <FILE id="IqGWB7" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
