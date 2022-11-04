@@ -180,7 +180,10 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         voice.modulateOsc2Frequency(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
         voice.setWaveform(apvts.getRawParameterValue("OSC_1_WAVEFORM")->load(), 
                           apvts.getRawParameterValue("OSC_2_WAVEFORM")->load());
-        float cutoff_mod = juce::jmap<float>(lfo1_mod, 0.0f, 10000.0f);
+
+        float cutoff_mod = juce::jmap<float>(
+            static_cast<float>(lfo1_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_1")->load(),
+            0.0f, 10000.0f);
         voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() + cutoff_mod,
                                apvts.getRawParameterValue("FILTER_RESONANCE")->load(),
                                apvts.getRawParameterValue("FILTER_ENV2_DEPTH")->load());
@@ -261,6 +264,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_WAVEFORM", "Waveform", 0.0f, 2.0f, 0.0f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_CUTOFF", "Cutoff", 10.0f, 12000.0f, 4500.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_CUTOFF_MOD_LFO_1", "LFO 1", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_RESONANCE", "Resonance", 0.5f, 5.0f, 0.7f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_ENV2_DEPTH", "Envelope2 depth", 0.0f, 10000.0f, 1000.0f));
 

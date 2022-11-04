@@ -19,23 +19,25 @@ SliderComponent::SliderComponent(juce::String label_text, SliderComponent::Style
         slider_.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
         slider_.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::gold);
         label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
+        label_.setFont(juce::Font(FONT_SIZE, juce::Font::FontStyleFlags::bold));
         break;
     case Style::KNOB:
         slider_.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
         slider_.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::lightgoldenrodyellow);
         label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::lightgoldenrodyellow);
+        label_.setFont(juce::Font(FONT_SIZE, juce::Font::FontStyleFlags::bold));
         break;
     case Style::SMALL_KNOB:
         slider_.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
         slider_.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::gold);
         label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
+        label_.setFont(juce::Font(SMALL_FONT_SIZE, juce::Font::FontStyleFlags::bold));
         break;
     }
 
     slider_.setTextBoxStyle(juce::Slider::NoTextBox, true, 25, 25);
     addAndMakeVisible(slider_);
 
-    label_.setFont(juce::Font(FONT_SIZE, juce::Font::FontStyleFlags::bold));
     label_.setText(label_text, juce::dontSendNotification);
     label_.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(label_);
@@ -58,7 +60,7 @@ void SliderComponent::resized()
         break;
     case Style::SMALL_KNOB:
         slider_.setBounds(0, 0, SMALL_KNOB_WIDTH, SMALL_KNOB_HEIGHT);
-        label_.setBounds(0, SMALL_KNOB_HEIGHT, SMALL_KNOB_WIDTH, TEXT_LABEL_HEIGHT);
+        label_.setBounds(0, SMALL_KNOB_HEIGHT - 10, SMALL_KNOB_WIDTH, SMALL_TEXT_LABEL_HEIGHT);
         break;
     }
 }
