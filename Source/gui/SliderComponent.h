@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "GuiConstants.h"
 
 class SliderComponent : public juce::Component
 {

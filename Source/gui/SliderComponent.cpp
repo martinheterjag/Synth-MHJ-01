@@ -10,14 +10,6 @@
 
 #include "SliderComponent.h"
 
-constexpr int SLIDER_WIDTH = 45;
-constexpr int SLIDER_HEIGHT = 85;
-constexpr int KNOB_WIDTH = 45;
-constexpr int KNOB_HEIGHT = 45;
-constexpr int SMALL_KNOB_WIDTH = 10;
-constexpr int SMALL_KNOB_HEIGHT = 10;
-constexpr int LABEL_HEIGHT = 15;
-constexpr int FONT_SIZE = 12;
 
 SliderComponent::SliderComponent(juce::String label_text, SliderComponent::Style style)
     : style_(style)
@@ -58,15 +50,15 @@ void SliderComponent::resized()
     switch (style_) {
     case Style::SLIDER:
         slider_.setBounds(0, 0, SLIDER_WIDTH, SLIDER_HEIGHT);
-        label_.setBounds(0, SLIDER_HEIGHT, SLIDER_WIDTH, LABEL_HEIGHT);
+        label_.setBounds(0, SLIDER_HEIGHT, SLIDER_WIDTH, TEXT_LABEL_HEIGHT);
         break;
     case Style::KNOB:
         slider_.setBounds(0, 0, KNOB_WIDTH, KNOB_HEIGHT);
-        label_.setBounds(0, KNOB_HEIGHT, KNOB_WIDTH, LABEL_HEIGHT);
+        label_.setBounds(0, KNOB_HEIGHT, KNOB_WIDTH, TEXT_LABEL_HEIGHT);
         break;
     case Style::SMALL_KNOB:
         slider_.setBounds(0, 0, SMALL_KNOB_WIDTH, SMALL_KNOB_HEIGHT);
-        label_.setBounds(0, SMALL_KNOB_HEIGHT, SMALL_KNOB_WIDTH, LABEL_HEIGHT);
+        label_.setBounds(0, SMALL_KNOB_HEIGHT, SMALL_KNOB_WIDTH, TEXT_LABEL_HEIGHT);
         break;
     }
 }

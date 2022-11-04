@@ -15,6 +15,7 @@
               file="Source/gui/FilterComponent.cpp"/>
         <FILE id="UmG7Nl" name="FilterComponent.h" compile="0" resource="0"
               file="Source/gui/FilterComponent.h"/>
+        <FILE id="o3ovsM" name="GuiConstants.h" compile="0" resource="0" file="Source/gui/GuiConstants.h"/>
         <FILE id="OZK19a" name="LfoComponent.cpp" compile="1" resource="0"
               file="Source/gui/LfoComponent.cpp"/>
         <FILE id="dyOFQq" name="LfoComponent.h" compile="0" resource="0" file="Source/gui/LfoComponent.h"/>
