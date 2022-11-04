@@ -18,7 +18,7 @@ public:
     ~Modulation();
     void prepare(juce::dsp::ProcessSpec& spec);
     double getLfo1Output();
-    void process(juce::AudioProcessorValueTreeState& apvts);
+    void process(juce::AudioProcessorValueTreeState& apvts, const juce::AudioSourceChannelInfo bufferToFill);
     enum class Waveform {
         SINE,
         SAW,

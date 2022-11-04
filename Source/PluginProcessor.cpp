@@ -160,11 +160,7 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         juce::MidiMessage midi_msg = m.getMessage();
         if (midi_msg.isNoteOn()) {
             int note_number = midi_msg.getNoteNumber();
-            // TODO: instead of denying new notes, implement voice stealing.
             int index = getAvailableVoiceIndex();
-            if (index < 0) {
-                continue;
-            }
             synth_voices_[index].setVoiceFrequency(midi_msg.getMidiNoteInHertz(note_number));
             synth_voices_[index].setKey(note_number);
             synth_voices_[index].noteOn();
@@ -177,7 +173,7 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             }
         }
     }
-    mod_.process(apvts);
+    mod_.process(apvts, juce::AudioSourceChannelInfo(buffer));
     for (auto& voice : synth_voices_) {
         voice.modulateOsc1Frequency(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load());
         voice.modulateOsc2Frequency(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());

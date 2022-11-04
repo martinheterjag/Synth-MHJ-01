@@ -27,14 +27,16 @@ void Modulation::prepare(juce::dsp::ProcessSpec& spec)
 }
 
 double Modulation::getLfo1Output() {
-    DBG("lfo1_output_: " << lfo1_output_);
     return lfo1_output_;
 }
 
-void Modulation::process(juce::AudioProcessorValueTreeState& apvts)
+void Modulation::process(juce::AudioProcessorValueTreeState& apvts, const juce::AudioSourceChannelInfo bufferToFill)
 {
+    auto block = juce::dsp::AudioBlock<float>(*bufferToFill.buffer);
+    auto context = juce::dsp::ProcessContextReplacing<float>(block);
+
     auto f = apvts.getRawParameterValue("LFO_1_FREQUENCY")->load();
-    DBG("lfo1: " << f);
     lfo1_.setFrequency(apvts.getRawParameterValue("LFO_1_FREQUENCY")->load());
-    lfo1_output_ = lfo1_.processSample(0.0f);
+    lfo1_output_ = lfo1_.processSample(0.0);
+    lfo1_.process(context);
 }
