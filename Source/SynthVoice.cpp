@@ -47,7 +47,7 @@ void SynthVoice::setVcfParameters(float cutoff_hz, float resonance, float env_de
         return;
     }
     float cutoff = cutoff_hz + (envelope2_output_ * (env_depth));
-    cutoff = std::min(std::max(cutoff, 15.0f), 25000.0f);
+    cutoff = std::min(std::max(cutoff, 15.0f), 20000.0f);
     auto& vcf = signal_chain_.template get<vcf_index>();
     auto vcf_state = vcf.state.get();
     vcf_state->setCutOffFrequency(sample_rate_, cutoff, resonance);

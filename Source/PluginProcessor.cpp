@@ -174,12 +174,14 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         }
     }
     mod_.process(apvts, juce::AudioSourceChannelInfo(buffer));
+    double lfo1_mod = mod_.getLfo1Output();
     for (auto& voice : synth_voices_) {
         voice.modulateOsc1Frequency(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load());
         voice.modulateOsc2Frequency(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
         voice.setWaveform(apvts.getRawParameterValue("OSC_1_WAVEFORM")->load(), 
                           apvts.getRawParameterValue("OSC_2_WAVEFORM")->load());
-        voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() * mod_.getLfo1Output(),
+        float cutoff_mod = juce::jmap<float>(lfo1_mod, 0.0f, 10000.0f);
+        voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() + cutoff_mod,
                                apvts.getRawParameterValue("FILTER_RESONANCE")->load(),
                                apvts.getRawParameterValue("FILTER_ENV2_DEPTH")->load());
         voice.setVcaGain(apvts.getRawParameterValue("VCA_GAIN")->load());
@@ -276,7 +278,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ENV_2_RELEASE", "Release", 0.01f, 1.0f, 0.5f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LFO_1_FREQUENCY", "Frequency", 0.01f, 10.0f, 1.0f));
-    // parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LFO_1_WAVEFORM", "Waveform", Waveform::SINE, Waveform::SQUARE, Waveform::SINE));
+    parameters.push_back(std::make_unique<juce::AudioParameterChoice>("LFO_1_WAVEFORM", "Waveform", juce::StringArray { "Sine", "Saw", "Square", "Triangle" }, 1));
 
     return { parameters.begin(), parameters.end() };
 }
