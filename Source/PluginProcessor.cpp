@@ -183,7 +183,7 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
 
         float cutoff_mod = juce::jmap<float>(
             static_cast<float>(lfo1_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_1")->load(),
-            0.0f, 10000.0f);
+            0.0f, 6500.0f);
         voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() + cutoff_mod,
                                apvts.getRawParameterValue("FILTER_RESONANCE")->load(),
                                apvts.getRawParameterValue("FILTER_CUTOFF_MOD_ENV_2")->load());
