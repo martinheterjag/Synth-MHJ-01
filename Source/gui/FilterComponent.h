@@ -24,5 +24,4 @@ private:
     SliderComponent cutoff_slider_;
     ModulationComponent cutoff_modulation_;
     SliderComponent resonance_slider_;
-    SliderComponent envelope2_depth_slider_;
 };

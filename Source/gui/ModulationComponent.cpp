@@ -12,7 +12,8 @@
 
 ModulationComponent::ModulationComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, 
                                          ParamIdPrefix param_id_prefix)
-    : lfo1_knob_("LFO 1", SliderComponent::Style::SMALL_KNOB)
+    : lfo1_knob_("LFO 1", SliderComponent::Style::SMALL_KNOB),
+      env2_knob_("Env 2", SliderComponent::Style::SMALL_KNOB)
 {
     label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
     label_.setFont(juce::Font(FONT_SIZE, juce::Font::FontStyleFlags::bold));
@@ -22,6 +23,8 @@ ModulationComponent::ModulationComponent(juce::String name, juce::AudioProcessor
 
     lfo1_knob_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "LFO_1");
     addAndMakeVisible(lfo1_knob_);
+    env2_knob_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "ENV_2");
+    addAndMakeVisible(env2_knob_);
 }
 
 ModulationComponent::~ModulationComponent()
@@ -42,6 +45,8 @@ void ModulationComponent::paint(juce::Graphics& g)
 void ModulationComponent::resized()
 {
     lfo1_knob_.setBounds(MOD_COMPONENT_PADDING, MOD_COMPONENT_PADDING,
+        SMALL_KNOB_WIDTH, SMALL_KNOB_HEIGHT + SMALL_TEXT_LABEL_HEIGHT);
+    env2_knob_.setBounds(MOD_COMPONENT_PADDING, MOD_COMPONENT_PADDING + SMALL_KNOB_HEIGHT,
         SMALL_KNOB_WIDTH, SMALL_KNOB_HEIGHT + SMALL_TEXT_LABEL_HEIGHT);
     label_.setBounds(0, SLIDER_HEIGHT, TEXT_LABEL_WIDTH * 2, TEXT_LABEL_HEIGHT);
 }

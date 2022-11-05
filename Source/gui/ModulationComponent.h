@@ -26,4 +26,5 @@ public:
 private:
     juce::Label label_;
     SliderComponent lfo1_knob_;
+    SliderComponent env2_knob_;
 };
