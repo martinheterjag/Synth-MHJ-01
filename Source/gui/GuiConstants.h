@@ -39,7 +39,9 @@ constexpr int LINE_THICKNESS = 2;
 enum class ParamIdPrefix {
     OSC_1,
     OSC_2,
-    FILTER_CUTOFF_MOD,
+    FREQUENCY_MOD,
+    FILTER,
+    CUTOFF_MOD,
     ENV_1,
     ENV_2,
     LFO_1,
@@ -49,7 +51,9 @@ enum class ParamIdPrefix {
 const std::map<ParamIdPrefix, const juce::String> param_id_string_map = {
     {ParamIdPrefix::OSC_1, "OSC_1_"},
     {ParamIdPrefix::OSC_2, "OSC_2_"},
-    {ParamIdPrefix::FILTER_CUTOFF_MOD, "FILTER_CUTOFF_MOD_"},
+    {ParamIdPrefix::FREQUENCY_MOD, "FREQUENCY_MOD_"},
+    {ParamIdPrefix::FILTER, "FILTER_"},
+    {ParamIdPrefix::CUTOFF_MOD, "CUTOFF_MOD_"},
     {ParamIdPrefix::ENV_1, "ENV_1_"},
     {ParamIdPrefix::ENV_2, "ENV_2_"},
     {ParamIdPrefix::LFO_1, "LFO_1_"},

@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ModulationComponent.h"
 #include "SynthModuleComponent.h"
 #include "SliderComponent.h"
 
@@ -22,5 +23,6 @@ public:
     void resized() override;
 private:
     SliderComponent frequency_slider_;
+    ModulationComponent frequency_modulation_;
     SliderComponent waveform_slider_;
 };

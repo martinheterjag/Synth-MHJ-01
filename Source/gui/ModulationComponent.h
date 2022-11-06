@@ -19,6 +19,7 @@
 class ModulationComponent : public juce::Component {
 public:
     ModulationComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts,
+                        ParamIdPrefix module_id_prefix,
                         ParamIdPrefix param_id_prefix);
     ~ModulationComponent();
     void paint(juce::Graphics& g) override;

@@ -13,7 +13,7 @@
 FilterComponent::FilterComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts)
     : SynthModuleComponent(name),
       cutoff_slider_("Freq"),
-      cutoff_modulation_("Freq mod", apvts, ParamIdPrefix::FILTER_CUTOFF_MOD),
+      cutoff_modulation_("Freq mod", apvts, ParamIdPrefix::FILTER, ParamIdPrefix::CUTOFF_MOD),
       resonance_slider_("Res")
 {
     cutoff_slider_.attatchToParameter(apvts, "FILTER_CUTOFF");

@@ -27,16 +27,20 @@ void SynthVoice::setVoiceFrequency(double f_hz)
     osc2_f_hz_ = f_hz;
 }
 
-void SynthVoice::modulateOsc1Frequency(double factor)
+void SynthVoice::modulateOsc1Frequency(double factor, float env_depth)
 {
     auto& osc1 = signal_chain_.template get<osc1_index>();
-    osc1.setFrequency(osc1_f_hz_ * factor, true);
+    double new_frequency = osc1_f_hz_ * factor + envelope2_output_ * env_depth;
+    new_frequency = std::min(std::max(new_frequency, 20.0), 20000.0);
+    osc1.setFrequency(new_frequency, true);
 }
 
-void SynthVoice::modulateOsc2Frequency(double factor)
+void SynthVoice::modulateOsc2Frequency(double factor, float env_depth)
 {
     auto& osc2 = signal_chain_.template get<osc2_index>();
-    osc2.setFrequency(osc2_f_hz_ * factor, true);
+    double new_frequency = osc1_f_hz_ * factor + envelope2_output_ * env_depth;
+    new_frequency = std::min(std::max(new_frequency, 20.0), 20000.0);
+    osc2.setFrequency(new_frequency, true);
 }
 
 void SynthVoice::setVcfParameters(float cutoff_hz, float resonance, float env_depth)
@@ -46,7 +50,7 @@ void SynthVoice::setVcfParameters(float cutoff_hz, float resonance, float env_de
             "have this SynthVoice been PreparedToPlay?");
         return;
     }
-    float cutoff = cutoff_hz + (envelope2_output_ * (env_depth));
+    float cutoff = cutoff_hz + envelope2_output_ * env_depth;
     cutoff = std::min(std::max(cutoff, 15.0f), 20000.0f);
     auto& vcf = signal_chain_.template get<vcf_index>();
     auto vcf_state = vcf.state.get();

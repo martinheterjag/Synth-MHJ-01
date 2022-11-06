@@ -11,6 +11,7 @@
 #include "ModulationComponent.h"
 
 ModulationComponent::ModulationComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, 
+                                         ParamIdPrefix module_id_prefix,
                                          ParamIdPrefix param_id_prefix)
     : lfo1_knob_("LFO 1", SliderComponent::Style::SMALL_KNOB),
       env2_knob_("Env 2", SliderComponent::Style::SMALL_KNOB)
@@ -21,9 +22,13 @@ ModulationComponent::ModulationComponent(juce::String name, juce::AudioProcessor
     label_.setText(name, juce::dontSendNotification);
     addAndMakeVisible(label_);
 
-    lfo1_knob_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "LFO_1");
+    juce::String param_id_full_prefix = param_id_string_map.at(module_id_prefix) +
+                                        param_id_string_map.at(param_id_prefix);
+
+    lfo1_knob_.attatchToParameter(apvts, param_id_full_prefix + "LFO_1");
     addAndMakeVisible(lfo1_knob_);
-    env2_knob_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "ENV_2");
+
+    env2_knob_.attatchToParameter(apvts, param_id_full_prefix + "ENV_2");
     addAndMakeVisible(env2_knob_);
 }
 
