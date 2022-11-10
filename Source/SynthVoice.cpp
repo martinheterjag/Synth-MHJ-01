@@ -43,6 +43,13 @@ void SynthVoice::modulateOsc2Frequency(double factor, double env_depth)
     osc2.setFrequency(new_frequency, true);
 }
 
+void SynthVoice::setWaveform(float osc1_shape, float osc2_shape, float osc1_env_depth, float osc2_env_depth) {
+    float osc1_envmod = static_cast<float>(envelope2_output_) * osc1_env_depth;
+    float osc2_envmod = static_cast<float>(envelope2_output_) * osc2_env_depth;
+    osc1_waveform_ = std::min(std::max(osc1_shape + osc1_envmod, 0.0f), 2.0f);
+    osc2_waveform_ = std::min(std::max(osc2_shape + osc2_envmod, 0.0f), 2.0f);
+}
+
 void SynthVoice::setVcfParameters(float cutoff_hz, float resonance, float env_depth)
 {
     if (sample_rate_ == 0) {
@@ -99,11 +106,6 @@ void SynthVoice::setEnvelope2Parameters(float attack, float decay, float sustain
     envelope2_params_.sustain = sustain;
     envelope2_params_.release = release;
     envelope2_.setParameters(envelope2_params_);
-}
-
-void SynthVoice::setWaveform(float osc1_shape, float osc2_shape) {
-    osc1_waveform_ = std::min(std::max(osc1_shape, 0.0f), 2.0f);
-    osc2_waveform_ = std::min(std::max(osc2_shape, 0.0f), 2.0f);
 }
 
 void SynthVoice::setKey(const int key)

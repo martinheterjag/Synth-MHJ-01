@@ -28,7 +28,7 @@ public:
     void setVcaGain(float gain);
     void setEnvelope1Parameters(float attack, float decay, float sustain, float release);
     void setEnvelope2Parameters(float attack, float decay, float sustain, float release);
-    void setWaveform(float osc1_shape, float osc2_shape);
+    void setWaveform(float osc1_shape, float osc2_shape, float osc1_env_depth, float osc2_env_depth);
     void setKey(const int key);
     int getKey();
     bool isActive();

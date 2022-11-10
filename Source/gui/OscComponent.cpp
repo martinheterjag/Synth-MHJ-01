@@ -13,7 +13,8 @@
 OscComponent::OscComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix)
     : SynthModuleComponent(name), frequency_slider_("Freq"),
       frequency_modulation_("Freq mod", apvts, param_id_prefix, ParamIdPrefix::FREQUENCY_MOD),
-      waveform_slider_("Shape")
+      waveform_slider_("Shape"),
+      waveform_modulation_("Shape mod", apvts, param_id_prefix, ParamIdPrefix::WAVEFORM_MOD)
 {
     juce::String param_id = param_id_string_map.at(param_id_prefix) + "FREQUENCY";
     frequency_slider_.attatchToParameter(apvts, param_id);
@@ -23,6 +24,8 @@ OscComponent::OscComponent(juce::String name, juce::AudioProcessorValueTreeState
 
     waveform_slider_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "WAVEFORM");
     addAndMakeVisible(waveform_slider_);
+
+    addAndMakeVisible(waveform_modulation_);
 }
 
 OscComponent::~OscComponent()
@@ -40,4 +43,7 @@ void OscComponent::resized()
     waveform_slider_.setBounds(MODULE_PADDING + SLIDER_COMPONENT_WIDTH + MOD_COMPONENT_WIDTH,
         MODULE_PADDING,
         SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
+    waveform_modulation_.setBounds(MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 2 + MOD_COMPONENT_WIDTH,
+        MODULE_PADDING,
+        MOD_COMPONENT_WIDTH, MOD_COMPONENT_HEIGHT);
 }

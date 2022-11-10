@@ -25,4 +25,5 @@ private:
     SliderComponent frequency_slider_;
     ModulationComponent frequency_modulation_;
     SliderComponent waveform_slider_;
+    ModulationComponent waveform_modulation_;
 };
