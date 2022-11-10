@@ -22,6 +22,7 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
       env1_("Env 1", p.apvts, ParamIdPrefix::ENV_1),
       env2_("Env 2", p.apvts, ParamIdPrefix::ENV_2),
       lfo1_("LFO 1", p.apvts, ParamIdPrefix::LFO_1),
+      lfo2_("LFO 2", p.apvts, ParamIdPrefix::LFO_2),
       volume_knob_("Volume", SliderComponent::Style::KNOB)
 {
     addAndMakeVisible(osc1_);
@@ -30,6 +31,7 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
     addAndMakeVisible(env1_);
     addAndMakeVisible(env2_);
     addAndMakeVisible(lfo1_);
+    addAndMakeVisible(lfo2_);
     volume_knob_.attatchToParameter(p.apvts, "VCA_GAIN");
     addAndMakeVisible(volume_knob_);
 
@@ -59,5 +61,6 @@ void Mhj01AudioProcessorEditor::resized()
     env1_.setBounds(300, 0, 225, 130);
     env2_.setBounds(525, 0, 225, 130);
     lfo1_.setBounds(750, 0, 225, 130);
+    lfo2_.setBounds(750, 130, 225, 130);
     volume_knob_.setBounds(15, 260, 60, 60);
 }

@@ -36,6 +36,7 @@ private:
     AdsrComponent env1_;
     AdsrComponent env2_;
     LfoComponent lfo1_;
+    LfoComponent lfo2_;
     // General controls, individual controls that are not grouped
     SliderComponent volume_knob_;
 
