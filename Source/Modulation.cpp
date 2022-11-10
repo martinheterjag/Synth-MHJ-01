@@ -45,16 +45,16 @@ void Modulation::resetLfo1() {
         break;
     case(Waveform::SQUARE):
         lfo1_.initialise([](float x) {
-            return (x > 0.0 ? 
-                0.0 : 
-                1.0);
+            return (x > 0.0f ?
+                -0.5f :
+                0.5f);
             }, 128);
         break;
     case(Waveform::TRIANGLE):
         lfo1_.initialise([](float x) {
             return (x > 0.0 ?
-                (2.0 * x / (juce::MathConstants<double>::pi)) :
-                juce::MathConstants<double>::pi - (2.0 * x / (juce::MathConstants<double>::pi)));
+                2.0f * x - 0.5f :
+                -2.0f * x - 0.5f);
             }, 128);
             break;
     default:
