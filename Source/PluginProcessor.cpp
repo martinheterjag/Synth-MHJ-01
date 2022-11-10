@@ -272,11 +272,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     // Frequency parameter is not in Hertz, it's multiplied with the current note frequency for each synth voice.
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY", "Frequency", 0.25f, 2.0f, 1.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY_MOD_LFO_1", "LFO 1", 0.0f, 1.0f, 0.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY_MOD_ENV_2", "Envelope2 depth", 0.0f, 6000.0f, 1000.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY_MOD_ENV_2", "Envelope2 depth", 0.0f, 6000.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_WAVEFORM", "Waveform", 0.0f, 2.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.25f, 2.0f, 0.5f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_MOD_LFO_1", "LFO 1", 0.0f, 1.0f, 0.0f));
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_MOD_ENV_2", "Envelope2 depth", 0.0f, 6000.0f, 1000.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_MOD_ENV_2", "Envelope2 depth", 0.0f, 6000.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_WAVEFORM", "Waveform", 0.0f, 2.0f, 0.0f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("FILTER_CUTOFF", "Cutoff", 10.0f, 12000.0f, 4500.0f));
