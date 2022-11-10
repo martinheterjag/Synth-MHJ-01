@@ -35,6 +35,8 @@
         <FILE id="i2O73w" name="SynthModuleComponent.h" compile="0" resource="0"
               file="Source/gui/SynthModuleComponent.h"/>
       </GROUP>
+      <FILE id="JJRB9g" name="Lfo.cpp" compile="1" resource="0" file="Source/Lfo.cpp"/>
+      <FILE id="ps9pyB" name="Lfo.h" compile="0" resource="0" file="Source/Lfo.h"/>
       <FILE id="FhjKXW" name="Modulation.cpp" compile="1" resource="0" file="Source/Modulation.cpp"/>
       <FILE id="xPvJca" name="Modulation.h" compile="0" resource="0" file="Source/Modulation.h"/>
       <FILE id="pdVrIr" name="PluginProcessor.cpp" compile="1" resource="0"
