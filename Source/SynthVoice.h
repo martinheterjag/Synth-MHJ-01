@@ -20,8 +20,8 @@ public:
     ~SynthVoice();
 
     void setVoiceFrequency(double f_hz);
-    void modulateOsc1Frequency(double factor, float env_depth);
-    void modulateOsc2Frequency(double factor, float env_depth);
+    void modulateOsc1Frequency(double factor, double env_depth);
+    void modulateOsc2Frequency(double factor, double env_depth);
     void setVcfParameters(float cutoff_hz, float resonance, float env_depth);
     void noteOn();
     void noteOff();
@@ -55,7 +55,7 @@ private:
     juce::ADSR envelope1_;
     juce::ADSR::Parameters envelope1_params_;
     juce::ADSR envelope2_;
-    float envelope2_output_;
+    double envelope2_output_ = 0.0;
     juce::ADSR::Parameters envelope2_params_;
     juce::uint32 main_bus_output_channels_;
     int key_ = 999;  // init to something out of midi key range

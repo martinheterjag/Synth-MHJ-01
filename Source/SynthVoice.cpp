@@ -27,7 +27,7 @@ void SynthVoice::setVoiceFrequency(double f_hz)
     osc2_f_hz_ = f_hz;
 }
 
-void SynthVoice::modulateOsc1Frequency(double factor, float env_depth)
+void SynthVoice::modulateOsc1Frequency(double factor, double env_depth)
 {
     auto& osc1 = signal_chain_.template get<osc1_index>();
     double new_frequency = osc1_f_hz_ * factor + envelope2_output_ * env_depth;
@@ -35,7 +35,7 @@ void SynthVoice::modulateOsc1Frequency(double factor, float env_depth)
     osc1.setFrequency(new_frequency, true);
 }
 
-void SynthVoice::modulateOsc2Frequency(double factor, float env_depth)
+void SynthVoice::modulateOsc2Frequency(double factor, double env_depth)
 {
     auto& osc2 = signal_chain_.template get<osc2_index>();
     double new_frequency = osc1_f_hz_ * factor + envelope2_output_ * env_depth;
@@ -169,7 +169,7 @@ void SynthVoice::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToF
     auto envelope_buffer = *bufferToFill.buffer;
     envelope_buffer.clear();
     envelope2_.applyEnvelopeToBuffer(envelope_buffer, 0, envelope_buffer.getNumSamples());
-    envelope2_output_ = envelope2_.getNextSample();
+    envelope2_output_ = static_cast<double>(envelope2_.getNextSample());
 
     auto block = juce::dsp::AudioBlock<float>(*buffer);
     auto contextToUse = juce::dsp::ProcessContextReplacing<float>(block);
