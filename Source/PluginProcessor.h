@@ -66,6 +66,7 @@ private:
     unsigned int next_voice_ = 0;
     juce::MixerAudioSource voice_mixer_;
     Modulation mod_;
+    double pitch_wheel_ = 1.0;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Mhj01AudioProcessor)

@@ -27,19 +27,21 @@ void SynthVoice::setVoiceFrequency(double f_hz)
     osc2_f_hz_ = f_hz;
 }
 
-void SynthVoice::modulateOsc1Frequency(double factor, double env_depth)
+void SynthVoice::modulateOsc1Frequency(double factor, double env_depth, double pitch_wheel)
 {
     auto& osc1 = signal_chain_.template get<osc1_index>();
     double new_frequency = osc1_f_hz_ * factor + envelope2_output_ * env_depth;
+    new_frequency *= pitch_wheel;
     new_frequency = std::min(std::max(new_frequency, 20.0), 20000.0);
     osc1.setFrequency(new_frequency, true);
 }
 
-void SynthVoice::modulateOsc2Frequency(double factor, double env_depth)
+void SynthVoice::modulateOsc2Frequency(double factor, double env_depth, double pitch_wheel)
 {
     auto& osc2 = signal_chain_.template get<osc2_index>();
     double new_frequency = osc1_f_hz_ * factor + envelope2_output_ * env_depth;
     new_frequency = std::min(std::max(new_frequency, 20.0), 20000.0);
+    new_frequency *= pitch_wheel;
     osc2.setFrequency(new_frequency, true);
 }
 
@@ -82,6 +84,12 @@ void SynthVoice::noteOff() {
     envelope2_.noteOff();
 }
 
+void SynthVoice::setVelocity(int velocity)
+{
+    velocity_ = juce::jmap(static_cast<double>(velocity), 0.0, 127.0,
+        0.0, 1.0);
+}
+
 void SynthVoice::setVcaGain(float gain)
 {
     auto& vca = signal_chain_.template get<vca_index>();
@@ -89,7 +97,7 @@ void SynthVoice::setVcaGain(float gain)
     //       The problem could be that ADSR is controlling the gain as well?
 
     // 0.7f will let the exponential curve hit y=1 just before x=1
-    vca.setGainLinear(juce::dsp::FastMathApproximations::exp(0.7f * gain) -1.0f );
+    vca.setGainLinear(juce::dsp::FastMathApproximations::exp(0.7f * gain * velocity_) -1.0f );
 }
 
 void SynthVoice::setEnvelope1Parameters(float attack, float decay, float sustain, float release) {

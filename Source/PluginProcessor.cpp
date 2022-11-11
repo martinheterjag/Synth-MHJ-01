@@ -161,6 +161,7 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             int index = getAvailableVoiceIndex();
             synth_voices_[index].setVoiceFrequency(midi_msg.getMidiNoteInHertz(note_number));
             synth_voices_[index].setKey(note_number);
+            synth_voices_[index].setVelocity(midi_msg.getVelocity());
             synth_voices_[index].noteOn();
         }
         else if (midi_msg.isNoteOff()) {
@@ -169,6 +170,16 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
                 if (voice.getKey() == midi_msg.getNoteNumber())
                     voice.noteOff();
             }
+        }
+        else if (midi_msg.isPitchWheel()) {
+            pitch_wheel_ = juce::jmap(static_cast<double>(midi_msg.getPitchWheelValue()),
+                0.0, static_cast<double>(0x3FFF), 0.0, 1.0);
+            pitch_wheel_ = juce::mapToLog10(pitch_wheel_, 7.0/8.0, 9.0/8.0) + (1.0 - 0.992164);
+            DBG("Pitch wheel " << midi_msg.getPitchWheelValue() << ", " << pitch_wheel_);
+        }
+        else if (midi_msg.isChannelPressure()) {
+            // TODO: Implement channel pressure
+            // DBG("Channel pressure " << midi_msg.getChannelPressureValue());
         }
     }
     mod_.process(apvts, juce::AudioSourceChannelInfo(buffer));
@@ -181,14 +192,14 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             lfo1_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_1")->load() +
             lfo2_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_2")->load(),
             0.0, 2.0);
-        voice.modulateOsc1Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load()) + osc1_frequency_mod,
-                                    apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load());
+        voice.modulateOsc1Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load() + osc1_frequency_mod),
+                                    apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
         double osc2_frequency_mod = juce::jmap<double>(
             lfo1_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() +
             lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load(),
             0.0, 2.0);
         voice.modulateOsc2Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load()) + osc2_frequency_mod,
-            apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_ENV_2")->load());
+            apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
 
         double osc1_waveform_mod = juce::jmap<float>(
             lfo1_mod * apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_LFO_1")->load() +

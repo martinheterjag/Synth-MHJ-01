@@ -20,11 +20,12 @@ public:
     ~SynthVoice();
 
     void setVoiceFrequency(double f_hz);
-    void modulateOsc1Frequency(double factor, double env_depth);
-    void modulateOsc2Frequency(double factor, double env_depth);
+    void modulateOsc1Frequency(double factor, double env_depth, double pitch_wheel);
+    void modulateOsc2Frequency(double factor, double env_depth, double pitch_wheel);
     void setVcfParameters(float cutoff_hz, float resonance, float env_depth);
     void noteOn();
     void noteOff();
+    void setVelocity(int velocity);
     void setVcaGain(float gain);
     void setEnvelope1Parameters(float attack, float decay, float sustain, float release);
     void setEnvelope2Parameters(float attack, float decay, float sustain, float release);
@@ -60,6 +61,7 @@ private:
     juce::uint32 main_bus_output_channels_;
     int key_ = 999;  // init to something out of midi key range
     double sample_rate_ = 0;
+    double velocity_ = 1.0;
     double osc1_f_hz_ = 220.0;
     double osc2_f_hz_ = 220.0;
     float osc1_waveform_ = 1.0f;
