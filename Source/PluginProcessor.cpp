@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include "SynthVoice.h"
 
+const int CC_MOD_WHEEL = 1;
 
 //==============================================================================
 Mhj01AudioProcessor::Mhj01AudioProcessor()
@@ -177,6 +178,13 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             pitch_wheel_ = juce::mapToLog10(pitch_wheel_, 7.0/8.0, 9.0/8.0) + (1.0 - 0.992164);
             DBG("Pitch wheel " << midi_msg.getPitchWheelValue() << ", " << pitch_wheel_);
         }
+        else if (midi_msg.isController()) {
+            if (midi_msg.getControllerNumber() == CC_MOD_WHEEL) {
+                mod_wheel_ = juce::jmap(static_cast<double>(midi_msg.getControllerValue()),
+                               0.0, 127.0, 0.0, 1.0);
+                DBG("Mod wheel " << midi_msg.getControllerValue() << ", " << mod_wheel_);
+            }
+        }
         else if (midi_msg.isChannelPressure()) {
             // TODO: Implement channel pressure
             // DBG("Channel pressure " << midi_msg.getChannelPressureValue());
@@ -188,16 +196,17 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     for (auto& voice : synth_voices_) {
         // TODO: Make helper functions
         // Oscillators
+        // TODO: add controller for mod_wheel_ destination.
         double osc1_frequency_mod = juce::jmap<double>(
             lfo1_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_1")->load() +
             lfo2_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_2")->load(),
-            0.0, 2.0);
+            0.0, 2.0) * mod_wheel_;
         voice.modulateOsc1Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load() + osc1_frequency_mod),
                                     apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
         double osc2_frequency_mod = juce::jmap<double>(
             lfo1_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() +
             lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load(),
-            0.0, 2.0);
+            0.0, 2.0) * mod_wheel_;
         voice.modulateOsc2Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load()) + osc2_frequency_mod,
             apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
 
