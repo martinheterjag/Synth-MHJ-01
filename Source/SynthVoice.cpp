@@ -84,7 +84,7 @@ void SynthVoice::noteOff() {
     envelope2_.noteOff();
 }
 
-void SynthVoice::setVelocity(int velocity)
+void SynthVoice::setVelocity(const int velocity)
 {
     velocity_ = juce::jmap(static_cast<double>(velocity), 0.0, 127.0,
         0.0, 1.0);

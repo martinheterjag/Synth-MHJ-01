@@ -25,7 +25,7 @@ public:
     void setVcfParameters(float cutoff_hz, float resonance, float env_depth);
     void noteOn();
     void noteOff();
-    void setVelocity(int velocity);
+    void setVelocity(const int velocity);
     void setVcaGain(float gain);
     void setEnvelope1Parameters(float attack, float decay, float sustain, float release);
     void setEnvelope2Parameters(float attack, float decay, float sustain, float release);
