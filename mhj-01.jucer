@@ -11,6 +11,10 @@
         <FILE id="PwquFt" name="AdsrComponent.cpp" compile="1" resource="0"
               file="Source/gui/AdsrComponent.cpp"/>
         <FILE id="gcXtjv" name="AdsrComponent.h" compile="0" resource="0" file="Source/gui/AdsrComponent.h"/>
+        <FILE id="pnRgY4" name="ButtonSelectComponent.cpp" compile="1" resource="0"
+              file="Source/gui/ButtonSelectComponent.cpp"/>
+        <FILE id="ylHrfW" name="ButtonSelectComponent.h" compile="0" resource="0"
+              file="Source/gui/ButtonSelectComponent.h"/>
         <FILE id="v0UfnK" name="FilterComponent.cpp" compile="1" resource="0"
               file="Source/gui/FilterComponent.cpp"/>
         <FILE id="UmG7Nl" name="FilterComponent.h" compile="0" resource="0"

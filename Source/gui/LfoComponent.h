@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ButtonSelectComponent.h"
 #include "SynthModuleComponent.h"
 #include "SliderComponent.h"
 
@@ -23,6 +24,6 @@ public:
 private:
     SliderComponent frequency_slider_;
     // TODO: Combobox looks kinda crappy, consider some other gui component to select waveform.
-    juce::ComboBox waveform_selector_;
+    ButtonSelectComponent waveform_selector_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveform_attachment_;
 };
