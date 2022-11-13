@@ -49,7 +49,6 @@ void ButtonSelectComponent::resetColours() {
 
 void ButtonSelectComponent::resized()
 {
-    // label_.setBounds(0, 0, TEXT_LABEL_WIDTH * 2, TEXT_LABEL_HEIGHT);
     int i = 10;
     for (auto& button : buttons_) {
         button.setBounds(0, i, TEXT_LABEL_WIDTH, TEXT_LABEL_HEIGHT);

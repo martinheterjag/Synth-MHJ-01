@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "gui/OscComponent.h"
+#include "gui/ModWheelComponent.h"
 
 constexpr int WIDTH = 1000;
 constexpr int HEIGHT = 330;
@@ -23,7 +24,8 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
       env2_("Env 2", p.apvts, ParamIdPrefix::ENV_2),
       lfo1_("LFO 1", p.apvts, ParamIdPrefix::LFO_1),
       lfo2_("LFO 2", p.apvts, ParamIdPrefix::LFO_2),
-      volume_knob_("Volume", SliderComponent::Style::KNOB)
+      volume_knob_("Volume", SliderComponent::Style::KNOB),
+      modwheel_controls_(p.apvts)
 {
     addAndMakeVisible(osc1_);
     addAndMakeVisible(osc2_);
@@ -34,6 +36,7 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
     addAndMakeVisible(lfo2_);
     volume_knob_.attatchToParameter(p.apvts, "VCA_GAIN");
     addAndMakeVisible(volume_knob_);
+    addAndMakeVisible(modwheel_controls_);
 
     setSize (WIDTH, HEIGHT);
 }
@@ -63,4 +66,5 @@ void Mhj01AudioProcessorEditor::resized()
     lfo1_.setBounds(750, 0, 225, 130);
     lfo2_.setBounds(750, 130, 225, 130);
     volume_knob_.setBounds(15, 260, 60, 60);
+    modwheel_controls_.setBounds(75, 260, 95, 75);
 }

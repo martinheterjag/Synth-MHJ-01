@@ -27,6 +27,10 @@
               file="Source/gui/ModulationComponent.cpp"/>
         <FILE id="hb2v3Q" name="ModulationComponent.h" compile="0" resource="0"
               file="Source/gui/ModulationComponent.h"/>
+        <FILE id="VVyRAE" name="ModWheelComponent.cpp" compile="1" resource="0"
+              file="Source/gui/ModWheelComponent.cpp"/>
+        <FILE id="uKHJsN" name="ModWheelComponent.h" compile="0" resource="0"
+              file="Source/gui/ModWheelComponent.h"/>
         <FILE id="lXYWjo" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/gui/OscComponent.cpp"/>
         <FILE id="GDFcAB" name="OscComponent.h" compile="0" resource="0" file="Source/gui/OscComponent.h"/>

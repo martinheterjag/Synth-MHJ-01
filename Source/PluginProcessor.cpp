@@ -196,17 +196,18 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     for (auto& voice : synth_voices_) {
         // TODO: Make helper functions
         // Oscillators
-        // TODO: add controller for mod_wheel_ destination.
         double osc1_frequency_mod = juce::jmap<double>(
-            lfo1_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_1")->load() +
+            lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_1_LFO_1") *
+            apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_1")->load() +
             lfo2_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_2")->load(),
-            0.0, 2.0) * mod_wheel_;
+            0.0, 2.0);
         voice.modulateOsc1Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load() + osc1_frequency_mod),
                                     apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
         double osc2_frequency_mod = juce::jmap<double>(
-            lfo1_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() +
+            lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_2_LFO_1") *
+            apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() * mod_wheel_ +
             lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load(),
-            0.0, 2.0) * mod_wheel_;
+            0.0, 2.0);
         voice.modulateOsc2Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load()) + osc2_frequency_mod,
             apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
 
@@ -218,17 +219,21 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             lfo1_mod * apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_LFO_1")->load() +
             lfo2_mod * apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_LFO_2")->load(),
             0.0f, 2.0f);
-        voice.setWaveform(apvts.getRawParameterValue("OSC_1_WAVEFORM")->load() + osc1_waveform_mod,
-                          apvts.getRawParameterValue("OSC_2_WAVEFORM")->load() + osc2_waveform_mod,
+        voice.setWaveform(apvts.getRawParameterValue("OSC_1_WAVEFORM")->load() * 
+                          getModWheelAmount("MOD_WHEEL_OSC_1_WAVEFORM") + osc1_waveform_mod,
+                          apvts.getRawParameterValue("OSC_2_WAVEFORM")->load() *
+                          getModWheelAmount("MOD_WHEEL_OSC_2_WAVEFORM") + osc2_waveform_mod,
                           apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_ENV_2")->load(),
                           apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_ENV_2")->load());
 
         // Filter
         float cutoff_mod = juce::jmap<float>(
-            static_cast<float>(lfo1_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_1")->load() +
+            static_cast<float>(lfo1_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_1")->load() *
+            getModWheelAmount("MOD_WHEEL_FILTER_LFO_1") +
             static_cast<float>(lfo2_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_2")->load(),
             0.0f, 6500.0f);
-        voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() + cutoff_mod,
+        voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() *
+                               getModWheelAmount("MOD_WHEEL_FILTER_CUTOFF") + cutoff_mod,
                                apvts.getRawParameterValue("FILTER_RESONANCE")->load(),
                                apvts.getRawParameterValue("FILTER_CUTOFF_MOD_ENV_2")->load());
 
@@ -246,6 +251,13 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
                                      apvts.getRawParameterValue("ENV_2_RELEASE")->load());
     }
     voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
+}
+
+double Mhj01AudioProcessor::getModWheelAmount(juce::String parameter) {
+    if (apvts.getRawParameterValue(parameter)->load())
+        return mod_wheel_;
+    else
+        return 1.0;
 }
 
 //==============================================================================
@@ -314,6 +326,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_WAVEFORM_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_WAVEFORM_MOD_ENV_2", "Envelope2 depth", 0.0f, 2.0f, 0.0f));
 
+
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.25f, 2.0f, 0.5f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_MOD_LFO_1", "LFO 1 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
@@ -347,6 +360,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LFO_2_FREQUENCY", "Frequency", 0.01f, 10.0f, 1.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterChoice>("LFO_2_WAVEFORM", "Waveform", juce::StringArray { "Sine", "Saw", "Square", "Triangle" }, 1));
 
+    // Mod wheel buttons
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_OSC_1_LFO_1", "Osc 1 LFO 1", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_OSC_1_WAVEFORM", "Osc 1 waveform", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_OSC_2_LFO_1", "Osc 2 LFO 1", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_OSC_2_WAVEFORM", "Osc 2 waveform", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_FILTER_LFO_1", "Filter LFO 1", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_FILTER_CUTOFF", "Filter cutoff", false));
     return { parameters.begin(), parameters.end() };
 }
 

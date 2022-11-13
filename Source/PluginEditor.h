@@ -13,6 +13,7 @@
 #include "gui/AdsrComponent.h"
 #include "gui/FilterComponent.h"
 #include "gui/LfoComponent.h"
+#include "gui/ModWheelComponent.h"
 #include "gui/OscComponent.h"
 #include "gui/SliderComponent.h"
 
@@ -39,6 +40,7 @@ private:
     LfoComponent lfo2_;
     // General controls, individual controls that are not grouped
     SliderComponent volume_knob_;
+    ModWheelComopnent modwheel_controls_;
 
     Mhj01AudioProcessor& audioProcessor;
 
