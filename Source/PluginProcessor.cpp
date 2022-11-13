@@ -201,14 +201,18 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_1")->load() +
             lfo2_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_2")->load(),
             0.0, 2.0);
-        voice.modulateOsc1Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load() + osc1_frequency_mod),
+        double osc1_coarse = getCoarse(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load());
+        double osc1_fine = apvts.getRawParameterValue("OSC_1_FREQUENCY_FINE")->load();
+        voice.modulateOsc1Frequency(osc1_coarse + osc1_fine + osc1_frequency_mod,
                                     apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
         double osc2_frequency_mod = juce::jmap<double>(
             lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_2_LFO_1") *
             apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() * mod_wheel_ +
             lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load(),
             0.0, 2.0);
-        voice.modulateOsc2Frequency(static_cast<double>(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load()) + osc2_frequency_mod,
+        double osc2_coarse = getCoarse(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
+        double osc2_fine = apvts.getRawParameterValue("OSC_2_FREQUENCY_FINE")->load();
+        voice.modulateOsc2Frequency(osc2_coarse + osc2_fine + osc2_frequency_mod,
             apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
 
         double osc1_waveform_mod = juce::jmap<float>(
@@ -251,6 +255,20 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
                                      apvts.getRawParameterValue("ENV_2_RELEASE")->load());
     }
     voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
+}
+
+double Mhj01AudioProcessor::getCoarse(double frequency)
+{
+    if (frequency > 0.8)
+        return 2.0;
+    else if (frequency > 0.6)
+        return 1.0;
+    else if (frequency > 0.4)
+        return 0.5;
+    else if (frequency > 0.2)
+        return 0.25;
+    else
+        return 0.125;
 }
 
 double Mhj01AudioProcessor::getModWheelAmount(juce::String parameter) {
@@ -317,7 +335,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
 
     // Signal chain parameters
     // Frequency parameter is not in Hertz, it's multiplied with the current note frequency for each synth voice.
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY", "Frequency", 0.25f, 2.0f, 1.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY", "Frequency", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY_FINE", "Frequency", -0.5f, 0.5f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY_MOD_LFO_1", "LFO 1 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_FREQUENCY_MOD_ENV_2", "Envelope2 depth", 0.0f, 6000.0f, 0.0f));
@@ -327,7 +346,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_WAVEFORM_MOD_ENV_2", "Envelope2 depth", 0.0f, 2.0f, 0.0f));
 
 
-    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.25f, 2.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_FINE", "fine pitch", -0.5f, 0.5f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_MOD_LFO_1", "LFO 1 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_MOD_ENV_2", "Envelope2 depth", 0.0f, 6000.0f, 0.0f));

@@ -58,13 +58,13 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
 
 void Mhj01AudioProcessorEditor::resized()
 {
-    osc1_.setBounds (0, 0, 300, 130);
-    osc2_.setBounds (0, 130, 300, 130);
-    filter_.setBounds (300, 130, 300, 130);
-    env1_.setBounds(300, 0, 225, 130);
-    env2_.setBounds(525, 0, 225, 130);
-    lfo1_.setBounds(750, 0, 225, 130);
-    lfo2_.setBounds(750, 130, 225, 130);
+    osc1_.setBounds (0, 0, 345, 130);
+    osc2_.setBounds (0, 130, 345, 130);
+    filter_.setBounds (345, 130, 300, 130);
+    env1_.setBounds(345, 0, 225, 130);
+    env2_.setBounds(570, 0, 225, 130);
+    lfo1_.setBounds(795, 0, 200, 130);
+    lfo2_.setBounds(795, 130, 200, 130);
     volume_knob_.setBounds(15, 260, 60, 95);
     modwheel_controls_.setBounds(75, 260, 105, 95);
 }

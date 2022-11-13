@@ -32,6 +32,7 @@ public:
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
+    double getCoarse(double frequency);
     double getModWheelAmount(juce::String parameter);
 
 
