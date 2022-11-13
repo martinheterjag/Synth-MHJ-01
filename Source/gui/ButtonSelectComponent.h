@@ -18,7 +18,6 @@ public:
     void resetColours();
     void resized() override;
 private:
-    juce::Label label_;
     juce::ComboBox invisible_combo_box_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> invisible_combo_box_attachment_;
     juce::StringArray button_names_;

@@ -14,12 +14,6 @@
 ButtonSelectComponent::ButtonSelectComponent(const juce::String& name, juce::AudioProcessorValueTreeState& apvts, juce::String param_id, juce::StringArray& buttons)
     : button_names_(buttons), buttons_(button_names_.size())
 {
-    //label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
-    //label_.setFont(juce::Font(FONT_SIZE, juce::Font::FontStyleFlags::bold));
-    //label_.setJustificationType(juce::Justification::centred);
-    //label_.setText(name, juce::dontSendNotification);
-    //addAndMakeVisible(label_);
-
     // The combo box is not visible in the gui but set by the buttons callback functions.
     // This is because it is easy to attach a combo box with the apvts instead of implementing a
     // new custom attachment class for the ButtonSelectComponent.
