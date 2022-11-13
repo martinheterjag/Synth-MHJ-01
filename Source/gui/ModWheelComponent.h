@@ -17,6 +17,7 @@ public:
     ModWheelComopnent(juce::AudioProcessorValueTreeState& apvts);
     void resized() override;
 private:
+    juce::Label label_;
     juce::TextButton osc1_lfo1_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> osc1_lfo1_attachment_;
     juce::TextButton osc1_waveform_;

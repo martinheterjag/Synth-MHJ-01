@@ -12,7 +12,7 @@
 #include "gui/ModWheelComponent.h"
 
 constexpr int WIDTH = 1000;
-constexpr int HEIGHT = 330;
+constexpr int HEIGHT = 365;
 
 //==============================================================================
 Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
@@ -65,6 +65,6 @@ void Mhj01AudioProcessorEditor::resized()
     env2_.setBounds(525, 0, 225, 130);
     lfo1_.setBounds(750, 0, 225, 130);
     lfo2_.setBounds(750, 130, 225, 130);
-    volume_knob_.setBounds(15, 260, 60, 60);
-    modwheel_controls_.setBounds(75, 260, 95, 75);
+    volume_knob_.setBounds(15, 260, 60, 95);
+    modwheel_controls_.setBounds(75, 260, 105, 95);
 }

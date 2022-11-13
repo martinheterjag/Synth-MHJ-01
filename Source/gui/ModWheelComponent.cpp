@@ -16,6 +16,11 @@ ModWheelComopnent::ModWheelComopnent(juce::AudioProcessorValueTreeState& apvts)
       osc2_lfo1_("Osc 2 LFO 1"), osc2_waveform_("Osc 2 Shape"),
       filter_lfo1_("Filter LFO1"), filter_cutoff_("Filter Freq")
 {
+    label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::gold);
+    label_.setFont(juce::Font(FONT_SIZE, juce::Font::FontStyleFlags::bold));
+    label_.setJustificationType(juce::Justification::centred);
+    label_.setText("Mod wheel destination", juce::dontSendNotification);
+    addAndMakeVisible(label_);
     addAndMakeVisible(osc1_lfo1_);
     osc1_lfo1_.setClickingTogglesState(true);
     osc1_lfo1_.setColour(juce::TextButton::ColourIds::buttonOnColourId, juce::Colours::gold);
@@ -51,10 +56,11 @@ ModWheelComopnent::ModWheelComopnent(juce::AudioProcessorValueTreeState& apvts)
 
 void ModWheelComopnent::resized()
 {
-    osc1_lfo1_.setBounds(0, 0, 45, 20);
-    osc1_waveform_.setBounds(50, 0, 45, 20);
-    osc2_lfo1_.setBounds(0, 25, 45, 20);
-    osc2_waveform_.setBounds(50, 25, 45, 20);
-    filter_lfo1_.setBounds(0, 50, 45, 20);
-    filter_cutoff_.setBounds(50, 50, 45, 20);
+    label_.setBounds(0, 0, 105, 20);
+    osc1_lfo1_.setBounds(5, 20, 45, 20);
+    osc1_waveform_.setBounds(55, 20, 45, 20);
+    osc2_lfo1_.setBounds(5, 45, 45, 20);
+    osc2_waveform_.setBounds(55, 45, 45, 20);
+    filter_lfo1_.setBounds(5, 70, 45, 20);
+    filter_cutoff_.setBounds(55, 70, 45, 20);
 }
