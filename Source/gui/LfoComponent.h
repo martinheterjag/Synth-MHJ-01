@@ -23,7 +23,6 @@ public:
     void resized() override;
 private:
     SliderComponent frequency_slider_;
-    // TODO: Combobox looks kinda crappy, consider some other gui component to select waveform.
     ButtonSelectComponent waveform_selector_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveform_attachment_;
 };
