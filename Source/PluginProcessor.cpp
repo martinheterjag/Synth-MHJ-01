@@ -140,7 +140,7 @@ bool Mhj01AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 }
 #endif
 
-void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi_messages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -155,7 +155,24 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    for (auto m : midiMessages) {
+    processMidi(midi_messages);
+
+    mod_.process(apvts, juce::AudioSourceChannelInfo(buffer));  // Update modulators
+    double lfo1_mod = mod_.getLfo1Output();
+    double lfo2_mod = mod_.getLfo2Output();
+    for (auto& voice : synth_voices_) {
+        processOscs(voice, lfo1_mod, lfo2_mod);
+        processNoise(voice);
+        processFilter(voice, lfo1_mod, lfo2_mod);
+        processVca(voice);
+        processEnvelopes(voice);
+    }
+    voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
+}
+
+void Mhj01AudioProcessor::processMidi(juce::MidiBuffer& midi_messages)
+{
+    for (auto m : midi_messages) {
         juce::MidiMessage midi_msg = m.getMessage();
         if (midi_msg.isNoteOn()) {
             int note_number = midi_msg.getNoteNumber();
@@ -175,13 +192,13 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         else if (midi_msg.isPitchWheel()) {
             pitch_wheel_ = juce::jmap(static_cast<double>(midi_msg.getPitchWheelValue()),
                 0.0, static_cast<double>(0x3FFF), 0.0, 1.0);
-            pitch_wheel_ = juce::mapToLog10(pitch_wheel_, 7.0/8.0, 9.0/8.0) + (1.0 - 0.992164);
+            pitch_wheel_ = juce::mapToLog10(pitch_wheel_, 7.0 / 8.0, 9.0 / 8.0) + (1.0 - 0.992164);
             DBG("Pitch wheel " << midi_msg.getPitchWheelValue() << ", " << pitch_wheel_);
         }
         else if (midi_msg.isController()) {
             if (midi_msg.getControllerNumber() == CC_MOD_WHEEL) {
                 mod_wheel_ = juce::jmap(static_cast<double>(midi_msg.getControllerValue()),
-                               0.0, 127.0, 0.0, 1.0);
+                    0.0, 127.0, 0.0, 1.0);
                 DBG("Mod wheel " << midi_msg.getControllerValue() << ", " << mod_wheel_);
             }
         }
@@ -190,73 +207,78 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             // DBG("Channel pressure " << midi_msg.getChannelPressureValue());
         }
     }
-    mod_.process(apvts, juce::AudioSourceChannelInfo(buffer));
-    double lfo1_mod = mod_.getLfo1Output();
-    double lfo2_mod = mod_.getLfo2Output();
-    for (auto& voice : synth_voices_) {
-        // TODO: Make helper functions
-        // Oscillators
-        double osc1_frequency_mod = juce::jmap<double>(
-            lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_1_LFO_1") *
-            apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_1")->load() +
-            lfo2_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_2")->load(),
-            0.0, 2.0);
-        double osc1_coarse = getCoarse(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load());
-        double osc1_fine = apvts.getRawParameterValue("OSC_1_FREQUENCY_FINE")->load();
-        voice.modulateOsc1Frequency(osc1_coarse + osc1_fine + osc1_frequency_mod,
-                                    apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
-        double osc2_frequency_mod = juce::jmap<double>(
-            lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_2_LFO_1") *
-            apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() * mod_wheel_ +
-            lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load(),
-            0.0, 2.0);
-        double osc2_coarse = getCoarse(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
-        double osc2_fine = apvts.getRawParameterValue("OSC_2_FREQUENCY_FINE")->load();
-        voice.modulateOsc2Frequency(osc2_coarse + osc2_fine + osc2_frequency_mod,
-            apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
+}
 
-        double osc1_waveform_mod = juce::jmap<float>(
-            lfo1_mod * apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_LFO_1")->load() +
-            lfo2_mod * apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_LFO_2")->load(),
-            0.0f, 2.0f);
-        double osc2_waveform_mod = juce::jmap<float>(
-            lfo1_mod * apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_LFO_1")->load() +
-            lfo2_mod * apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_LFO_2")->load(),
-            0.0f, 2.0f);
-        voice.setWaveform(apvts.getRawParameterValue("OSC_1_WAVEFORM")->load() * 
-                          getModWheelAmount("MOD_WHEEL_OSC_1_WAVEFORM") + osc1_waveform_mod,
-                          apvts.getRawParameterValue("OSC_2_WAVEFORM")->load() *
-                          getModWheelAmount("MOD_WHEEL_OSC_2_WAVEFORM") + osc2_waveform_mod,
-                          apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_ENV_2")->load(),
-                          apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_ENV_2")->load());
-        // Noise
-        voice.setNoiseLevel(apvts.getRawParameterValue("NOISE_VOLUME")->load());
+void Mhj01AudioProcessor::processOscs(SynthVoice& voice, double lfo1_mod, double lfo2_mod)
+{
+    double osc1_frequency_mod = juce::jmap<double>(
+        lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_1_LFO_1") *
+        apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_1")->load() +
+        lfo2_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_2")->load(),
+        0.0, 2.0);
+    double osc1_coarse = getCoarse(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load());
+    double osc1_fine = apvts.getRawParameterValue("OSC_1_FREQUENCY_FINE")->load();
+    voice.modulateOsc1Frequency(osc1_coarse + osc1_fine + osc1_frequency_mod,
+        apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
+    double osc2_frequency_mod = juce::jmap<double>(
+        lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_2_LFO_1") *
+        apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() * mod_wheel_ +
+        lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load(),
+        0.0, 2.0);
+    double osc2_coarse = getCoarse(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
+    double osc2_fine = apvts.getRawParameterValue("OSC_2_FREQUENCY_FINE")->load();
+    voice.modulateOsc2Frequency(osc2_coarse + osc2_fine + osc2_frequency_mod,
+        apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
 
-        // Filter
-        float cutoff_mod = juce::jmap<float>(
-            static_cast<float>(lfo1_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_1")->load() *
-            getModWheelAmount("MOD_WHEEL_FILTER_LFO_1") +
-            static_cast<float>(lfo2_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_2")->load(),
-            0.0f, 6500.0f);
-        voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() *
-                               getModWheelAmount("MOD_WHEEL_FILTER_CUTOFF") + cutoff_mod,
-                               apvts.getRawParameterValue("FILTER_RESONANCE")->load(),
-                               apvts.getRawParameterValue("FILTER_CUTOFF_MOD_ENV_2")->load());
+    double osc1_waveform_mod = juce::jmap<float>(
+        lfo1_mod * apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_LFO_1")->load() +
+        lfo2_mod * apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_LFO_2")->load(),
+        0.0f, 2.0f);
+    double osc2_waveform_mod = juce::jmap<float>(
+        lfo1_mod * apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_LFO_1")->load() +
+        lfo2_mod * apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_LFO_2")->load(),
+        0.0f, 2.0f);
+    voice.setWaveform(apvts.getRawParameterValue("OSC_1_WAVEFORM")->load() *
+        getModWheelAmount("MOD_WHEEL_OSC_1_WAVEFORM") + osc1_waveform_mod,
+        apvts.getRawParameterValue("OSC_2_WAVEFORM")->load() *
+        getModWheelAmount("MOD_WHEEL_OSC_2_WAVEFORM") + osc2_waveform_mod,
+        apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_ENV_2")->load(),
+        apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_ENV_2")->load());
+}
 
-        // VCA
-        voice.setVcaGain(apvts.getRawParameterValue("VCA_GAIN")->load());
+void Mhj01AudioProcessor::processNoise(SynthVoice& voice)
+{
+    voice.setNoiseLevel(apvts.getRawParameterValue("NOISE_VOLUME")->load());
+}
 
-        // Envepoles
-        voice.setEnvelope1Parameters(apvts.getRawParameterValue("ENV_1_ATTACK")->load(),
-                                     apvts.getRawParameterValue("ENV_1_DECAY")->load(),
-                                     apvts.getRawParameterValue("ENV_1_SUSTAIN")->load(),
-                                     apvts.getRawParameterValue("ENV_1_RELEASE")->load());
-        voice.setEnvelope2Parameters(apvts.getRawParameterValue("ENV_2_ATTACK")->load(),
-                                     apvts.getRawParameterValue("ENV_2_DECAY")->load(),
-                                     apvts.getRawParameterValue("ENV_2_SUSTAIN")->load(),
-                                     apvts.getRawParameterValue("ENV_2_RELEASE")->load());
-    }
-    voice_mixer_.getNextAudioBlock(juce::AudioSourceChannelInfo(buffer));
+void Mhj01AudioProcessor::processFilter(SynthVoice& voice, double lfo1_mod, double lfo2_mod)
+{
+    float cutoff_mod = juce::jmap<float>(
+        static_cast<float>(lfo1_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_1")->load() *
+        getModWheelAmount("MOD_WHEEL_FILTER_LFO_1") +
+        static_cast<float>(lfo2_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_2")->load(),
+        0.0f, 6500.0f);
+    voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() *
+        getModWheelAmount("MOD_WHEEL_FILTER_CUTOFF") + cutoff_mod,
+        apvts.getRawParameterValue("FILTER_RESONANCE")->load(),
+        apvts.getRawParameterValue("FILTER_CUTOFF_MOD_ENV_2")->load());
+}
+
+void Mhj01AudioProcessor::processVca(SynthVoice& voice)
+{
+    voice.setVcaGain(apvts.getRawParameterValue("VCA_GAIN")->load());
+}
+
+void Mhj01AudioProcessor::processEnvelopes(SynthVoice& voice)
+{
+    voice.setEnvelope1Parameters(apvts.getRawParameterValue("ENV_1_ATTACK")->load(),
+        apvts.getRawParameterValue("ENV_1_DECAY")->load(),
+        apvts.getRawParameterValue("ENV_1_SUSTAIN")->load(),
+        apvts.getRawParameterValue("ENV_1_RELEASE")->load());
+    voice.setEnvelope2Parameters(apvts.getRawParameterValue("ENV_2_ATTACK")->load(),
+        apvts.getRawParameterValue("ENV_2_DECAY")->load(),
+        apvts.getRawParameterValue("ENV_2_SUSTAIN")->load(),
+        apvts.getRawParameterValue("ENV_2_RELEASE")->load());
 }
 
 double Mhj01AudioProcessor::getCoarse(double frequency)
