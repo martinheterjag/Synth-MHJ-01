@@ -44,12 +44,14 @@ private:
     {
         osc1_index,
         osc2_index,
+        noise_index,
         vcf_index,
         vca_index
     };
     typedef juce::dsp::ProcessorDuplicator<juce::dsp::StateVariableFilter::Filter<float>,
                                            juce::dsp::StateVariableFilter::Parameters<float> > StereoFilter;
     juce::dsp::ProcessorChain<juce::dsp::Oscillator<double>,
+                              juce::dsp::Oscillator<double>,
                               juce::dsp::Oscillator<double>,
                               StereoFilter,
                               juce::dsp::Gain<float>> signal_chain_;

@@ -166,6 +166,12 @@ void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
                         (this->osc2_waveform_ -1.0) * (x < 0.0 ? -1.0 : 2.0);
 
         });
+
+    auto& noise = signal_chain_.template get<noise_index>();
+    noise.initialise([this](double x)
+        {
+            return juce::Random::getSystemRandom().nextDouble() * 2.0 - 1.0;
+        });
 }
 
 void SynthVoice::releaseResources()
