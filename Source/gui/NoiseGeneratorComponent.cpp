@@ -13,7 +13,7 @@
 
 //==============================================================================
 NoiseGeneratorComponent::NoiseGeneratorComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts)
-    : SynthModuleComponent(name), volume_slider_("Volume")
+    : SynthModuleComponent(name), volume_slider_("Level")
 {
     volume_slider_.attatchToParameter(apvts, "NOISE_VOLUME");
     addAndMakeVisible(volume_slider_);

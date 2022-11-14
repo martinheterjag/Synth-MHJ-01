@@ -242,6 +242,10 @@ void Mhj01AudioProcessor::processOscs(SynthVoice& voice, double lfo1_mod, double
         getModWheelAmount("MOD_WHEEL_OSC_2_WAVEFORM") + osc2_waveform_mod,
         apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_ENV_2")->load(),
         apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_ENV_2")->load());
+
+    double osc_1_amplitude = apvts.getRawParameterValue("OSC_1_VOLUME")->load();
+    double osc_2_amplitude = apvts.getRawParameterValue("OSC_2_VOLUME")->load();
+    voice.setOscsAmplitude(osc_1_amplitude, osc_2_amplitude);
 }
 
 void Mhj01AudioProcessor::processNoise(SynthVoice& voice)
@@ -366,7 +370,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_WAVEFORM_MOD_LFO_1", "LFO 1 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_WAVEFORM_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_WAVEFORM_MOD_ENV_2", "Envelope2 depth", 0.0f, 2.0f, 0.0f));
-
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_1_VOLUME", "Volume", 0.0f, 1.0f, 1.0f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY", "Frequency", 0.0f, 1.0f, 0.5f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_FREQUENCY_FINE", "fine pitch", -0.5f, 0.5f, 0.0f));
@@ -377,6 +381,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_WAVEFORM_MOD_LFO_1", "LFO 1 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_WAVEFORM_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_WAVEFORM_MOD_ENV_2", "Envelope2 depth", 0.0f, 2.0f, 0.0f));
+    parameters.push_back(std::make_unique<juce::AudioParameterFloat>("OSC_2_VOLUME", "Volume", 0.0f, 1.0f, 0.5f));
 
     parameters.push_back(std::make_unique<juce::AudioParameterFloat>("NOISE_VOLUME", "Noise volume", 0.0f, 1.0f, 0.0f));
 

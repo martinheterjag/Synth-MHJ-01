@@ -52,6 +52,12 @@ void SynthVoice::setWaveform(float osc1_shape, float osc2_shape, float osc1_env_
     osc2_waveform_ = std::min(std::max(osc2_shape + osc2_envmod, 0.0f), 2.0f);
 }
 
+void SynthVoice::setOscsAmplitude(double osc1_amplitude, double osc2_amplitude)
+{
+    osc1_amplitude_ = osc1_amplitude;
+    osc2_amplitude_ = osc2_amplitude;
+}
+
 void SynthVoice::setVcfParameters(float cutoff_hz, float resonance, float env_depth)
 {
     if (sample_rate_ == 0) {
@@ -150,11 +156,12 @@ void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
             // Fade between sinewave (waveform == 0) then 
             // saw (waveform == 1) then square (waveform == 2)
             if (this->osc1_waveform_ < 1.0)
-                return (1.0 - this->osc1_waveform_) * std::sin(x) +
-                (-1 + this->osc1_waveform_ * x / juce::MathConstants<double>::pi);
+                return ((1.0 - this->osc1_waveform_) * std::sin(x) +
+                       (-1 + this->osc1_waveform_ * x / juce::MathConstants<double>::pi))
+                       * this->osc1_amplitude_;
             else
-                return (-1.0 + (2.0 - this->osc1_waveform_) * (x / juce::MathConstants<double>::pi)) +
-                (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 2.0);
+                return ((-1.0 + (2.0 - this->osc1_waveform_) * (x / juce::MathConstants<double>::pi)) +
+                       (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 2.0)) * this->osc1_amplitude_;
 
         });
 
@@ -164,11 +171,12 @@ void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
             // Fade between sinewave (waveform == 0) then 
             // saw (waveform == 1) then square (waveform == 2)
             if (this->osc2_waveform_ < 1.0)
-                return (1.0 - this->osc2_waveform_) * std::sin(x) +
-                        (-1 + this->osc2_waveform_ * x / juce::MathConstants<double>::pi);
+                return ((1.0 - this->osc2_waveform_) * std::sin(x) +
+                       (-1 + this->osc2_waveform_ * x / juce::MathConstants<double>::pi))
+                       * this->osc2_amplitude_;
             else
-                return (-1.0 + (2.0 - this->osc2_waveform_) * (x / juce::MathConstants<double>::pi)) +
-                        (this->osc2_waveform_ -1.0) * (x < 0.0 ? -1.0 : 2.0);
+                return ((-1.0 + (2.0 - this->osc2_waveform_) * (x / juce::MathConstants<double>::pi)) +
+                       (this->osc2_waveform_ -1.0) * (x < 0.0 ? -1.0 : 2.0)) * this->osc2_amplitude_;
 
         });
 

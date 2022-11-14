@@ -31,6 +31,7 @@ public:
     void setEnvelope2Parameters(float attack, float decay, float sustain, float release);
     void setNoiseLevel(const double level);
     void setWaveform(float osc1_shape, float osc2_shape, float osc1_env_depth, float osc2_env_depth);
+    void setOscsAmplitude(double osc1_amplitude, double osc2_amplitude);
     void setKey(const int key);
     int getKey();
     bool isActive();
@@ -69,5 +70,7 @@ private:
     double osc2_f_hz_ = 220.0;
     float osc1_waveform_ = 1.0f;
     float osc2_waveform_ = 1.0f;
+    double osc1_amplitude_ = 1.0;
+    double osc2_amplitude_ = 0.5;
     double noise_level_ = 0.1;
 };
