@@ -12,10 +12,11 @@
 
 OscComponent::OscComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix)
     : SynthModuleComponent(name), frequency_slider_("Coarse"),
-      fine_pitch_slider_("Fine"),
-      frequency_modulation_("Freq mod", apvts, param_id_prefix, ParamIdPrefix::FREQUENCY_MOD),
-      waveform_slider_("Shape"),
-      waveform_modulation_("Shape mod", apvts, param_id_prefix, ParamIdPrefix::WAVEFORM_MOD)
+    fine_pitch_slider_("Fine"),
+    frequency_modulation_("Freq mod", apvts, param_id_prefix, ParamIdPrefix::FREQUENCY_MOD),
+    waveform_slider_("Shape"),
+    waveform_modulation_("Shape mod", apvts, param_id_prefix, ParamIdPrefix::WAVEFORM_MOD),
+    volume_slider_("Volume")
 {
     frequency_slider_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "FREQUENCY");
     addAndMakeVisible(frequency_slider_);

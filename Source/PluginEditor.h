@@ -14,6 +14,7 @@
 #include "gui/FilterComponent.h"
 #include "gui/LfoComponent.h"
 #include "gui/ModWheelComponent.h"
+#include "gui/NoiseGeneratorComponent.h"
 #include "gui/OscComponent.h"
 #include "gui/SliderComponent.h"
 
@@ -33,6 +34,7 @@ public:
 private:
     OscComponent osc1_;
     OscComponent osc2_;
+    NoiseGeneratorComponent noise_;
     FilterComponent filter_;
     AdsrComponent env1_;
     AdsrComponent env2_;

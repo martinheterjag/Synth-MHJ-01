@@ -31,6 +31,10 @@
               file="Source/gui/ModWheelComponent.cpp"/>
         <FILE id="uKHJsN" name="ModWheelComponent.h" compile="0" resource="0"
               file="Source/gui/ModWheelComponent.h"/>
+        <FILE id="YRJWt2" name="NoiseGeneratorComponent.cpp" compile="1" resource="0"
+              file="Source/gui/NoiseGeneratorComponent.cpp"/>
+        <FILE id="xzK4FK" name="NoiseGeneratorComponent.h" compile="0" resource="0"
+              file="Source/gui/NoiseGeneratorComponent.h"/>
         <FILE id="lXYWjo" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/gui/OscComponent.cpp"/>
         <FILE id="GDFcAB" name="OscComponent.h" compile="0" resource="0" file="Source/gui/OscComponent.h"/>

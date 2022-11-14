@@ -29,6 +29,7 @@ public:
     void setVcaGain(float gain);
     void setEnvelope1Parameters(float attack, float decay, float sustain, float release);
     void setEnvelope2Parameters(float attack, float decay, float sustain, float release);
+    void setNoiseLevel(const double level);
     void setWaveform(float osc1_shape, float osc2_shape, float osc1_env_depth, float osc2_env_depth);
     void setKey(const int key);
     int getKey();
@@ -68,4 +69,5 @@ private:
     double osc2_f_hz_ = 220.0;
     float osc1_waveform_ = 1.0f;
     float osc2_waveform_ = 1.0f;
+    double noise_level_ = 0.1;
 };

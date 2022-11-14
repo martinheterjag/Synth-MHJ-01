@@ -19,6 +19,7 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p),
       osc1_("Osc 1", p.apvts, ParamIdPrefix::OSC_1),
       osc2_("Osc 2", p.apvts, ParamIdPrefix::OSC_2),
+      noise_("Noise", p.apvts),
       filter_("Filter", p.apvts),
       env1_("Env 1", p.apvts, ParamIdPrefix::ENV_1),
       env2_("Env 2", p.apvts, ParamIdPrefix::ENV_2),
@@ -29,6 +30,7 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
 {
     addAndMakeVisible(osc1_);
     addAndMakeVisible(osc2_);
+    addAndMakeVisible(noise_);
     addAndMakeVisible(filter_);
     addAndMakeVisible(env1_);
     addAndMakeVisible(env2_);
@@ -60,7 +62,8 @@ void Mhj01AudioProcessorEditor::resized()
 {
     osc1_.setBounds (0, 0, 345, 130);
     osc2_.setBounds (0, 130, 345, 130);
-    filter_.setBounds (345, 130, 300, 130);
+    noise_.setBounds(345, 130, 75, 130);
+    filter_.setBounds (420, 130, 300, 130);
     env1_.setBounds(345, 0, 225, 130);
     env2_.setBounds(570, 0, 225, 130);
     lfo1_.setBounds(795, 0, 200, 130);

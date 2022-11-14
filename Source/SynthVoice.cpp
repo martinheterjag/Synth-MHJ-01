@@ -116,6 +116,11 @@ void SynthVoice::setEnvelope2Parameters(float attack, float decay, float sustain
     envelope2_.setParameters(envelope2_params_);
 }
 
+void SynthVoice::setNoiseLevel(const double level)
+{
+    noise_level_ = level;
+}
+
 void SynthVoice::setKey(const int key)
 {
     key_ = key;
@@ -170,7 +175,8 @@ void SynthVoice::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
     auto& noise = signal_chain_.template get<noise_index>();
     noise.initialise([this](double x)
         {
-            return juce::Random::getSystemRandom().nextDouble() * 2.0 - 1.0;
+            // * 2 -1 because we want to offset signal from 0 to 1 => -1 to 1
+            return juce::Random::getSystemRandom().nextDouble() * noise_level_ * 2.0 - 1.0;
         });
 }
 
