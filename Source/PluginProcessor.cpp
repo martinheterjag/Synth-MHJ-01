@@ -193,13 +193,11 @@ void Mhj01AudioProcessor::processMidi(juce::MidiBuffer& midi_messages)
             pitch_wheel_ = juce::jmap(static_cast<double>(midi_msg.getPitchWheelValue()),
                 0.0, static_cast<double>(0x3FFF), 0.0, 1.0);
             pitch_wheel_ = juce::mapToLog10(pitch_wheel_, 7.0 / 8.0, 9.0 / 8.0) + (1.0 - 0.992164);
-            DBG("Pitch wheel " << midi_msg.getPitchWheelValue() << ", " << pitch_wheel_);
         }
         else if (midi_msg.isController()) {
             if (midi_msg.getControllerNumber() == CC_MOD_WHEEL) {
                 mod_wheel_ = juce::jmap(static_cast<double>(midi_msg.getControllerValue()),
                     0.0, 127.0, 0.0, 1.0);
-                DBG("Mod wheel " << midi_msg.getControllerValue() << ", " << mod_wheel_);
             }
         }
         else if (midi_msg.isChannelPressure()) {
@@ -222,7 +220,7 @@ void Mhj01AudioProcessor::processOscs(SynthVoice& voice, double lfo1_mod, double
         apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
     double osc2_frequency_mod = juce::jmap<double>(
         lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_2_LFO_1") *
-        apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() * mod_wheel_ +
+        apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() +
         lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load(),
         0.0, 2.0);
     double osc2_coarse = getCoarse(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
