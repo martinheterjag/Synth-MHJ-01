@@ -17,16 +17,17 @@ constexpr int HEIGHT = 365;
 //==============================================================================
 Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p),
-      osc1_("Osc 1", p.apvts, ParamIdPrefix::OSC_1),
-      osc2_("Osc 2", p.apvts, ParamIdPrefix::OSC_2),
-      noise_("Noise", p.apvts),
-      filter_("Filter", p.apvts),
-      env1_("Env 1", p.apvts, ParamIdPrefix::ENV_1),
-      env2_("Env 2", p.apvts, ParamIdPrefix::ENV_2),
-      lfo1_("LFO 1", p.apvts, ParamIdPrefix::LFO_1),
-      lfo2_("LFO 2", p.apvts, ParamIdPrefix::LFO_2),
-      volume_knob_("Volume", SliderComponent::Style::KNOB),
-      modwheel_controls_(p.apvts)
+    osc1_("Osc 1", p.apvts, ParamIdPrefix::OSC_1),
+    osc2_("Osc 2", p.apvts, ParamIdPrefix::OSC_2),
+    noise_("Noise", p.apvts),
+    filter_("Filter", p.apvts),
+    env1_("Env 1", p.apvts, ParamIdPrefix::ENV_1),
+    env2_("Env 2", p.apvts, ParamIdPrefix::ENV_2),
+    lfo1_("LFO 1", p.apvts, ParamIdPrefix::LFO_1),
+    lfo2_("LFO 2", p.apvts, ParamIdPrefix::LFO_2),
+    volume_knob_("Volume", SliderComponent::Style::KNOB),
+    modwheel_controls_(p.apvts),
+    aftertouch_controls_(p.apvts)
 {
     addAndMakeVisible(osc1_);
     addAndMakeVisible(osc2_);
@@ -39,6 +40,7 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor(Mhj01AudioProcessor& p)
     volume_knob_.attatchToParameter(p.apvts, "VCA_GAIN");
     addAndMakeVisible(volume_knob_);
     addAndMakeVisible(modwheel_controls_);
+    addAndMakeVisible(aftertouch_controls_);
 
     setSize (WIDTH, HEIGHT);
 }
@@ -70,4 +72,5 @@ void Mhj01AudioProcessorEditor::resized()
     lfo2_.setBounds(795, 130, 200, 130);
     volume_knob_.setBounds(15, 260, 60, 95);
     modwheel_controls_.setBounds(75, 260, 105, 95);
+    aftertouch_controls_.setBounds(200, 260, 105, 95);
 }

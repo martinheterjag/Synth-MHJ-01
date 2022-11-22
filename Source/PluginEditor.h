@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "gui/AdsrComponent.h"
+#include "gui/AftertouchComponent.h"
 #include "gui/FilterComponent.h"
 #include "gui/LfoComponent.h"
 #include "gui/ModWheelComponent.h"
@@ -43,6 +44,7 @@ private:
     // General controls, individual controls that are not grouped
     SliderComponent volume_knob_;
     ModWheelComopnent modwheel_controls_;
+    AftertouchComponent aftertouch_controls_;
 
     Mhj01AudioProcessor& audioProcessor;
 
