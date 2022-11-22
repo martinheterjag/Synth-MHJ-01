@@ -416,6 +416,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_OSC_2_WAVEFORM", "Osc 2 waveform", false));
     parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_FILTER_LFO_1", "Filter LFO 1", false));
     parameters.push_back(std::make_unique<juce::AudioParameterBool>("MOD_WHEEL_FILTER_CUTOFF", "Filter cutoff", false));
+
+    // Aftertouch buttons
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("AFTERTOUCH_OSC_1_LFO_2", "Osc 1 LFO 2", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("AFTERTOUCH_OSC_1_WAVEFORM", "Osc 1 waveform", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("AFTERTOUCH_OSC_2_LFO_2", "Osc 2 LFO 2", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("AFTERTOUCH_OSC_2_WAVEFORM", "Osc 2 waveform", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("AFTERTOUCH_FILTER_LFO_2", "Filter LFO 2", false));
+    parameters.push_back(std::make_unique<juce::AudioParameterBool>("AFTERTOUCH_FILTER_CUTOFF", "Filter cutoff", false));
     return { parameters.begin(), parameters.end() };
 }
 

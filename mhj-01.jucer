@@ -11,6 +11,10 @@
         <FILE id="PwquFt" name="AdsrComponent.cpp" compile="1" resource="0"
               file="Source/gui/AdsrComponent.cpp"/>
         <FILE id="gcXtjv" name="AdsrComponent.h" compile="0" resource="0" file="Source/gui/AdsrComponent.h"/>
+        <FILE id="KBwIxm" name="AftertouchComponent.cpp" compile="1" resource="0"
+              file="Source/gui/AftertouchComponent.cpp"/>
+        <FILE id="T5ucPt" name="AftertouchComponent.h" compile="0" resource="0"
+              file="Source/gui/AftertouchComponent.h"/>
         <FILE id="pnRgY4" name="ButtonSelectComponent.cpp" compile="1" resource="0"
               file="Source/gui/ButtonSelectComponent.cpp"/>
         <FILE id="ylHrfW" name="ButtonSelectComponent.h" compile="0" resource="0"
