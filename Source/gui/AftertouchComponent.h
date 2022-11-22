@@ -12,9 +12,9 @@
 
 #include <JuceHeader.h>
 
-class AftertouchComopnent : public juce::Component {
+class AftertouchComponent : public juce::Component {
 public:
-    AftertouchComopnent(juce::AudioProcessorValueTreeState& apvts);
+    AftertouchComponent(juce::AudioProcessorValueTreeState& apvts);
     void resized() override;
 private:
     juce::Label label_;

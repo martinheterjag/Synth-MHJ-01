@@ -14,7 +14,7 @@
 #include "ModWheelComponent.h"
 #include "GuiConstants.h"
 
-AftertouchComopnent::AftertouchComopnent(juce::AudioProcessorValueTreeState& apvts)
+AftertouchComponent::AftertouchComponent(juce::AudioProcessorValueTreeState& apvts)
     : osc1_lfo2_("Osc 1 LFO 2"), osc1_waveform_("Osc 1 Shape"),
     osc2_lfo2_("Osc 2 LFO 2"), osc2_waveform_("Osc 2 Shape"),
     filter_lfo2_("Filter LFO 2"), filter_cutoff_("Filter Freq")
@@ -57,7 +57,7 @@ AftertouchComopnent::AftertouchComopnent(juce::AudioProcessorValueTreeState& apv
 }
 
 
-void AftertouchComopnent::resized()
+void AftertouchComponent::resized()
 {
     label_.setBounds(0, 0, 105, 20);
     osc1_lfo2_.setBounds(5, 20, 45, 20);
