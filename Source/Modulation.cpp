@@ -10,7 +10,6 @@
 
 #include "Modulation.h"
 
-// TODO: Refactor to get rid of loads of duplicate code
 Modulation::Modulation()
 {
 }
