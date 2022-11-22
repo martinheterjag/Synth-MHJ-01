@@ -14,7 +14,7 @@
 ModWheelComopnent::ModWheelComopnent(juce::AudioProcessorValueTreeState& apvts)
     : osc1_lfo1_("Osc 1 LFO 1"), osc1_waveform_("Osc 1 Shape"),
       osc2_lfo1_("Osc 2 LFO 1"), osc2_waveform_("Osc 2 Shape"),
-      filter_lfo1_("Filter LFO1"), filter_cutoff_("Filter Freq")
+      filter_lfo1_("Filter LFO 1"), filter_cutoff_("Filter Freq")
 {
     label_.setColour(juce::Label::ColourIds::textColourId, juce::Colours::gold);
     label_.setFont(juce::Font(FONT_SIZE, juce::Font::FontStyleFlags::bold));
