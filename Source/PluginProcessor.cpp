@@ -201,27 +201,33 @@ void Mhj01AudioProcessor::processMidi(juce::MidiBuffer& midi_messages)
             }
         }
         else if (midi_msg.isChannelPressure()) {
-            // TODO: Implement channel pressure
-            // DBG("Channel pressure " << midi_msg.getChannelPressureValue());
+            channel_pressure_ = juce::jmap(static_cast<double>(midi_msg.getChannelPressureValue()),
+                0.0, 127.0, 0.0, 1.0);
+            DBG("Channel pressure " << channel_pressure_);
         }
     }
 }
 
 void Mhj01AudioProcessor::processOscs(SynthVoice& voice, double lfo1_mod, double lfo2_mod)
 {
+    double osc1_lfo2_aftertouch = 0.5 * lfo2_mod * getChannelPressureAmount("AFTERTOUCH_OSC_1_LFO_2");
     double osc1_frequency_mod = juce::jmap<double>(
         lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_1_LFO_1") *
         apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_1")->load() +
-        lfo2_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_2")->load(),
+        lfo2_mod * apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_LFO_2")->load() + 
+        osc1_lfo2_aftertouch,
         0.0, 2.0);
     double osc1_coarse = getCoarse(apvts.getRawParameterValue("OSC_1_FREQUENCY")->load());
     double osc1_fine = apvts.getRawParameterValue("OSC_1_FREQUENCY_FINE")->load();
     voice.modulateOsc1Frequency(osc1_coarse + osc1_fine + osc1_frequency_mod,
         apvts.getRawParameterValue("OSC_1_FREQUENCY_MOD_ENV_2")->load(), pitch_wheel_);
+
+    double osc2_lfo2_aftertouch = 0.5 * lfo2_mod * getChannelPressureAmount("AFTERTOUCH_OSC_2_LFO_2");
     double osc2_frequency_mod = juce::jmap<double>(
         lfo1_mod * getModWheelAmount("MOD_WHEEL_OSC_2_LFO_1") *
         apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_1")->load() +
-        lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load(),
+        lfo2_mod * apvts.getRawParameterValue("OSC_2_FREQUENCY_MOD_LFO_2")->load() +
+        osc2_lfo2_aftertouch,
         0.0, 2.0);
     double osc2_coarse = getCoarse(apvts.getRawParameterValue("OSC_2_FREQUENCY")->load());
     double osc2_fine = apvts.getRawParameterValue("OSC_2_FREQUENCY_FINE")->load();
@@ -237,9 +243,11 @@ void Mhj01AudioProcessor::processOscs(SynthVoice& voice, double lfo1_mod, double
         lfo2_mod * apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_LFO_2")->load(),
         0.0f, 2.0f);
     voice.setWaveform(apvts.getRawParameterValue("OSC_1_WAVEFORM")->load() *
-        getModWheelAmount("MOD_WHEEL_OSC_1_WAVEFORM") + osc1_waveform_mod,
+        getModWheelAmount("MOD_WHEEL_OSC_1_WAVEFORM") + osc1_waveform_mod +
+        getChannelPressureAmount("AFTERTOUCH_OSC_1_WAVEFORM"),
         apvts.getRawParameterValue("OSC_2_WAVEFORM")->load() *
-        getModWheelAmount("MOD_WHEEL_OSC_2_WAVEFORM") + osc2_waveform_mod,
+        getModWheelAmount("MOD_WHEEL_OSC_2_WAVEFORM") + osc2_waveform_mod +
+        getChannelPressureAmount("AFTERTOUCH_OSC_2_WAVEFORM"),
         apvts.getRawParameterValue("OSC_1_WAVEFORM_MOD_ENV_2")->load(),
         apvts.getRawParameterValue("OSC_2_WAVEFORM_MOD_ENV_2")->load());
 
@@ -255,10 +263,13 @@ void Mhj01AudioProcessor::processNoise(SynthVoice& voice)
 
 void Mhj01AudioProcessor::processFilter(SynthVoice& voice, double lfo1_mod, double lfo2_mod)
 {
+    float filter_lfo2_aftertouch = 0.5 * lfo2_mod * getChannelPressureAmount("AFTERTOUCH_FILTER_LFO_2");
     float cutoff_mod = juce::jmap<float>(
-        static_cast<float>(lfo1_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_1")->load() *
+        lfo1_mod * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_1")->load() *
         getModWheelAmount("MOD_WHEEL_FILTER_LFO_1") +
-        static_cast<float>(lfo2_mod) * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_2")->load(),
+        lfo2_mod * apvts.getRawParameterValue("FILTER_CUTOFF_MOD_LFO_2")->load() +
+        filter_lfo2_aftertouch +
+        getChannelPressureAmount("AFTERTOUCH_FILTER_CUTOFF"),
         0.0f, 6500.0f);
     voice.setVcfParameters(apvts.getRawParameterValue("FILTER_CUTOFF")->load() *
         getModWheelAmount("MOD_WHEEL_FILTER_CUTOFF") + cutoff_mod,
@@ -302,6 +313,13 @@ double Mhj01AudioProcessor::getModWheelAmount(juce::String parameter) {
         return mod_wheel_;
     else
         return 1.0;
+}
+
+double Mhj01AudioProcessor::getChannelPressureAmount(juce::String parameter) {
+    if (apvts.getRawParameterValue(parameter)->load())
+        return channel_pressure_;
+    else
+        return 0.0;
 }
 
 //==============================================================================
