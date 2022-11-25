@@ -189,6 +189,11 @@ void Mhj01AudioProcessor::processMidi(juce::MidiBuffer& midi_messages)
                     voice.noteOff();
             }
         }
+        else if (midi_msg.isAllNotesOff()) {
+            for (auto& voice : synth_voices_) {
+                voice.noteOff();
+            }
+        }
         else if (midi_msg.isPitchWheel()) {
             pitch_wheel_ = juce::jmap(static_cast<double>(midi_msg.getPitchWheelValue()),
                 0.0, static_cast<double>(0x3FFF), 0.0, 1.0);
