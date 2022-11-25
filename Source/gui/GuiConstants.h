@@ -36,7 +36,8 @@ constexpr int MOD_COMPONENT_WIDTH = SLIDER_COMPONENT_WIDTH * 2;
 constexpr int MOD_COMPONENT_HEIGHT = SLIDER_COMPONENT_HEIGHT;
 constexpr int LINE_THICKNESS = 2;
 
-enum class ParamIdPrefix {
+enum class ParamIdPrefix
+{
     OSC_1,
     OSC_2,
     FREQUENCY_MOD,
@@ -50,14 +51,14 @@ enum class ParamIdPrefix {
 };
 
 const std::map<ParamIdPrefix, const juce::String> param_id_string_map = {
-    {ParamIdPrefix::OSC_1, "OSC_1_"},
-    {ParamIdPrefix::OSC_2, "OSC_2_"},
-    {ParamIdPrefix::FREQUENCY_MOD, "FREQUENCY_MOD_"},
-    {ParamIdPrefix::WAVEFORM_MOD, "WAVEFORM_MOD_"},
-    {ParamIdPrefix::FILTER, "FILTER_"},
-    {ParamIdPrefix::CUTOFF_MOD, "CUTOFF_MOD_"},
-    {ParamIdPrefix::ENV_1, "ENV_1_"},
-    {ParamIdPrefix::ENV_2, "ENV_2_"},
-    {ParamIdPrefix::LFO_1, "LFO_1_"},
-    {ParamIdPrefix::LFO_2, "LFO_2_"}
+    { ParamIdPrefix::OSC_1, "OSC_1_" },
+    { ParamIdPrefix::OSC_2, "OSC_2_" },
+    { ParamIdPrefix::FREQUENCY_MOD, "FREQUENCY_MOD_" },
+    { ParamIdPrefix::WAVEFORM_MOD, "WAVEFORM_MOD_" },
+    { ParamIdPrefix::FILTER, "FILTER_" },
+    { ParamIdPrefix::CUTOFF_MOD, "CUTOFF_MOD_" },
+    { ParamIdPrefix::ENV_1, "ENV_1_" },
+    { ParamIdPrefix::ENV_2, "ENV_2_" },
+    { ParamIdPrefix::LFO_1, "LFO_1_" },
+    { ParamIdPrefix::LFO_2, "LFO_2_" }
 };

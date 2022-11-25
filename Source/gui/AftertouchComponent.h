@@ -12,10 +12,12 @@
 
 #include <JuceHeader.h>
 
-class AftertouchComponent : public juce::Component {
+class AftertouchComponent : public juce::Component
+{
 public:
-    AftertouchComponent(juce::AudioProcessorValueTreeState& apvts);
+    AftertouchComponent (juce::AudioProcessorValueTreeState& apvts);
     void resized() override;
+
 private:
     juce::Label label_;
     juce::TextButton osc1_lfo2_;
@@ -30,5 +32,4 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> filter_lfo2_attachment_;
     juce::TextButton filter_cutoff_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> filter_cutoff_attachment_;
-
 };

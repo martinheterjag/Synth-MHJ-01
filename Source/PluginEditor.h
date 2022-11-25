@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "gui/AdsrComponent.h"
 #include "gui/AftertouchComponent.h"
@@ -18,11 +17,12 @@
 #include "gui/NoiseGeneratorComponent.h"
 #include "gui/OscComponent.h"
 #include "gui/SliderComponent.h"
+#include <JuceHeader.h>
 
 //==============================================================================
 /**
 */
-class Mhj01AudioProcessorEditor  : public juce::AudioProcessorEditor
+class Mhj01AudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
     Mhj01AudioProcessorEditor (Mhj01AudioProcessor&);

@@ -10,16 +10,18 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "ModulationComponent.h"
 #include "SliderComponent.h"
 #include "SynthModuleComponent.h"
+#include <JuceHeader.h>
 
-class FilterComponent : public SynthModuleComponent {
+class FilterComponent : public SynthModuleComponent
+{
 public:
-    FilterComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts);
+    FilterComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts);
     ~FilterComponent();
     void resized() override;
+
 private:
     SliderComponent cutoff_slider_;
     ModulationComponent cutoff_modulation_;

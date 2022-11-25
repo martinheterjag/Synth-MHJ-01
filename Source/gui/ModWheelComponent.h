@@ -12,10 +12,12 @@
 
 #include <JuceHeader.h>
 
-class ModWheelComopnent : public juce::Component {
+class ModWheelComopnent : public juce::Component
+{
 public:
-    ModWheelComopnent(juce::AudioProcessorValueTreeState& apvts);
+    ModWheelComopnent (juce::AudioProcessorValueTreeState& apvts);
     void resized() override;
+
 private:
     juce::Label label_;
     juce::TextButton osc1_lfo1_;
@@ -30,5 +32,4 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> filter_lfo1_attachment_;
     juce::TextButton filter_cutoff_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> filter_cutoff_attachment_;
-
 };

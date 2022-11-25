@@ -10,17 +10,17 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "SynthModuleComponent.h"
 #include "SliderComponent.h"
+#include "SynthModuleComponent.h"
+#include <JuceHeader.h>
 
 //==============================================================================
 /*
 */
-class NoiseGeneratorComponent  : public SynthModuleComponent
+class NoiseGeneratorComponent : public SynthModuleComponent
 {
 public:
-    NoiseGeneratorComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts);
+    NoiseGeneratorComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts);
     ~NoiseGeneratorComponent() override;
 
     void resized() override;

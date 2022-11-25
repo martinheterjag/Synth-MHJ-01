@@ -10,21 +10,23 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "Lfo.h"
+#include <JuceHeader.h>
 
-class Modulation {
+class Modulation
+{
 public:
     Modulation();
     ~Modulation();
-    void prepare(juce::dsp::ProcessSpec& spec);
+    void prepare (juce::dsp::ProcessSpec& spec);
     void resetLfo1();
     void resetLfo2();
-    void setLfo1Waveform(Lfo::Waveform waveform);
-    void setLfo2Waveform(Lfo::Waveform waveform);
+    void setLfo1Waveform (Lfo::Waveform waveform);
+    void setLfo2Waveform (Lfo::Waveform waveform);
     double getLfo1Output();
     double getLfo2Output();
-    void process(juce::AudioProcessorValueTreeState& apvts, const juce::AudioSourceChannelInfo bufferToFill);
+    void process (juce::AudioProcessorValueTreeState& apvts, const juce::AudioSourceChannelInfo bufferToFill);
+
 private:
     Lfo lfo1_;
     Lfo lfo2_;

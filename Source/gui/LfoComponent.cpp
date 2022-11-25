@@ -10,13 +10,12 @@
 
 #include "LfoComponent.h"
 
-LfoComponent::LfoComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix)
-    : SynthModuleComponent(name), frequency_slider_("Freq"),
-    waveform_selector_("Waveform", apvts, param_id_string_map.at(param_id_prefix) + "WAVEFORM", juce::StringArray({ "sine", "saw", "square", "triangle" }))
+LfoComponent::LfoComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix)
+    : SynthModuleComponent (name), frequency_slider_ ("Freq"), waveform_selector_ ("Waveform", apvts, param_id_string_map.at (param_id_prefix) + "WAVEFORM", juce::StringArray ({ "sine", "saw", "square", "triangle" }))
 {
-    frequency_slider_.attatchToParameter(apvts, param_id_string_map.at(param_id_prefix) + "FREQUENCY");
-    addAndMakeVisible(frequency_slider_);
-    addAndMakeVisible(waveform_selector_);
+    frequency_slider_.attatchToParameter (apvts, param_id_string_map.at (param_id_prefix) + "FREQUENCY");
+    addAndMakeVisible (frequency_slider_);
+    addAndMakeVisible (waveform_selector_);
 }
 
 LfoComponent::~LfoComponent()
@@ -25,10 +24,12 @@ LfoComponent::~LfoComponent()
 
 void LfoComponent::resized()
 {
-    frequency_slider_.setBounds(MODULE_PADDING,
-        MODULE_PADDING,
-        SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
-    waveform_selector_.setBounds(MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
-        MODULE_PADDING,
-        SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
+    frequency_slider_.setBounds (MODULE_PADDING,
+                                 MODULE_PADDING,
+                                 SLIDER_COMPONENT_WIDTH,
+                                 SLIDER_COMPONENT_HEIGHT);
+    waveform_selector_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
+                                  MODULE_PADDING,
+                                  SLIDER_COMPONENT_WIDTH,
+                                  SLIDER_COMPONENT_HEIGHT);
 }

@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "Modulation.h"
 #include "SynthVoice.h"
+#include <JuceHeader.h>
 
 //==============================================================================
 /**
 */
-class Mhj01AudioProcessor  : public juce::AudioProcessor
+class Mhj01AudioProcessor : public juce::AudioProcessor
 {
 public:
     //==============================================================================
@@ -26,22 +26,21 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
+#ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+#endif
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
-    void processMidi(juce::MidiBuffer& midi_messages);
-    void processOscs(SynthVoice& voice, double lfo1_mod, double lfo2_mod);
-    void processNoise(SynthVoice& voice);
-    void processFilter(SynthVoice& voice, double lfo1_mod, double lfo2_mod);
-    void processVca(SynthVoice& voice);
-    void processEnvelopes(SynthVoice& voice);
+    void processMidi (juce::MidiBuffer& midi_messages);
+    void processOscs (SynthVoice& voice, double lfo1_mod, double lfo2_mod);
+    void processNoise (SynthVoice& voice);
+    void processFilter (SynthVoice& voice, double lfo1_mod, double lfo2_mod);
+    void processVca (SynthVoice& voice);
+    void processEnvelopes (SynthVoice& voice);
 
-    double getCoarse(double frequency);
-    double getModWheelAmount(juce::String parameter);
-    double getChannelPressureAmount(juce::String parameter);
-
+    double getCoarse (double frequency);
+    double getModWheelAmount (juce::String parameter);
+    double getChannelPressureAmount (juce::String parameter);
 
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override;

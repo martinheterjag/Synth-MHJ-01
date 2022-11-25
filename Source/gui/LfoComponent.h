@@ -10,17 +10,18 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "ButtonSelectComponent.h"
-#include "SynthModuleComponent.h"
 #include "SliderComponent.h"
+#include "SynthModuleComponent.h"
+#include <JuceHeader.h>
 
-class LfoComponent : public SynthModuleComponent {
+class LfoComponent : public SynthModuleComponent
+{
 public:
-    LfoComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts,
-                 ParamIdPrefix param_id_prefix);
+    LfoComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix);
     ~LfoComponent();
     void resized() override;
+
 private:
     SliderComponent frequency_slider_;
     ButtonSelectComponent waveform_selector_;

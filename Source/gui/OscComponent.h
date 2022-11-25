@@ -10,17 +10,18 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "ModulationComponent.h"
-#include "SynthModuleComponent.h"
 #include "SliderComponent.h"
+#include "SynthModuleComponent.h"
+#include <JuceHeader.h>
 
-
-class OscComponent : public SynthModuleComponent {
+class OscComponent : public SynthModuleComponent
+{
 public:
-    OscComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix);
+    OscComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix);
     ~OscComponent();
     void resized() override;
+
 private:
     SliderComponent frequency_slider_;
     SliderComponent fine_pitch_slider_;

@@ -10,20 +10,18 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "SliderComponent.h"
 #include "GuiConstants.h"
+#include "SliderComponent.h"
+#include <JuceHeader.h>
 
-
-
-class ModulationComponent : public juce::Component {
+class ModulationComponent : public juce::Component
+{
 public:
-    ModulationComponent(juce::String name, juce::AudioProcessorValueTreeState& apvts,
-                        ParamIdPrefix module_id_prefix,
-                        ParamIdPrefix param_id_prefix);
+    ModulationComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix module_id_prefix, ParamIdPrefix param_id_prefix);
     ~ModulationComponent();
-    void paint(juce::Graphics& g) override;
+    void paint (juce::Graphics& g) override;
     void resized() override;
+
 private:
     juce::Label label_;
     SliderComponent lfo1_knob_;

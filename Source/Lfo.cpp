@@ -10,7 +10,8 @@
 
 #include "Lfo.h"
 
-void Lfo::setWaveform(Waveform waveform) {
+void Lfo::setWaveform (Waveform waveform)
+{
     if (waveform == waveform_)
         return;
     waveform_ = waveform;
@@ -22,41 +23,41 @@ double Lfo::getOutput()
     return output_;
 }
 
-void Lfo::update(juce::dsp::ProcessContextReplacing<float>& context)
+void Lfo::update (juce::dsp::ProcessContextReplacing<float>& context)
 {
-    output_ = processSample(0.0);
-    process(context);
+    output_ = processSample (0.0);
+    process (context);
 }
 
-void Lfo::resetLfo() {
-    switch (waveform_) {
-    case(Waveform::SINE):
-        initialise([](float x) {
-            return std::sin(x);
-            }, 128);
+void Lfo::resetLfo()
+{
+    switch (waveform_)
+    {
+    case (Waveform::SINE):
+        initialise ([] (float x) {
+            return std::sin (x);
+        },
+                    128);
         break;
-    case(Waveform::SAW):
-        initialise([](float x) {
+    case (Waveform::SAW):
+        initialise ([] (float x) {
             return x / juce::MathConstants<double>::pi;
-            }, 128);
+        },
+                    128);
         break;
-    case(Waveform::SQUARE):
-        initialise([](float x) {
-            return (x > 0.0f ?
-                -0.5f :
-                0.5f);
-            }, 128);
+    case (Waveform::SQUARE):
+        initialise ([] (float x) {
+            return (x > 0.0f ? -0.5f : 0.5f);
+        },
+                    128);
         break;
-    case(Waveform::TRIANGLE):
-        initialise([](float x) {
-            return (x > 0.0 ?
-                2.0f * x - 0.5f :
-                -2.0f * x - 0.5f);
-            }, 128);
+    case (Waveform::TRIANGLE):
+        initialise ([] (float x) {
+            return (x > 0.0 ? 2.0f * x - 0.5f : -2.0f * x - 0.5f);
+        },
+                    128);
         break;
     default:
-        DBG("Warning, we should not get here.");
+        DBG ("Warning, we should not get here.");
     }
 }
-
-
