@@ -5,7 +5,7 @@ The main signal path is a classic "East coast" osc->filter->vca design, but with
 At the moment the project is designed on the fly, with design choices done while developing, so we will see where this goes.
 
 # Getting started with development
-The project is made with the Juce framework, load the project with projucer and pick development environment to tweak the code on your own.
+The project is made with the JUCE framework, download and install it from the JUCE website https://juce.com/. Load the project with projucer and pick development environment to tweak the code on your own.
 
 # Style guide
 The project C++ code base shall follow the JUCE style guide. There's a .clang-format file in this repository that can be used for formatting.
