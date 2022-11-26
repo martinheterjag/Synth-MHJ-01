@@ -23,7 +23,7 @@ public:
         SMALL_KNOB
     };
 
-    SliderComponent (juce::String label_text,
+    explicit SliderComponent (juce::String label_text,
                      SliderComponent::Style style = SliderComponent::Style::SLIDER);
     void attatchToParameter (juce::AudioProcessorValueTreeState& apvts, juce::String param_id);
     void resized() override;

@@ -15,7 +15,7 @@
 class AftertouchComponent : public juce::Component
 {
 public:
-    AftertouchComponent (juce::AudioProcessorValueTreeState& apvts);
+    explicit AftertouchComponent (juce::AudioProcessorValueTreeState& apvts);
     void resized() override;
 
 private:

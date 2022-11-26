@@ -15,7 +15,7 @@
 class ModWheelComopnent : public juce::Component
 {
 public:
-    ModWheelComopnent (juce::AudioProcessorValueTreeState& apvts);
+    explicit ModWheelComopnent (juce::AudioProcessorValueTreeState& apvts);
     void resized() override;
 
 private:

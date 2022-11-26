@@ -25,7 +25,7 @@
 class Mhj01AudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
-    Mhj01AudioProcessorEditor (Mhj01AudioProcessor&);
+    explicit Mhj01AudioProcessorEditor (Mhj01AudioProcessor&);
     ~Mhj01AudioProcessorEditor() override;
 
     //==============================================================================

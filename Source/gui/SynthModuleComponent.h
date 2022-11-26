@@ -16,7 +16,7 @@
 class SynthModuleComponent : public juce::Component
 {
 public:
-    SynthModuleComponent (juce::String name);
+    explicit SynthModuleComponent (juce::String name);
     void paint (juce::Graphics& g) override;
 
 protected:

@@ -15,7 +15,7 @@
 class SynthVoice : public juce::AudioSource
 {
 public:
-    SynthVoice (juce::uint32 main_bus_output_channels);
+    explicit SynthVoice (juce::uint32 main_bus_output_channels);
     SynthVoice (const SynthVoice& other) : main_bus_output_channels_ (other.main_bus_output_channels_) {};
     ~SynthVoice();
 
