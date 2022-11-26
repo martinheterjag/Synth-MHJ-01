@@ -16,7 +16,8 @@ my projects.
 The JUCE style guide can be found here: https://juce.com/discover/stories/coding-standards
 
 # Code analysis
-To run code analysis with cppcheck this command from the root directory of this repository:
+To run code analysis with cppcheck run this command from the root directory of this repository:
+
 `cppcheck --std=c++14 --enable=all --xml-version=2 ./Source/`
 
 Note that you would need to enter full path to cppcheck if it's not included in your `$PATH`.
