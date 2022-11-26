@@ -21,19 +21,9 @@ Modulation::~Modulation()
 void Modulation::prepare (juce::dsp::ProcessSpec& spec)
 {
     lfo1_.prepare (spec);
-    lfo1_.resetLfo();
+    resetLfo1();
     lfo2_.prepare (spec);
-    lfo2_.resetLfo();
-}
-
-void Modulation::setLfo1Waveform (Lfo::Waveform waveform)
-{
-    lfo1_.setWaveform (waveform);
-}
-
-void Modulation::setLfo2Waveform (Lfo::Waveform waveform)
-{
-    lfo2_.setWaveform (waveform);
+    resetLfo2();
 }
 
 void Modulation::resetLfo1()

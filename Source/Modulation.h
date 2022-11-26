@@ -21,8 +21,6 @@ public:
     void prepare (juce::dsp::ProcessSpec& spec);
     void resetLfo1();
     void resetLfo2();
-    void setLfo1Waveform (Lfo::Waveform waveform);
-    void setLfo2Waveform (Lfo::Waveform waveform);
     double getLfo1Output();
     double getLfo2Output();
     void process (juce::AudioProcessorValueTreeState& apvts, const juce::AudioSourceChannelInfo bufferToFill);
