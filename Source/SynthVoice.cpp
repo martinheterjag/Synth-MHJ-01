@@ -108,6 +108,7 @@ void SynthVoice::setVcaGain (float gain)
     //       The problem could be that ADSR is controlling the gain as well?
 
     // 0.7f will let the exponential curve hit y=1 just before x=1
+    // cppcheck-suppress unpreciseMathCall
     vca.setGainLinear (juce::dsp::FastMathApproximations::exp (0.7f * gain * velocity_) - 1.0f);
 }
 
