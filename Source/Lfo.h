@@ -27,5 +27,5 @@ public:
 
 private:
     Waveform waveform_ { Waveform::SINE };
-    double output_;
+    double output_ { 0.0 };
 };
