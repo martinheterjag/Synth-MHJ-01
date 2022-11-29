@@ -159,8 +159,9 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     processMidi (midi_messages);
 
     mod_.process (apvts, juce::AudioSourceChannelInfo (buffer)); // Update modulators
-    double lfo1_mod = mod_.getLfo1Output();
-    double lfo2_mod = mod_.getLfo2Output();
+    // TODO: Use full modulation buffers instead of just first sample.
+    double lfo1_mod = mod_.getLfo1Output()[0];
+    double lfo2_mod = mod_.getLfo2Output()[0];
     for (auto& voice : synth_voices_)
     {
         processOscs (voice, lfo1_mod, lfo2_mod);
@@ -442,9 +443,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("ENV_2_SUSTAIN", "Sustain", 0.0f, 1.0f, 0.2f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("ENV_2_RELEASE", "Release", 0.01f, 1.0f, 0.5f));
 
-    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("LFO_1_FREQUENCY", "Frequency", 0.01f, 10.0f, 1.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("LFO_1_FREQUENCY", "Frequency", 0.01f, 20.0f, 1.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterChoice> ("LFO_1_WAVEFORM", "Waveform", juce::StringArray { "Sine", "Saw", "Square", "Triangle" }, 1));
-    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("LFO_2_FREQUENCY", "Frequency", 0.01f, 10.0f, 1.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("LFO_2_FREQUENCY", "Frequency", 0.01f, 20.0f, 1.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterChoice> ("LFO_2_WAVEFORM", "Waveform", juce::StringArray { "Sine", "Saw", "Square", "Triangle" }, 1));
 
     // Mod wheel buttons

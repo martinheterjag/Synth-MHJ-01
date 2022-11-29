@@ -36,7 +36,7 @@ void SynthVoice::modulateOsc1Frequency (double factor, double env_depth, double 
     double new_frequency = osc1_f_hz_ * factor + envelope2_output_ * env_depth;
     new_frequency *= pitch_wheel;
     new_frequency = std::min (std::max (new_frequency, 20.0), 20000.0);
-    osc1.setFrequency (new_frequency, true);
+    osc1.setFrequency (new_frequency, false);
 }
 
 void SynthVoice::modulateOsc2Frequency (double factor, double env_depth, double pitch_wheel)
@@ -45,7 +45,7 @@ void SynthVoice::modulateOsc2Frequency (double factor, double env_depth, double 
     double new_frequency = osc1_f_hz_ * factor + envelope2_output_ * env_depth;
     new_frequency = std::min (std::max (new_frequency, 20.0), 20000.0);
     new_frequency *= pitch_wheel;
-    osc2.setFrequency (new_frequency, true);
+    osc2.setFrequency (new_frequency, false);
 }
 
 void SynthVoice::setWaveform (float osc1_shape, float osc2_shape, float osc1_env_depth, float osc2_env_depth)

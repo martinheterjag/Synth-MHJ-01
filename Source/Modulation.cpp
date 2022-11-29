@@ -36,12 +36,12 @@ void Modulation::resetLfo2()
     lfo2_.resetLfo();
 }
 
-double Modulation::getLfo1Output()
+std::vector<double> Modulation::getLfo1Output()
 {
     return lfo1_.getOutput();
 }
 
-double Modulation::getLfo2Output()
+std::vector<double> Modulation::getLfo2Output()
 {
     return lfo2_.getOutput();
 }
