@@ -165,10 +165,9 @@ void SynthVoice::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
         // Fade between sinewave (waveform == 0) then
         // saw (waveform == 1) then square (waveform == 2)
         if (this->osc1_waveform_ < 1.0)
-            return ((1.0 - this->osc1_waveform_) * std::sin (x) + (this->osc1_waveform_ * x / juce::MathConstants<double>::pi) + OSC_BIAS)
-                   * this->osc1_amplitude_;
+            return (((1.0 - this->osc1_waveform_) * std::sin (x) + (this->osc1_waveform_ * x/3.0)) + OSC_BIAS) * this->osc1_amplitude_;
         else
-            return (((2.0 - this->osc1_waveform_) * (x / juce::MathConstants<double>::pi)) + (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0)) * this->osc1_amplitude_ + OSC_BIAS;
+            return ((((2.0 - this->osc1_waveform_) * x/3.0) + (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0)) + OSC_BIAS) * this->osc1_amplitude_;
     });
 
     auto& osc2 = signal_chain_.template get<osc2_index>();
@@ -176,10 +175,9 @@ void SynthVoice::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
         // Fade between sinewave (waveform == 0) then
         // saw (waveform == 1) then square (waveform == 2)
         if (this->osc2_waveform_ < 1.0)
-            return ((1.0 - this->osc2_waveform_) * std::sin (x) + (this->osc2_waveform_ * x / juce::MathConstants<double>::pi) + OSC_BIAS)
-                   * this->osc2_amplitude_;
+            return (((1.0 - this->osc2_waveform_) * std::sin (x) + (this->osc2_waveform_ * x / juce::MathConstants<double>::pi)) + OSC_BIAS) * this->osc2_amplitude_;
         else
-            return (((2.0 - this->osc2_waveform_) * (x / juce::MathConstants<double>::pi)) + (this->osc2_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0)) * this->osc2_amplitude_ + OSC_BIAS;
+            return ((((2.0 - this->osc2_waveform_) * x / juce::MathConstants<double>::pi) + (this->osc2_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0)) + OSC_BIAS) * this->osc2_amplitude_;
     });
 
     auto& noise = signal_chain_.template get<noise_index>();
