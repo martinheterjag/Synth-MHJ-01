@@ -18,14 +18,21 @@ void Lfo::setWaveform (Waveform waveform)
     resetLfo();
 }
 
-double Lfo::getOutput()
+std::vector<double> Lfo::getOutput()
 {
-    return output_;
+    if (output_.size() > 0)
+        return output_;
+    else
+        return { 0.0 };
 }
 
 void Lfo::update (juce::dsp::ProcessContextReplacing<float>& context)
 {
-    output_ = processSample (0.0);
+    output_.clear();
+    for (int i = 0; i < context.getOutputBlock().getNumSamples(); i++)
+    {
+        output_.push_back (processSample (0.0));
+    }
     process (context);
 }
 

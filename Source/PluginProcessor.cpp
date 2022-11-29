@@ -159,8 +159,9 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     processMidi (midi_messages);
 
     mod_.process (apvts, juce::AudioSourceChannelInfo (buffer)); // Update modulators
-    double lfo1_mod = mod_.getLfo1Output();
-    double lfo2_mod = mod_.getLfo2Output();
+    // TODO: Use full modulation buffers instead of just first sample.
+    double lfo1_mod = mod_.getLfo1Output()[0];
+    double lfo2_mod = mod_.getLfo2Output()[0];
     for (auto& voice : synth_voices_)
     {
         processOscs (voice, lfo1_mod, lfo2_mod);

@@ -22,10 +22,10 @@ public:
     };
     void resetLfo();
     void setWaveform (Waveform waveform);
-    double getOutput();
+    std::vector<double> getOutput();
     void update (juce::dsp::ProcessContextReplacing<float>& context);
 
 private:
     Waveform waveform_ { Waveform::SINE };
-    double output_ { 0.0 };
+    std::vector<double> output_;
 };

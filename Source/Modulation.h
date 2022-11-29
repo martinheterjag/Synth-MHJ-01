@@ -21,8 +21,8 @@ public:
     void prepare (juce::dsp::ProcessSpec& spec);
     void resetLfo1();
     void resetLfo2();
-    double getLfo1Output();
-    double getLfo2Output();
+    std::vector<double> getLfo1Output();
+    std::vector<double> getLfo2Output();
     void process (juce::AudioProcessorValueTreeState& apvts, const juce::AudioSourceChannelInfo bufferToFill);
 
 private:
