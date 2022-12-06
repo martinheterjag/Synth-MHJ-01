@@ -107,9 +107,6 @@ void SynthVoice::setVelocity (const int velocity)
 void SynthVoice::setVcaGain (float gain)
 {
     auto& vca = signal_chain_.template get<vca_index>();
-    // TODO: Knob response feels a bit off, need to investigate on how to improve it.
-    //       The problem could be that ADSR is controlling the gain as well?
-
     // 0.7f will let the exponential curve hit y=1 just before x=1
     // cppcheck-suppress unpreciseMathCall
     vca.setGainLinear (juce::dsp::FastMathApproximations::exp (0.7f * gain * velocity_) - 1.0f);
