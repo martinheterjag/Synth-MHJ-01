@@ -16,6 +16,7 @@
 #include "gui/ModWheelComponent.h"
 #include "gui/NoiseGeneratorComponent.h"
 #include "gui/OscComponent.h"
+#include "gui/SequencerComponent.h"
 #include "gui/SliderComponent.h"
 #include <JuceHeader.h>
 
@@ -41,6 +42,7 @@ private:
     AdsrComponent env2_;
     LfoComponent lfo1_;
     LfoComponent lfo2_;
+    SequencerComponent seq_;
     // General controls, individual controls that are not grouped
     SliderComponent volume_knob_;
     ModWheelComopnent modwheel_controls_;

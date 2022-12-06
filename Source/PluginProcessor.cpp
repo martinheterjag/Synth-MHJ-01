@@ -448,6 +448,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("LFO_2_FREQUENCY", "Frequency", 0.01f, 20.0f, 1.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterChoice> ("LFO_2_WAVEFORM", "Waveform", juce::StringArray { "Sine", "Saw", "Square", "Triangle" }, 1));
 
+    // Sequencer parameters
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("SEQUENCER_STEP_1", "Step 1", 0.0f, 1.0f, 1.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("SEQUENCER_STEP_2", "Step 2", 0.0f, 1.0f, 0.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("SEQUENCER_STEP_3", "Step 3", 0.0f, 1.0f, 0.75f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("SEQUENCER_STEP_4", "Step 4", 0.0f, 1.0f, 0.25f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> ("SEQUENCER_STEP_5", "Step 5", 0.0f, 1.0f, 0.5f));
+
     // Mod wheel buttons
     parameters.push_back (std::make_unique<juce::AudioParameterBool> ("MOD_WHEEL_OSC_1_LFO_1", "Osc 1 LFO 1", false));
     parameters.push_back (std::make_unique<juce::AudioParameterBool> ("MOD_WHEEL_OSC_1_WAVEFORM", "Osc 1 waveform", false));
