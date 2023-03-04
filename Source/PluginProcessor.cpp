@@ -23,7 +23,12 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
                           .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
 #endif
                           ),
-      apvts (*this, nullptr, "Parameters", createParameters())
+      apvts (*this, nullptr, "Parameters", createParameters()),
+      seq_ ({ apvts.getRawParameterValue ("SEQUENCER_STEP_1")->load(),
+              apvts.getRawParameterValue ("SEQUENCER_STEP_2")->load(),
+              apvts.getRawParameterValue ("SEQUENCER_STEP_3")->load(),
+              apvts.getRawParameterValue ("SEQUENCER_STEP_4")->load(),
+              apvts.getRawParameterValue ("SEQUENCER_STEP_5")->load() })
 #endif
 {
     for (int i = 0; i < 8; i++)
@@ -159,12 +164,22 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     processMidi (midi_messages);
 
     mod_.process (apvts, juce::AudioSourceChannelInfo (buffer)); // Update modulators
+    seq_.updateValues ({ apvts.getRawParameterValue ("SEQUENCER_STEP_1")->load(),
+                         apvts.getRawParameterValue ("SEQUENCER_STEP_2")->load(),
+                         apvts.getRawParameterValue ("SEQUENCER_STEP_3")->load(),
+                         apvts.getRawParameterValue ("SEQUENCER_STEP_4")->load(),
+                         apvts.getRawParameterValue ("SEQUENCER_STEP_5")->load() });
     // TODO: Use full modulation buffers instead of just first sample.
     double lfo1_mod = mod_.getLfo1Output()[0];
     double lfo2_mod = mod_.getLfo2Output()[0];
+
+    // TODO: Trigger seq by more/other things than just LFO1
+    triggerSeqOnRisingEdge (lfo1_mod);
+    double seq_mod = seq_.getActiveStepValue();
+
     for (auto& voice : synth_voices_)
     {
-        processOscs (voice, lfo1_mod, lfo2_mod);
+        processOscs (voice, lfo1_mod, lfo2_mod, seq_mod);
         processNoise (voice);
         processFilter (voice, lfo1_mod, lfo2_mod);
         processVca (voice);
@@ -230,16 +245,15 @@ void Mhj01AudioProcessor::processMidi (juce::MidiBuffer& midi_messages)
                                             127.0,
                                             0.0,
                                             1.0);
-            DBG ("Channel pressure " << channel_pressure_);
         }
     }
 }
 
-void Mhj01AudioProcessor::processOscs (SynthVoice& voice, double lfo1_mod, double lfo2_mod)
+void Mhj01AudioProcessor::processOscs (SynthVoice& voice, double lfo1_mod, double lfo2_mod, double seq_mod)
 {
     double osc1_lfo2_aftertouch = 0.5 * lfo2_mod * getChannelPressureAmount ("AFTERTOUCH_OSC_1_LFO_2");
     double osc1_frequency_mod = juce::jmap<double> (
-        lfo1_mod * getModWheelAmount ("MOD_WHEEL_OSC_1_LFO_1") * apvts.getRawParameterValue ("OSC_1_FREQUENCY_MOD_LFO_1")->load() + lfo2_mod * apvts.getRawParameterValue ("OSC_1_FREQUENCY_MOD_LFO_2")->load() + osc1_lfo2_aftertouch,
+        lfo1_mod * getModWheelAmount ("MOD_WHEEL_OSC_1_LFO_1") * apvts.getRawParameterValue ("OSC_1_FREQUENCY_MOD_LFO_1")->load() + lfo2_mod * apvts.getRawParameterValue ("OSC_1_FREQUENCY_MOD_LFO_2")->load() + osc1_lfo2_aftertouch + seq_mod,
         0.0,
         2.0);
     double osc1_coarse = getCoarse (apvts.getRawParameterValue ("OSC_1_FREQUENCY")->load());
@@ -309,6 +323,16 @@ void Mhj01AudioProcessor::processEnvelopes (SynthVoice& voice)
                                   apvts.getRawParameterValue ("ENV_2_DECAY")->load(),
                                   apvts.getRawParameterValue ("ENV_2_SUSTAIN")->load(),
                                   apvts.getRawParameterValue ("ENV_2_RELEASE")->load());
+}
+
+void Mhj01AudioProcessor::triggerSeqOnRisingEdge (double value)
+{
+    static double last_value;
+    if (last_value < 0.0 && value >= 0.0)
+    {
+        seq_.trigger();
+    }
+    last_value = value;
 }
 
 double Mhj01AudioProcessor::getCoarse (double frequency)

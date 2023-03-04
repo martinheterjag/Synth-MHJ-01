@@ -66,6 +66,9 @@
       <FILE id="oshdGe" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="RhF0eV" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="VsEEhv" name="StepSequencer.cpp" compile="1" resource="0"
+            file="Source/StepSequencer.cpp"/>
+      <FILE id="FTah1o" name="StepSequencer.h" compile="0" resource="0" file="Source/StepSequencer.h"/>
       <FILE id="FqzJbT" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
       <FILE id="IqGWB7" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
     </GROUP>

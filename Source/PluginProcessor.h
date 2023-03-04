@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Modulation.h"
+#include "StepSequencer.h"
 #include "SynthVoice.h"
 #include <JuceHeader.h>
 
@@ -32,12 +33,13 @@ public:
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
     void processMidi (juce::MidiBuffer& midi_messages);
-    void processOscs (SynthVoice& voice, double lfo1_mod, double lfo2_mod);
+    void processOscs (SynthVoice& voice, double lfo1_mod, double lfo2_mod, double seq_mod);
     void processNoise (SynthVoice& voice);
     void processFilter (SynthVoice& voice, double lfo1_mod, double lfo2_mod);
     void processVca (SynthVoice& voice);
     void processEnvelopes (SynthVoice& voice);
 
+    void triggerSeqOnRisingEdge (double value);
     double getCoarse (double frequency);
     double getModWheelAmount (juce::String parameter);
     double getChannelPressureAmount (juce::String parameter);
@@ -76,6 +78,7 @@ private:
     unsigned int next_voice_ = 0;
     juce::MixerAudioSource voice_mixer_;
     Modulation mod_;
+    StepSequencer seq_;
     double pitch_wheel_ = 1.0;
     double mod_wheel_ = 0.0;
     double channel_pressure_ = 0.0;
