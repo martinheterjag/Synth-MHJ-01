@@ -68,12 +68,12 @@ void Mhj01AudioProcessorEditor::resized()
     osc1_.setBounds (0, 0, 390, 130);
     osc2_.setBounds (0, 130, 390, 130);
     noise_.setBounds (390, 130, 75, 130);
-    filter_.setBounds (465, 130, 250, 130);
-    env1_.setBounds (390, 0, 225, 130);
-    env2_.setBounds (615, 0, 225, 130);
+    filter_.setBounds (465, 130, 220, 130);
+    env1_.setBounds (390, 0, 220, 130);
+    env2_.setBounds (610, 0, 220, 130);
     lfo1_.setBounds (0, 260, 200, 130);
     lfo2_.setBounds (200, 260, 200, 130);
-    seq_.setBounds (400, 260, 200, 130);
+    seq_.setBounds (400, 260, 255, 130);
     volume_knob_.setBounds (15, 390, 60, 95);
     modwheel_controls_.setBounds (75, 390, 105, 95);
     aftertouch_controls_.setBounds (200, 390, 105, 95);
