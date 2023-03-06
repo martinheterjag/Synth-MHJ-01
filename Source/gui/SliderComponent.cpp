@@ -17,25 +17,26 @@ SliderComponent::SliderComponent (juce::String label_text, SliderComponent::Styl
     {
     case Style::SLIDER:
         slider_.setSliderStyle (juce::Slider::SliderStyle::LinearVertical);
-        slider_.setColour (juce::Slider::ColourIds::thumbColourId, juce::Colours::gold);
+        thumb_colour_ = juce::Colours::gold;
         label_.setColour (juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
         label_.setFont (juce::Font (FONT_SIZE, juce::Font::FontStyleFlags::bold));
         break;
     case Style::KNOB:
         slider_.setSliderStyle (juce::Slider::SliderStyle::RotaryVerticalDrag);
-        slider_.setColour (juce::Slider::ColourIds::thumbColourId,
-                           juce::Colours::lightgoldenrodyellow);
+        thumb_colour_ = juce::Colours::lightgoldenrodyellow;
         label_.setColour (juce::Label::ColourIds::textColourId,
                           juce::Colours::lightgoldenrodyellow);
         label_.setFont (juce::Font (FONT_SIZE, juce::Font::FontStyleFlags::bold));
         break;
     case Style::SMALL_KNOB:
         slider_.setSliderStyle (juce::Slider::SliderStyle::RotaryVerticalDrag);
-        slider_.setColour (juce::Slider::ColourIds::thumbColourId, juce::Colours::gold);
+        thumb_colour_ = juce::Colours::gold;
         label_.setColour (juce::Label::ColourIds::textColourId, juce::Colours::darkgrey);
         label_.setFont (juce::Font (SMALL_FONT_SIZE, juce::Font::FontStyleFlags::bold));
         break;
     }
+
+    slider_.setColour (juce::Slider::ColourIds::thumbColourId, thumb_colour_);
 
     slider_.setTextBoxStyle (juce::Slider::NoTextBox, true, 25, 25);
     addAndMakeVisible (slider_);
@@ -43,6 +44,12 @@ SliderComponent::SliderComponent (juce::String label_text, SliderComponent::Styl
     label_.setText (label_text, juce::dontSendNotification);
     label_.setJustificationType (juce::Justification::centred);
     addAndMakeVisible (label_);
+}
+
+void SliderComponent::lightUp (double amount, juce::Colour light_colour)
+{
+    slider_.setColour (juce::Slider::ColourIds::thumbColourId,
+                       thumb_colour_.interpolatedWith (light_colour, amount));
 }
 
 void SliderComponent::attatchToParameter (juce::AudioProcessorValueTreeState& apvts,
