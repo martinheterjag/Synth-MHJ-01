@@ -23,8 +23,10 @@ SliderComponent::SliderComponent (juce::String label_text, SliderComponent::Styl
         break;
     case Style::KNOB:
         slider_.setSliderStyle (juce::Slider::SliderStyle::RotaryVerticalDrag);
-        slider_.setColour (juce::Slider::ColourIds::thumbColourId, juce::Colours::lightgoldenrodyellow);
-        label_.setColour (juce::Label::ColourIds::textColourId, juce::Colours::lightgoldenrodyellow);
+        slider_.setColour (juce::Slider::ColourIds::thumbColourId,
+                           juce::Colours::lightgoldenrodyellow);
+        label_.setColour (juce::Label::ColourIds::textColourId,
+                          juce::Colours::lightgoldenrodyellow);
         label_.setFont (juce::Font (FONT_SIZE, juce::Font::FontStyleFlags::bold));
         break;
     case Style::SMALL_KNOB:
@@ -43,9 +45,11 @@ SliderComponent::SliderComponent (juce::String label_text, SliderComponent::Styl
     addAndMakeVisible (label_);
 }
 
-void SliderComponent::attatchToParameter (juce::AudioProcessorValueTreeState& apvts, juce::String param_id)
+void SliderComponent::attatchToParameter (juce::AudioProcessorValueTreeState& apvts,
+                                          juce::String param_id)
 {
-    attachment_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (apvts, param_id, slider_);
+    attachment_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment> (
+        apvts, param_id, slider_);
 }
 
 void SliderComponent::resized()

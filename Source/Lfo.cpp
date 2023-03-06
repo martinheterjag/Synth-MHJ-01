@@ -41,28 +41,16 @@ void Lfo::resetLfo()
     switch (waveform_)
     {
     case (Waveform::SINE):
-        initialise ([] (float x) {
-            return std::sin (x);
-        },
-                    128);
+        initialise ([] (float x) { return std::sin (x); }, 128);
         break;
     case (Waveform::SAW):
-        initialise ([] (float x) {
-            return x / juce::MathConstants<double>::pi;
-        },
-                    128);
+        initialise ([] (float x) { return x / juce::MathConstants<double>::pi; }, 128);
         break;
     case (Waveform::SQUARE):
-        initialise ([] (float x) {
-            return (x > 0.0f ? -0.5f : 0.5f);
-        },
-                    128);
+        initialise ([] (float x) { return (x > 0.0f ? -0.5f : 0.5f); }, 128);
         break;
     case (Waveform::TRIANGLE):
-        initialise ([] (float x) {
-            return (x > 0.0 ? 2.0f * x - 0.5f : -2.0f * x - 0.5f);
-        },
-                    128);
+        initialise ([] (float x) { return (x > 0.0 ? 2.0f * x - 0.5f : -2.0f * x - 0.5f); }, 128);
         break;
     default:
         DBG ("Warning, we should not get here.");

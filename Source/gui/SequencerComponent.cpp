@@ -8,12 +8,13 @@
   ==============================================================================
 */
 
-#include <JuceHeader.h>
 #include "SequencerComponent.h"
+#include <JuceHeader.h>
 
 //==============================================================================
-SequencerComponent::SequencerComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts)
-    : SynthModuleComponent (name), 
+SequencerComponent::SequencerComponent (juce::String name,
+                                        juce::AudioProcessorValueTreeState& apvts)
+    : SynthModuleComponent (name),
       step_1_ ("1"),
       step_2_ ("2"),
       step_3_ ("3"),
@@ -36,16 +37,12 @@ SequencerComponent::SequencerComponent (juce::String name, juce::AudioProcessorV
     addAndMakeVisible (step_5_);
 }
 
-SequencerComponent::~SequencerComponent()
-{
-}
+SequencerComponent::~SequencerComponent() {}
 
 void SequencerComponent::resized()
 {
-    step_1_.setBounds (MODULE_PADDING,
-                       MODULE_PADDING,
-                       SLIDER_COMPONENT_WIDTH,
-                       SLIDER_COMPONENT_HEIGHT);
+    step_1_.setBounds (
+        MODULE_PADDING, MODULE_PADDING, SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
     step_2_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,

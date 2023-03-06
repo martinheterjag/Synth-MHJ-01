@@ -48,9 +48,7 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
     setSize (WIDTH, HEIGHT);
 }
 
-Mhj01AudioProcessorEditor::~Mhj01AudioProcessorEditor()
-{
-}
+Mhj01AudioProcessorEditor::~Mhj01AudioProcessorEditor() {}
 
 //==============================================================================
 void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)

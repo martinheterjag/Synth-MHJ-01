@@ -10,15 +10,12 @@
 
 #include "StepSequencer.h"
 
-StepSequencer::StepSequencer (std::array<double, 5> init_values)
-    : values_(init_values)
-{
-}
+StepSequencer::StepSequencer (std::array<double, 5> init_values) : values_ (init_values) {}
 
 void StepSequencer::trigger (bool forward)
 {
     if (forward)
-    { 
+    {
         ++active_step_;
     }
     else
@@ -28,15 +25,9 @@ void StepSequencer::trigger (bool forward)
     active_step_ %= SEQUENCER_MAX_STEPS;
 }
 
-double StepSequencer::getActiveStepValue ()
-{
-    return values_[active_step_];
-}
+double StepSequencer::getActiveStepValue() { return values_[active_step_]; }
 
-unsigned int StepSequencer::getActiveStep()
-{
-    return active_step_;
-}
+unsigned int StepSequencer::getActiveStep() { return active_step_; }
 
 void StepSequencer::updateValues (std::array<double, SEQUENCER_MAX_STEPS> new_values)
 {

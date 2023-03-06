@@ -20,9 +20,7 @@ SynthVoice::SynthVoice (juce::uint32 main_bus_output_channels)
 {
 }
 
-SynthVoice::~SynthVoice()
-{
-}
+SynthVoice::~SynthVoice() {}
 
 void SynthVoice::setVoiceFrequency (double f_hz)
 {
@@ -48,7 +46,10 @@ void SynthVoice::modulateOsc2Frequency (double factor, double env_depth, double 
     osc2.setFrequency (new_frequency, false);
 }
 
-void SynthVoice::setWaveform (float osc1_shape, float osc2_shape, float osc1_env_depth, float osc2_env_depth)
+void SynthVoice::setWaveform (float osc1_shape,
+                              float osc2_shape,
+                              float osc1_env_depth,
+                              float osc2_env_depth)
 {
     float osc1_envmod = static_cast<float> (envelope2_output_) * osc1_env_depth;
     float osc2_envmod = static_cast<float> (envelope2_output_) * osc2_env_depth;
@@ -130,41 +131,36 @@ void SynthVoice::setEnvelope2Parameters (float attack, float decay, float sustai
     envelope2_.setParameters (envelope2_params_);
 }
 
-void SynthVoice::setNoiseLevel (const double level)
-{
-    noise_level_ = level;
-}
+void SynthVoice::setNoiseLevel (const double level) { noise_level_ = level; }
 
-void SynthVoice::setKey (const int key)
-{
-    key_ = key;
-}
+void SynthVoice::setKey (const int key) { key_ = key; }
 
-int SynthVoice::getKey()
-{
-    return key_;
-}
+int SynthVoice::getKey() { return key_; }
 
-bool SynthVoice::isActive()
-{
-    return envelope1_.isActive();
-}
+bool SynthVoice::isActive() { return envelope1_.isActive(); }
 
 void SynthVoice::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
     sample_rate_ = sampleRate;
     envelope1_.setSampleRate (sampleRate);
     envelope2_.setSampleRate (sampleRate);
-    juce::dsp::ProcessSpec spec = { sampleRate, samplesPerBlockExpected, main_bus_output_channels_ };
+    juce::dsp::ProcessSpec spec = { sampleRate,
+                                    samplesPerBlockExpected,
+                                    main_bus_output_channels_ };
     signal_chain_.prepare (spec);
     auto& osc1 = signal_chain_.template get<osc1_index>();
     osc1.initialise ([this] (double x) {
         // Fade between sinewave (waveform == 0) then
         // saw (waveform == 1) then square (waveform == 2)
         if (this->osc1_waveform_ < 1.0)
-            return (((1.0 - this->osc1_waveform_) * std::sin (x) + (this->osc1_waveform_ * x/3.0)) + OSC_BIAS) * this->osc1_amplitude_;
+            return (((1.0 - this->osc1_waveform_) * std::sin (x) + (this->osc1_waveform_ * x / 3.0))
+                    + OSC_BIAS)
+                   * this->osc1_amplitude_;
         else
-            return ((((2.0 - this->osc1_waveform_) * x/3.0) + (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0)) + OSC_BIAS) * this->osc1_amplitude_;
+            return ((((2.0 - this->osc1_waveform_) * x / 3.0)
+                     + (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0))
+                    + OSC_BIAS)
+                   * this->osc1_amplitude_;
     });
 
     auto& osc2 = signal_chain_.template get<osc2_index>();
@@ -172,9 +168,15 @@ void SynthVoice::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
         // Fade between sinewave (waveform == 0) then
         // saw (waveform == 1) then square (waveform == 2)
         if (this->osc2_waveform_ < 1.0)
-            return (((1.0 - this->osc2_waveform_) * std::sin (x) + (this->osc2_waveform_ * x / juce::MathConstants<double>::pi)) + OSC_BIAS) * this->osc2_amplitude_;
+            return (((1.0 - this->osc2_waveform_) * std::sin (x)
+                     + (this->osc2_waveform_ * x / juce::MathConstants<double>::pi))
+                    + OSC_BIAS)
+                   * this->osc2_amplitude_;
         else
-            return ((((2.0 - this->osc2_waveform_) * x / juce::MathConstants<double>::pi) + (this->osc2_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0)) + OSC_BIAS) * this->osc2_amplitude_;
+            return ((((2.0 - this->osc2_waveform_) * x / juce::MathConstants<double>::pi)
+                     + (this->osc2_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0))
+                    + OSC_BIAS)
+                   * this->osc2_amplitude_;
     });
 
     auto& noise = signal_chain_.template get<noise_index>();

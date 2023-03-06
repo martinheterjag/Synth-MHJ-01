@@ -23,7 +23,8 @@ public:
     void resetLfo2();
     std::vector<double> getLfo1Output();
     std::vector<double> getLfo2Output();
-    void process (juce::AudioProcessorValueTreeState& apvts, const juce::AudioSourceChannelInfo bufferToFill);
+    void process (juce::AudioProcessorValueTreeState& apvts,
+                  const juce::AudioSourceChannelInfo bufferToFill);
 
 private:
     Lfo lfo1_;

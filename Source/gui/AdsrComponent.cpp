@@ -10,8 +10,14 @@
 
 #include "AdsrComponent.h"
 
-AdsrComponent::AdsrComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix)
-    : SynthModuleComponent (name), attack_slider_ ("Att"), decay_slider_ ("Dec"), sustain_slider_ ("Sus"), release_slider_ ("Rel")
+AdsrComponent::AdsrComponent (juce::String name,
+                              juce::AudioProcessorValueTreeState& apvts,
+                              ParamIdPrefix param_id_prefix)
+    : SynthModuleComponent (name),
+      attack_slider_ ("Att"),
+      decay_slider_ ("Dec"),
+      sustain_slider_ ("Sus"),
+      release_slider_ ("Rel")
 {
     attack_slider_.attatchToParameter (apvts, param_id_string_map.at (param_id_prefix) + "ATTACK");
     addAndMakeVisible (attack_slider_);
@@ -19,10 +25,12 @@ AdsrComponent::AdsrComponent (juce::String name, juce::AudioProcessorValueTreeSt
     decay_slider_.attatchToParameter (apvts, param_id_string_map.at (param_id_prefix) + "DECAY");
     addAndMakeVisible (decay_slider_);
 
-    sustain_slider_.attatchToParameter (apvts, param_id_string_map.at (param_id_prefix) + "SUSTAIN");
+    sustain_slider_.attatchToParameter (apvts,
+                                        param_id_string_map.at (param_id_prefix) + "SUSTAIN");
     addAndMakeVisible (sustain_slider_);
 
-    release_slider_.attatchToParameter (apvts, param_id_string_map.at (param_id_prefix) + "RELEASE");
+    release_slider_.attatchToParameter (apvts,
+                                        param_id_string_map.at (param_id_prefix) + "RELEASE");
     addAndMakeVisible (release_slider_);
 }
 

@@ -16,7 +16,8 @@ class SynthVoice : public juce::AudioSource
 {
 public:
     explicit SynthVoice (juce::uint32 main_bus_output_channels);
-    SynthVoice (const SynthVoice& other) : main_bus_output_channels_ (other.main_bus_output_channels_) {};
+    SynthVoice (const SynthVoice& other)
+        : main_bus_output_channels_ (other.main_bus_output_channels_) {};
     ~SynthVoice();
 
     void setVoiceFrequency (double f_hz);
@@ -30,7 +31,10 @@ public:
     void setEnvelope1Parameters (float attack, float decay, float sustain, float release);
     void setEnvelope2Parameters (float attack, float decay, float sustain, float release);
     void setNoiseLevel (const double level);
-    void setWaveform (float osc1_shape, float osc2_shape, float osc1_env_depth, float osc2_env_depth);
+    void setWaveform (float osc1_shape,
+                      float osc2_shape,
+                      float osc1_env_depth,
+                      float osc2_env_depth);
     void setOscsAmplitude (double osc1_amplitude, double osc2_amplitude);
     void setKey (const int key);
     int getKey();

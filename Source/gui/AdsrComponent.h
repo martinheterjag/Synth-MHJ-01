@@ -17,7 +17,9 @@
 class AdsrComponent : public SynthModuleComponent
 {
 public:
-    AdsrComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix);
+    AdsrComponent (juce::String name,
+                   juce::AudioProcessorValueTreeState& apvts,
+                   ParamIdPrefix param_id_prefix);
     ~AdsrComponent();
     void resized() override;
 

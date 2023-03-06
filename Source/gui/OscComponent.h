@@ -18,7 +18,9 @@
 class OscComponent : public SynthModuleComponent
 {
 public:
-    OscComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix);
+    OscComponent (juce::String name,
+                  juce::AudioProcessorValueTreeState& apvts,
+                  ParamIdPrefix param_id_prefix);
     ~OscComponent();
     void resized() override;
 
