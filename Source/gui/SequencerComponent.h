@@ -20,6 +20,8 @@ public:
     SequencerComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts);
     ~SequencerComponent() override;
 
+    void setActiveStep (unsigned int step);
+
     void resized() override;
 
 private:

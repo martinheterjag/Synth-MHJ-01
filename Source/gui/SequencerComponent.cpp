@@ -39,6 +39,15 @@ SequencerComponent::SequencerComponent (juce::String name,
 
 SequencerComponent::~SequencerComponent() {}
 
+void SequencerComponent::setActiveStep (unsigned int step)
+{
+    step_1_.lightUp (step == 0 ? 1.0 : 0.0);
+    step_2_.lightUp (step == 1 ? 1.0 : 0.0);
+    step_3_.lightUp (step == 2 ? 1.0 : 0.0);
+    step_4_.lightUp (step == 3 ? 1.0 : 0.0);
+    step_5_.lightUp (step == 4 ? 1.0 : 0.0);
+}
+
 void SequencerComponent::resized()
 {
     step_1_.setBounds (

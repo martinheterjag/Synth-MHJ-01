@@ -23,13 +23,14 @@
 //==============================================================================
 /**
 */
-class Mhj01AudioProcessorEditor : public juce::AudioProcessorEditor
+class Mhj01AudioProcessorEditor : public juce::AudioProcessorEditor, juce::Timer
 {
 public:
     explicit Mhj01AudioProcessorEditor (Mhj01AudioProcessor&);
     ~Mhj01AudioProcessorEditor() override;
 
     //==============================================================================
+    void timerCallback() override;
     void paint (juce::Graphics&) override;
     void resized() override;
 

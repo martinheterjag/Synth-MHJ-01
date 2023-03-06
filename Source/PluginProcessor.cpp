@@ -401,6 +401,8 @@ void Mhj01AudioProcessor::setStateInformation (const void* data, int sizeInBytes
             apvts.replaceState (juce::ValueTree::fromXml (*xmlState));
 }
 
+int Mhj01AudioProcessor::getSequencerActiveStep() { return seq_.getActiveStep(); }
+
 int Mhj01AudioProcessor::getAvailableVoiceIndex()
 {
     // A ring buffer based voice stealing algrithm

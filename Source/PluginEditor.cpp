@@ -46,9 +46,12 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
     addAndMakeVisible (aftertouch_controls_);
 
     setSize (WIDTH, HEIGHT);
+    startTimer(10);
 }
 
 Mhj01AudioProcessorEditor::~Mhj01AudioProcessorEditor() {}
+
+void Mhj01AudioProcessorEditor::timerCallback() { repaint(); }
 
 //==============================================================================
 void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
@@ -59,6 +62,7 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::white);
     g.setFont (40.0f);
     g.drawFittedText ("MHJ-01", getLocalBounds(), juce::Justification::bottomRight, 1);
+    seq_.setActiveStep (audioProcessor.getSequencerActiveStep());
 }
 
 void Mhj01AudioProcessorEditor::resized()
