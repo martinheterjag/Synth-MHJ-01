@@ -27,5 +27,6 @@ private:
     SliderComponent step_2_;
     SliderComponent step_3_;
     SliderComponent step_4_;
+    SliderComponent step_5_;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SequencerComponent)
 };

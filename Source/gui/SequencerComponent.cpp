@@ -17,7 +17,8 @@ SequencerComponent::SequencerComponent (juce::String name, juce::AudioProcessorV
       step_1_ ("1"),
       step_2_ ("2"),
       step_3_ ("3"),
-      step_4_ ("4")
+      step_4_ ("4"),
+      step_5_ ("5")
 {
     step_1_.attatchToParameter (apvts, "SEQUENCER_STEP_1");
     addAndMakeVisible (step_1_);
@@ -30,6 +31,9 @@ SequencerComponent::SequencerComponent (juce::String name, juce::AudioProcessorV
 
     step_4_.attatchToParameter (apvts, "SEQUENCER_STEP_4");
     addAndMakeVisible (step_4_);
+
+    step_5_.attatchToParameter (apvts, "SEQUENCER_STEP_5");
+    addAndMakeVisible (step_5_);
 }
 
 SequencerComponent::~SequencerComponent()
@@ -51,6 +55,10 @@ void SequencerComponent::resized()
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
     step_4_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 3,
+                       MODULE_PADDING,
+                       SLIDER_COMPONENT_WIDTH,
+                       SLIDER_COMPONENT_HEIGHT);
+    step_5_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 4,
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
