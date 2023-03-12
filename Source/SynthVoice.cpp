@@ -149,41 +149,48 @@ void SynthVoice::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
                                     main_bus_output_channels_ };
     signal_chain_.prepare (spec);
     auto& osc1 = signal_chain_.template get<osc1_index>();
-    osc1.initialise ([this] (double x) {
-        // Fade between sinewave (waveform == 0) then
-        // saw (waveform == 1) then square (waveform == 2)
-        if (this->osc1_waveform_ < 1.0)
-            return (((1.0 - this->osc1_waveform_) * std::sin (x) + (this->osc1_waveform_ * x / 3.0))
-                    + OSC_BIAS)
-                   * this->osc1_amplitude_;
-        else
-            return ((((2.0 - this->osc1_waveform_) * x / 3.0)
-                     + (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0))
-                    + OSC_BIAS)
-                   * this->osc1_amplitude_;
-    });
+    osc1.initialise (
+        [this] (double x)
+        {
+            // Fade between sinewave (waveform == 0) then
+            // saw (waveform == 1) then square (waveform == 2)
+            if (this->osc1_waveform_ < 1.0)
+                return (((1.0 - this->osc1_waveform_) * std::sin (x)
+                         + (this->osc1_waveform_ * x / 3.0))
+                        + OSC_BIAS)
+                       * this->osc1_amplitude_;
+            else
+                return ((((2.0 - this->osc1_waveform_) * x / 3.0)
+                         + (this->osc1_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0))
+                        + OSC_BIAS)
+                       * this->osc1_amplitude_;
+        });
 
     auto& osc2 = signal_chain_.template get<osc2_index>();
-    osc2.initialise ([this] (double x) {
-        // Fade between sinewave (waveform == 0) then
-        // saw (waveform == 1) then square (waveform == 2)
-        if (this->osc2_waveform_ < 1.0)
-            return (((1.0 - this->osc2_waveform_) * std::sin (x)
-                     + (this->osc2_waveform_ * x / juce::MathConstants<double>::pi))
-                    + OSC_BIAS)
-                   * this->osc2_amplitude_;
-        else
-            return ((((2.0 - this->osc2_waveform_) * x / juce::MathConstants<double>::pi)
-                     + (this->osc2_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0))
-                    + OSC_BIAS)
-                   * this->osc2_amplitude_;
-    });
+    osc2.initialise (
+        [this] (double x)
+        {
+            // Fade between sinewave (waveform == 0) then
+            // saw (waveform == 1) then square (waveform == 2)
+            if (this->osc2_waveform_ < 1.0)
+                return (((1.0 - this->osc2_waveform_) * std::sin (x)
+                         + (this->osc2_waveform_ * x / juce::MathConstants<double>::pi))
+                        + OSC_BIAS)
+                       * this->osc2_amplitude_;
+            else
+                return ((((2.0 - this->osc2_waveform_) * x / juce::MathConstants<double>::pi)
+                         + (this->osc2_waveform_ - 1.0) * (x < 0.0 ? -1.0 : 1.0))
+                        + OSC_BIAS)
+                       * this->osc2_amplitude_;
+        });
 
     auto& noise = signal_chain_.template get<noise_index>();
-    noise.initialise ([this] (double x) {
-        // * 2 -1 because we want to offset signal from 0 to 1 => -1 to 1
-        return juce::Random::getSystemRandom().nextDouble() * noise_level_ * 2.0 - 1.0;
-    });
+    noise.initialise (
+        [this] (double x)
+        {
+            // * 2 -1 because we want to offset signal from 0 to 1 => -1 to 1
+            return juce::Random::getSystemRandom().nextDouble() * noise_level_ * 2.0 - 1.0;
+        });
 }
 
 void SynthVoice::releaseResources()

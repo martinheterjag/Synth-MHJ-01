@@ -25,16 +25,12 @@ FilterComponent::FilterComponent (juce::String name, juce::AudioProcessorValueTr
     addAndMakeVisible (resonance_slider_);
 }
 
-FilterComponent::~FilterComponent()
-{
-}
+FilterComponent::~FilterComponent() {}
 
 void FilterComponent::resized()
 {
-    cutoff_slider_.setBounds (MODULE_PADDING,
-                              MODULE_PADDING,
-                              SLIDER_COMPONENT_WIDTH,
-                              SLIDER_COMPONENT_HEIGHT);
+    cutoff_slider_.setBounds (
+        MODULE_PADDING, MODULE_PADDING, SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
     cutoff_modulation_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
                                   MODULE_PADDING,
                                   MOD_COMPONENT_WIDTH,

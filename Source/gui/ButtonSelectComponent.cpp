@@ -30,7 +30,8 @@ ButtonSelectComponent::ButtonSelectComponent (const juce::String& name,
     for (auto& button : buttons_)
     {
         button.setButtonText (button_names_[i]);
-        button.onClick = [&, i]() {
+        button.onClick = [&, i]()
+        {
             invisible_combo_box_.setSelectedId (i + 1);
             active_button_ = i;
             resetColours();

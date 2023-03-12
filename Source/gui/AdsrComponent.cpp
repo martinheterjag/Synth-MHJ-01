@@ -34,16 +34,12 @@ AdsrComponent::AdsrComponent (juce::String name,
     addAndMakeVisible (release_slider_);
 }
 
-AdsrComponent::~AdsrComponent()
-{
-}
+AdsrComponent::~AdsrComponent() {}
 
 void AdsrComponent::resized()
 {
-    attack_slider_.setBounds (MODULE_PADDING,
-                              MODULE_PADDING,
-                              SLIDER_COMPONENT_WIDTH,
-                              SLIDER_COMPONENT_HEIGHT);
+    attack_slider_.setBounds (
+        MODULE_PADDING, MODULE_PADDING, SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
     decay_slider_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
                              MODULE_PADDING,
                              SLIDER_COMPONENT_WIDTH,

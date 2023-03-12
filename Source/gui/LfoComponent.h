@@ -18,7 +18,9 @@
 class LfoComponent : public SynthModuleComponent
 {
 public:
-    LfoComponent (juce::String name, juce::AudioProcessorValueTreeState& apvts, ParamIdPrefix param_id_prefix);
+    LfoComponent (juce::String name,
+                  juce::AudioProcessorValueTreeState& apvts,
+                  ParamIdPrefix param_id_prefix);
     ~LfoComponent();
     void resized() override;
 
