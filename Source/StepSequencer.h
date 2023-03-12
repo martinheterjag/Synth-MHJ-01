@@ -17,7 +17,7 @@ const unsigned int SEQUENCER_MAX_STEPS = 5;
 class StepSequencer
 {
 public:
-    StepSequencer (std::array<double, 5> init_values);
+    explicit StepSequencer (std::array<double, 5> init_values);
     void trigger (bool forward = true);
     double getActiveStepValue();
     unsigned int getActiveStep();
