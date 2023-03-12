@@ -15,8 +15,8 @@ jobs:
       - name: Install cppcheck
         run: sudo apt install cppcheck
       - name: run cppcheck
-        run: cppcheck --enable=all --suppress=unusedFunction:Source/Plugin* ./Source 2> err.txt;
+        run: cppcheck --enable=all --inline-suppr --suppress=unusedFunction:Source/Plugin* --suppress=missingIncludeSystem ./Source 2> err.txt;
              cat err.txt;
              [ ! -s err.txt ]
-      - run: echo "🏁 Job status: ${{ job.status }}."
+      - run: echo "🏁 Job status ${{ job.status }}."
 
