@@ -17,5 +17,8 @@ jobs:
         run: cppcheck --std=c++14 --enable=all --inline-suppr --suppress=unusedFunction:Source/Plugin* --suppress=missingIncludeSystem ./Source 2> err.txt;
              cat err.txt;
              [ ! -s err.txt ]
+      - name: run clang-format
+        run: find Source/ -name '*.h' -o -name '*.cpp' | xargs clang-format --style=file:.clang-format --dry-run;
+             [[ ! $(find Source/ -name '*.h' -o -name '*.cpp' | xargs clang-format --style=file:.clang-format --dry-run 2>&1) ]]
       - run: echo "🏁 Job status ${{ job.status }}."
 
