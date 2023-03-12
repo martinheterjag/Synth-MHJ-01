@@ -11,8 +11,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - name: Install cppcheck
-        run: sudo apt install cppcheck
       - name: run cppcheck
         run: cppcheck --std=c++14 --enable=all --inline-suppr --suppress=unusedFunction:Source/Plugin* --suppress=missingIncludeSystem ./Source 2> err.txt;
              cat err.txt;
