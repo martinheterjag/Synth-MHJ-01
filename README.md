@@ -16,9 +16,9 @@ my projects.
 The JUCE style guide can be found here: https://juce.com/discover/stories/coding-standards
 
 # Code analysis
-Github Actions are set up to run cppcheck on push to any branch. After pushing make sure the action have succeded.
+Github Actions are set up to run cppcheck and clang-format on push to any branch. After pushing make sure the action have succeded.
 
-To run code analysis manually with cppcheck run this command from the root directory of this repository:
+To run code analysis manually with cppcheck, run this command from the root directory of this repository:
 
 `cppcheck --std=c++14 --enable=all --xml-version=2 ./Source/`
 
