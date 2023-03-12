@@ -46,7 +46,7 @@ Mhj01AudioProcessorEditor::Mhj01AudioProcessorEditor (Mhj01AudioProcessor& p)
     addAndMakeVisible (aftertouch_controls_);
 
     setSize (WIDTH, HEIGHT);
-    startTimer(10);
+    startTimer (10);
 }
 
 Mhj01AudioProcessorEditor::~Mhj01AudioProcessorEditor() {}
