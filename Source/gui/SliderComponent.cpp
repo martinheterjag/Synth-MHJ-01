@@ -11,7 +11,7 @@
 #include "SliderComponent.h"
 
 SliderComponent::SliderComponent (juce::String label_text, SliderComponent::Style style)
-    : style_ (style)
+    : style_ (style), light_colour_ (juce::Colours::hotpink)
 {
     switch (style_)
     {
@@ -44,12 +44,18 @@ SliderComponent::SliderComponent (juce::String label_text, SliderComponent::Styl
     label_.setText (label_text, juce::dontSendNotification);
     label_.setJustificationType (juce::Justification::centred);
     addAndMakeVisible (label_);
+
+    startTimer (10);
 }
 
-void SliderComponent::lightUp (double amount, juce::Colour light_colour)
+void SliderComponent::setLightColour (juce::Colour light_colour) { light_colour_ = light_colour; }
+
+void SliderComponent::lightUp (double amount)
 {
+    // Set the target value and let timerCallback animate the light.
+    light_amount_target_ = amount;
     slider_.setColour (juce::Slider::ColourIds::thumbColourId,
-                       thumb_colour_.interpolatedWith (light_colour, amount));
+                       thumb_colour_.interpolatedWith (light_colour_, light_amount_));
 }
 
 void SliderComponent::attatchToParameter (juce::AudioProcessorValueTreeState& apvts,
@@ -75,5 +81,18 @@ void SliderComponent::resized()
         slider_.setBounds (0, 0, SMALL_KNOB_WIDTH, SMALL_KNOB_HEIGHT);
         label_.setBounds (0, SMALL_KNOB_HEIGHT - 10, SMALL_KNOB_WIDTH, SMALL_TEXT_LABEL_HEIGHT);
         break;
+    }
+}
+
+void SliderComponent::timerCallback()
+{
+    // Light up fast but slowly decay, like a real LED behaves
+    if (light_amount_target_ > light_amount_)
+    {
+        light_amount_ = light_amount_target_;
+    }
+    else
+    {
+        light_amount_ = (4.0 * light_amount_target_ + light_amount_) / 5.0;
     }
 }
