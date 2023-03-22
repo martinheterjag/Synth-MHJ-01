@@ -85,7 +85,7 @@ private:
     double pitch_wheel_ = 1.0;
     double mod_wheel_ = 0.0;
     double channel_pressure_ = 0.0;
-    bool key_pressed_;
+    bool key_pressed_ = false;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Mhj01AudioProcessor)
