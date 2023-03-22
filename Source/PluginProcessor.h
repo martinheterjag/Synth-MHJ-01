@@ -35,7 +35,7 @@ public:
     void processMidi (juce::MidiBuffer& midi_messages);
     void processOscs (SynthVoice& voice, double lfo1_mod, double lfo2_mod, double seq_mod);
     void processNoise (SynthVoice& voice);
-    void processFilter (SynthVoice& voice, double lfo1_mod, double lfo2_mod);
+    void processFilter (SynthVoice& voice, double lfo1_mod, double lfo2_mod, double seq_mod);
     void processVca (SynthVoice& voice);
     void processEnvelopes (SynthVoice& voice);
 

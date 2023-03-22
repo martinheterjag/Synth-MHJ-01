@@ -166,7 +166,7 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     {
         processOscs (voice, lfo1_mod, lfo2_mod, seq_mod);
         processNoise (voice);
-        processFilter (voice, lfo1_mod, lfo2_mod);
+        processFilter (voice, lfo1_mod, lfo2_mod, seq_mod);
         processVca (voice);
         processEnvelopes (voice);
     }
@@ -239,7 +239,8 @@ void Mhj01AudioProcessor::processOscs (SynthVoice& voice,
         lfo1_mod * getModWheelAmount ("MOD_WHEEL_OSC_1_LFO_1")
                 * apvts.getRawParameterValue ("OSC_1_FREQUENCY_MOD_LFO_1")->load()
             + lfo2_mod * apvts.getRawParameterValue ("OSC_1_FREQUENCY_MOD_LFO_2")->load()
-            + osc1_lfo2_aftertouch + seq_mod,
+            + seq_mod * apvts.getRawParameterValue ("OSC_1_FREQUENCY_MOD_SEQ")->load()
+            + osc1_lfo2_aftertouch,
         0.0,
         2.0);
     double osc1_coarse = getCoarse (apvts.getRawParameterValue ("OSC_1_FREQUENCY")->load());
@@ -254,6 +255,7 @@ void Mhj01AudioProcessor::processOscs (SynthVoice& voice,
         lfo1_mod * getModWheelAmount ("MOD_WHEEL_OSC_2_LFO_1")
                 * apvts.getRawParameterValue ("OSC_2_FREQUENCY_MOD_LFO_1")->load()
             + lfo2_mod * apvts.getRawParameterValue ("OSC_2_FREQUENCY_MOD_LFO_2")->load()
+            + seq_mod * apvts.getRawParameterValue ("OSC_2_FREQUENCY_MOD_SEQ")->load()
             + osc2_lfo2_aftertouch,
         0.0,
         2.0);
@@ -265,12 +267,14 @@ void Mhj01AudioProcessor::processOscs (SynthVoice& voice,
 
     double osc1_waveform_mod = juce::jmap<float> (
         lfo1_mod * apvts.getRawParameterValue ("OSC_1_WAVEFORM_MOD_LFO_1")->load()
-            + lfo2_mod * apvts.getRawParameterValue ("OSC_1_WAVEFORM_MOD_LFO_2")->load(),
+            + lfo2_mod * apvts.getRawParameterValue ("OSC_1_WAVEFORM_MOD_LFO_2")->load()
+            + seq_mod * apvts.getRawParameterValue ("OSC_1_WAVEFORM_MOD_SEQ")->load(),
         0.0f,
         2.0f);
     double osc2_waveform_mod = juce::jmap<float> (
         lfo1_mod * apvts.getRawParameterValue ("OSC_2_WAVEFORM_MOD_LFO_1")->load()
-            + lfo2_mod * apvts.getRawParameterValue ("OSC_2_WAVEFORM_MOD_LFO_2")->load(),
+            + lfo2_mod * apvts.getRawParameterValue ("OSC_2_WAVEFORM_MOD_LFO_2")->load()
+            + seq_mod* apvts.getRawParameterValue ("OSC_2_WAVEFORM_MOD_SEQ")->load(),
         0.0f,
         2.0f);
     voice.setWaveform (
@@ -293,7 +297,7 @@ void Mhj01AudioProcessor::processNoise (SynthVoice& voice)
     voice.setNoiseLevel (apvts.getRawParameterValue ("NOISE_VOLUME")->load());
 }
 
-void Mhj01AudioProcessor::processFilter (SynthVoice& voice, double lfo1_mod, double lfo2_mod)
+void Mhj01AudioProcessor::processFilter (SynthVoice& voice, double lfo1_mod, double lfo2_mod, double seq_mod)
 {
     float filter_lfo2_aftertouch =
         0.5 * lfo2_mod * getChannelPressureAmount ("AFTERTOUCH_FILTER_LFO_2");
@@ -301,6 +305,7 @@ void Mhj01AudioProcessor::processFilter (SynthVoice& voice, double lfo1_mod, dou
         lfo1_mod * apvts.getRawParameterValue ("FILTER_CUTOFF_MOD_LFO_1")->load()
                 * getModWheelAmount ("MOD_WHEEL_FILTER_LFO_1")
             + lfo2_mod * apvts.getRawParameterValue ("FILTER_CUTOFF_MOD_LFO_2")->load()
+            + seq_mod * apvts.getRawParameterValue ("FILTER_CUTOFF_MOD_SEQ")->load()
             + filter_lfo2_aftertouch + getChannelPressureAmount ("AFTERTOUCH_FILTER_CUTOFF"),
         0.0f,
         6500.0f);
