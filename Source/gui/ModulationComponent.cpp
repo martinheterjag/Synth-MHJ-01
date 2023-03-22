@@ -69,8 +69,8 @@ void ModulationComponent::resized()
                           SMALL_KNOB_WIDTH,
                           SMALL_KNOB_HEIGHT + SMALL_TEXT_LABEL_HEIGHT);
     seq_knob_.setBounds (MOD_COMPONENT_PADDING + SMALL_KNOB_WIDTH,
-                          MOD_COMPONENT_PADDING + SMALL_KNOB_HEIGHT,
-                          SMALL_KNOB_WIDTH,
-                          SMALL_KNOB_HEIGHT + SMALL_TEXT_LABEL_HEIGHT);
+                         MOD_COMPONENT_PADDING + SMALL_KNOB_HEIGHT,
+                         SMALL_KNOB_WIDTH,
+                         SMALL_KNOB_HEIGHT + SMALL_TEXT_LABEL_HEIGHT);
     label_.setBounds (0, SLIDER_HEIGHT, TEXT_LABEL_WIDTH * 2, TEXT_LABEL_HEIGHT);
 }

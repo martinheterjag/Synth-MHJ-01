@@ -56,10 +56,8 @@ void SequencerComponent::setActiveStep (unsigned int step)
 
 void SequencerComponent::resized()
 {
-    trigger_selector_.setBounds (MODULE_PADDING,
-                                 MODULE_PADDING,
-                                 SLIDER_COMPONENT_WIDTH,
-                                 SLIDER_COMPONENT_HEIGHT);
+    trigger_selector_.setBounds (
+        MODULE_PADDING, MODULE_PADDING, SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
     step_1_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
@@ -68,7 +66,7 @@ void SequencerComponent::resized()
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
-    step_3_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH *3,
+    step_3_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 3,
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
@@ -80,5 +78,4 @@ void SequencerComponent::resized()
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
-
 }

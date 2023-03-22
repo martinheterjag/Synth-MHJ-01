@@ -159,9 +159,8 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     double lfo2_mod = mod_.getLfo2Output()[0];
 
     // Trigger sequencer and get next value
-    StepSequencer::Trigger trigger =
-        static_cast<StepSequencer::Trigger> (apvts.getRawParameterValue ("SEQUENCER_TRIGGER")
-            ->load());
+    StepSequencer::Trigger trigger = static_cast<StepSequencer::Trigger> (
+        apvts.getRawParameterValue ("SEQUENCER_TRIGGER")->load());
     switch (trigger)
     {
     case StepSequencer::Trigger::LFO1:
@@ -290,7 +289,7 @@ void Mhj01AudioProcessor::processOscs (SynthVoice& voice,
     double osc2_waveform_mod = juce::jmap<float> (
         lfo1_mod * apvts.getRawParameterValue ("OSC_2_WAVEFORM_MOD_LFO_1")->load()
             + lfo2_mod * apvts.getRawParameterValue ("OSC_2_WAVEFORM_MOD_LFO_2")->load()
-            + seq_mod* apvts.getRawParameterValue ("OSC_2_WAVEFORM_MOD_SEQ")->load(),
+            + seq_mod * apvts.getRawParameterValue ("OSC_2_WAVEFORM_MOD_SEQ")->load(),
         0.0f,
         2.0f);
     voice.setWaveform (
@@ -313,7 +312,10 @@ void Mhj01AudioProcessor::processNoise (SynthVoice& voice)
     voice.setNoiseLevel (apvts.getRawParameterValue ("NOISE_VOLUME")->load());
 }
 
-void Mhj01AudioProcessor::processFilter (SynthVoice& voice, double lfo1_mod, double lfo2_mod, double seq_mod)
+void Mhj01AudioProcessor::processFilter (SynthVoice& voice,
+                                         double lfo1_mod,
+                                         double lfo2_mod,
+                                         double seq_mod)
 {
     float filter_lfo2_aftertouch =
         0.5 * lfo2_mod * getChannelPressureAmount ("AFTERTOUCH_FILTER_LFO_2");
@@ -349,7 +351,8 @@ void Mhj01AudioProcessor::processEnvelopes (SynthVoice& voice)
                                   apvts.getRawParameterValue ("ENV_2_RELEASE")->load());
 }
 
-double Mhj01AudioProcessor::KeypressToSignal() {
+double Mhj01AudioProcessor::KeypressToSignal()
+{
     // Check if any key is pressed create a signal that passes 0.0
     if (key_pressed_)
     {
@@ -577,10 +580,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "SEQUENCER_STEP_5", "Step 5", 0.0f, 1.0f, 0.5f));
     parameters.push_back (std::make_unique<juce::AudioParameterChoice> (
-        "SEQUENCER_TRIGGER",
-        "Trigger",
-        juce::StringArray { "LFO1", "Keyboard" },
-        1));
+        "SEQUENCER_TRIGGER", "Trigger", juce::StringArray { "LFO1", "Keyboard" }, 1));
 
     // Mod wheel buttons
     parameters.push_back (
