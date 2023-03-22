@@ -30,4 +30,5 @@ private:
     SliderComponent lfo1_knob_;
     SliderComponent lfo2_knob_;
     SliderComponent env2_knob_;
+    SliderComponent seq_knob_;
 };

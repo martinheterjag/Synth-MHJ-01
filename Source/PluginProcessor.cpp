@@ -440,6 +440,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "OSC_1_FREQUENCY_MOD_ENV_2", "Envelope2 depth", 0.0f, 6000.0f, 0.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
+        "OSC_1_FREQUENCY_MOD_SEQ", "Sequencer depth", 0.0f, 1.0f, 0.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "OSC_1_WAVEFORM", "Waveform", 0.0f, 2.0f, 0.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "OSC_1_WAVEFORM_MOD_LFO_1", "LFO 1 depth", 0.0f, 1.0f, 0.0f));
@@ -447,6 +449,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
         "OSC_1_WAVEFORM_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "OSC_1_WAVEFORM_MOD_ENV_2", "Envelope2 depth", 0.0f, 2.0f, 0.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
+        "OSC_1_WAVEFORM_MOD_SEQ", "Sequencer depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back (
         std::make_unique<juce::AudioParameterFloat> ("OSC_1_VOLUME", "Volume", 0.0f, 1.0f, 1.0f));
 
@@ -461,6 +465,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "OSC_2_FREQUENCY_MOD_ENV_2", "Envelope2 depth", 0.0f, 6000.0f, 0.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
+        "OSC_2_FREQUENCY_MOD_SEQ", "Sequencer depth", 0.0f, 1.0f, 0.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "OSC_2_WAVEFORM", "Waveform", 0.0f, 2.0f, 0.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "OSC_2_WAVEFORM_MOD_LFO_1", "LFO 1 depth", 0.0f, 1.0f, 0.0f));
@@ -468,6 +474,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
         "OSC_2_WAVEFORM_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "OSC_2_WAVEFORM_MOD_ENV_2", "Envelope2 depth", 0.0f, 2.0f, 0.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
+        "OSC_2_WAVEFORM_MOD_SEQ", "Sequencer depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back (
         std::make_unique<juce::AudioParameterFloat> ("OSC_2_VOLUME", "Volume", 0.0f, 1.0f, 0.5f));
 
@@ -482,6 +490,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
         "FILTER_CUTOFF_MOD_LFO_2", "LFO 2 depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "FILTER_CUTOFF_MOD_ENV_2", "Envelope2 depth", 0.0f, 10000.0f, 1000.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
+        "FILTER_CUTOFF_MOD_SEQ", "Sequencer depth", 0.0f, 1.0f, 0.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "FILTER_RESONANCE", "Resonance", 0.5f, 5.0f, 0.7f));
 
