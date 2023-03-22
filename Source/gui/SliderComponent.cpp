@@ -48,8 +48,6 @@ SliderComponent::SliderComponent (juce::String label_text, SliderComponent::Styl
     startTimer (10);
 }
 
-void SliderComponent::setLightColour (juce::Colour light_colour) { light_colour_ = light_colour; }
-
 void SliderComponent::lightUp (double amount)
 {
     // Set the target value and let timerCallback animate the light.

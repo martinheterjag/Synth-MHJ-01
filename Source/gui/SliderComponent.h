@@ -25,7 +25,6 @@ public:
 
     explicit SliderComponent (juce::String label_text,
                               SliderComponent::Style style = SliderComponent::Style::SLIDER);
-    void setLightColour (juce::Colour light_colour);
     void lightUp (double amount);
     void attatchToParameter (juce::AudioProcessorValueTreeState& apvts, juce::String param_id);
     void resized() override;
