@@ -39,6 +39,7 @@ public:
     void processVca (SynthVoice& voice);
     void processEnvelopes (SynthVoice& voice);
 
+    double KeypressToSignal();
     void triggerSeqOnRisingEdge (double value);
     double getCoarse (double frequency);
     double getModWheelAmount (juce::String parameter);
@@ -84,6 +85,7 @@ private:
     double pitch_wheel_ = 1.0;
     double mod_wheel_ = 0.0;
     double channel_pressure_ = 0.0;
+    bool key_pressed_;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Mhj01AudioProcessor)

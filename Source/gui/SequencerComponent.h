@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "ButtonSelectComponent.h"
 #include "SliderComponent.h"
 #include "SynthModuleComponent.h"
 #include <JuceHeader.h>
@@ -25,6 +26,7 @@ public:
     void resized() override;
 
 private:
+    ButtonSelectComponent trigger_selector_;
     SliderComponent step_1_;
     SliderComponent step_2_;
     SliderComponent step_3_;

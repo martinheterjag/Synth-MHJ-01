@@ -15,12 +15,18 @@
 SequencerComponent::SequencerComponent (juce::String name,
                                         juce::AudioProcessorValueTreeState& apvts)
     : SynthModuleComponent (name),
+      trigger_selector_ ("Trigger",
+                         apvts,
+                         "SEQUENCER_TRIGGER",
+                         juce::StringArray ({ "LFO1", "Keyboard" })),
       step_1_ ("1"),
       step_2_ ("2"),
       step_3_ ("3"),
       step_4_ ("4"),
       step_5_ ("5")
 {
+    addAndMakeVisible (trigger_selector_);
+
     step_1_.attatchToParameter (apvts, "SEQUENCER_STEP_1");
     addAndMakeVisible (step_1_);
 
@@ -50,22 +56,29 @@ void SequencerComponent::setActiveStep (unsigned int step)
 
 void SequencerComponent::resized()
 {
-    step_1_.setBounds (
-        MODULE_PADDING, MODULE_PADDING, SLIDER_COMPONENT_WIDTH, SLIDER_COMPONENT_HEIGHT);
-    step_2_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
+    trigger_selector_.setBounds (MODULE_PADDING,
+                                 MODULE_PADDING,
+                                 SLIDER_COMPONENT_WIDTH,
+                                 SLIDER_COMPONENT_HEIGHT);
+    step_1_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH,
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
-    step_3_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 2,
+    step_2_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 2,
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
-    step_4_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 3,
+    step_3_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH *3,
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
-    step_5_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 4,
+    step_4_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 4,
                        MODULE_PADDING,
                        SLIDER_COMPONENT_WIDTH,
                        SLIDER_COMPONENT_HEIGHT);
+    step_5_.setBounds (MODULE_PADDING + SLIDER_COMPONENT_WIDTH * 5,
+                       MODULE_PADDING,
+                       SLIDER_COMPONENT_WIDTH,
+                       SLIDER_COMPONENT_HEIGHT);
+
 }

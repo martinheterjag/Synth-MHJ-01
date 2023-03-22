@@ -158,10 +158,22 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     double lfo1_mod = mod_.getLfo1Output()[0];
     double lfo2_mod = mod_.getLfo2Output()[0];
 
-    // TODO: Trigger seq by more/other things than just LFO1
-    triggerSeqOnRisingEdge (lfo1_mod);
+    // Trigger sequencer and get next value
+    StepSequencer::Trigger trigger =
+        static_cast<StepSequencer::Trigger> (apvts.getRawParameterValue ("SEQUENCER_TRIGGER")
+            ->load());
+    switch (trigger)
+    {
+    case StepSequencer::Trigger::LFO1:
+        triggerSeqOnRisingEdge (lfo1_mod);
+        break;
+    case StepSequencer::Trigger::KEY_PRESS:
+        triggerSeqOnRisingEdge (KeypressToSignal());
+        break;
+    }
     double seq_mod = seq_.getActiveStepValue();
 
+    // Update all voices with modulation
     for (auto& voice : synth_voices_)
     {
         processOscs (voice, lfo1_mod, lfo2_mod, seq_mod);
@@ -186,6 +198,7 @@ void Mhj01AudioProcessor::processMidi (juce::MidiBuffer& midi_messages)
             synth_voices_[index].setKey (note_number);
             synth_voices_[index].setVelocity (midi_msg.getVelocity());
             synth_voices_[index].noteOn();
+            key_pressed_ = true;
         }
         else if (midi_msg.isNoteOff())
         {
@@ -193,7 +206,10 @@ void Mhj01AudioProcessor::processMidi (juce::MidiBuffer& midi_messages)
             for (auto& voice : synth_voices_)
             {
                 if (voice.getKey() == midi_msg.getNoteNumber())
+                {
                     voice.noteOff();
+                    key_pressed_ = false;
+                }
             }
         }
         else if (midi_msg.isAllNotesOff())
@@ -333,9 +349,21 @@ void Mhj01AudioProcessor::processEnvelopes (SynthVoice& voice)
                                   apvts.getRawParameterValue ("ENV_2_RELEASE")->load());
 }
 
+double Mhj01AudioProcessor::KeypressToSignal() {
+    // Check if any key is pressed create a signal that passes 0.0
+    if (key_pressed_)
+    {
+        return 1.0;
+    }
+    else
+    {
+        return -1.0;
+    }
+}
+
 void Mhj01AudioProcessor::triggerSeqOnRisingEdge (double value)
 {
-    static double last_value;
+    static double last_value = -1.0;
     if (last_value < 0.0 && value >= 0.0)
     {
         seq_.trigger();
@@ -548,6 +576,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
         "SEQUENCER_STEP_4", "Step 4", 0.0f, 1.0f, 0.25f));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
         "SEQUENCER_STEP_5", "Step 5", 0.0f, 1.0f, 0.5f));
+    parameters.push_back (std::make_unique<juce::AudioParameterChoice> (
+        "SEQUENCER_TRIGGER",
+        "Trigger",
+        juce::StringArray { "LFO1", "Keyboard" },
+        1));
 
     // Mod wheel buttons
     parameters.push_back (

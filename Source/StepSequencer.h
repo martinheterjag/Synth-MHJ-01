@@ -17,6 +17,11 @@ const unsigned int SEQUENCER_MAX_STEPS = 5;
 class StepSequencer
 {
 public:
+    enum class Trigger
+    {
+        LFO1 = 0,
+        KEY_PRESS
+    };
     explicit StepSequencer (std::array<double, 5> init_values);
     void trigger (bool forward = true);
     double getActiveStepValue();
