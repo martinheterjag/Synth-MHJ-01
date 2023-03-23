@@ -63,6 +63,8 @@ void Mhj01AudioProcessorEditor::paint (juce::Graphics& g)
     g.setFont (40.0f);
     g.drawFittedText ("MHJ-01", getLocalBounds(), juce::Justification::bottomRight, 1);
     seq_.setActiveStep (audioProcessor.getSequencerActiveStep());
+    lfo1_.lightUp (audioProcessor.getLfo1Value());
+    lfo2_.lightUp (audioProcessor.getLfo2Value());
 }
 
 void Mhj01AudioProcessorEditor::resized()

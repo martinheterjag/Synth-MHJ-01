@@ -26,6 +26,8 @@ LfoComponent::LfoComponent (juce::String name,
     addAndMakeVisible (waveform_selector_);
 }
 
+void LfoComponent::lightUp (double amount) { frequency_slider_.lightUp (amount); }
+
 LfoComponent::~LfoComponent() {}
 
 void LfoComponent::resized()

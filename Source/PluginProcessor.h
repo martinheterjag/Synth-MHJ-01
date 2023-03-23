@@ -68,7 +68,10 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    // Getters for GUI to viualize state of the synth.
     int getSequencerActiveStep();
+    double getLfo1Value();
+    double getLfo2Value();
 
     juce::AudioProcessorValueTreeState apvts;
 

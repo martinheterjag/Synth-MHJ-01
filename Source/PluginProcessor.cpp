@@ -439,6 +439,24 @@ void Mhj01AudioProcessor::setStateInformation (const void* data, int sizeInBytes
 
 int Mhj01AudioProcessor::getSequencerActiveStep() { return seq_.getActiveStep(); }
 
+double Mhj01AudioProcessor::getLfo1Value()
+{
+    std::vector<double> values = mod_.getLfo1Output();
+    if (values.size() == 0)
+        return 0.0;
+    else
+        return values[0];
+}
+
+double Mhj01AudioProcessor::getLfo2Value()
+{
+    std::vector<double> values = mod_.getLfo2Output();
+    if (values.size() == 0)
+        return 0.0;
+    else
+        return values[0];
+}
+
 int Mhj01AudioProcessor::getAvailableVoiceIndex()
 {
     // A ring buffer based voice stealing algrithm
@@ -554,14 +572,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
         "ENV_2_RELEASE", "Release", 0.01f, 1.0f, 0.5f));
 
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
-        "LFO_1_FREQUENCY", "Frequency", 0.01f, 20.0f, 1.0f));
+        "LFO_1_FREQUENCY", "Frequency", 0.01f, 10.0f, 1.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterChoice> (
         "LFO_1_WAVEFORM",
         "Waveform",
         juce::StringArray { "Sine", "Saw", "Square", "Triangle" },
         1));
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
-        "LFO_2_FREQUENCY", "Frequency", 0.01f, 20.0f, 1.0f));
+        "LFO_2_FREQUENCY", "Frequency", 0.01f, 10.0f, 1.0f));
     parameters.push_back (std::make_unique<juce::AudioParameterChoice> (
         "LFO_2_WAVEFORM",
         "Waveform",

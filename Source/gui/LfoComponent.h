@@ -22,6 +22,7 @@ public:
                   juce::AudioProcessorValueTreeState& apvts,
                   ParamIdPrefix param_id_prefix);
     ~LfoComponent();
+    void lightUp (double amount);
     void resized() override;
 
 private:
