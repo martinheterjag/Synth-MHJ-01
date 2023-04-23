@@ -85,6 +85,7 @@ private:
     juce::MixerAudioSource voice_mixer_;
     Modulation mod_;
     StepSequencer seq_;
+    juce::dsp::Reverb reverb_;
     double pitch_wheel_ = 1.0;
     double mod_wheel_ = 0.0;
     double channel_pressure_ = 0.0;

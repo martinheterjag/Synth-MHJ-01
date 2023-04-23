@@ -28,7 +28,8 @@ Mhj01AudioProcessor::Mhj01AudioProcessor()
               apvts.getRawParameterValue ("SEQUENCER_STEP_2")->load(),
               apvts.getRawParameterValue ("SEQUENCER_STEP_3")->load(),
               apvts.getRawParameterValue ("SEQUENCER_STEP_4")->load(),
-              apvts.getRawParameterValue ("SEQUENCER_STEP_5")->load() })
+              apvts.getRawParameterValue ("SEQUENCER_STEP_5")->load() }),
+      reverb_()
 #endif
 {
     for (int i = 0; i < 8; i++)
@@ -98,6 +99,7 @@ void Mhj01AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
                                     static_cast<juce::uint32> (samplesPerBlock),
                                     static_cast<juce::uint32> (getMainBusNumOutputChannels()) };
     mod_.prepare (spec);
+    reverb_.prepare (spec);
 }
 
 void Mhj01AudioProcessor::releaseResources()
@@ -182,6 +184,15 @@ void Mhj01AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         processEnvelopes (voice);
     }
     voice_mixer_.getNextAudioBlock (juce::AudioSourceChannelInfo (buffer));
+
+    auto block = juce::dsp::AudioBlock<float> (buffer);
+    auto contextToUse = juce::dsp::ProcessContextReplacing<float> (block);
+    juce::dsp::Reverb::Parameters params;
+    params.wetLevel = apvts.getRawParameterValue ("FX_REVERB_WET")->load();
+    params.roomSize = apvts.getRawParameterValue ("FX_REVERB_ROOM_SIZE")->load();
+    params.dryLevel = 1.0f;
+    reverb_.setParameters (params);
+    reverb_.process (contextToUse);
 }
 
 void Mhj01AudioProcessor::processMidi (juce::MidiBuffer& midi_messages)
@@ -551,6 +562,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout Mhj01AudioProcessor::createP
 
     parameters.push_back (
         std::make_unique<juce::AudioParameterFloat> ("VCA_GAIN", "Gain", 0.0f, 1.0f, 0.7f));
+
+    // FX parameters
+    parameters.push_back (
+        std::make_unique<juce::AudioParameterFloat> ("FX_REVERB_WET", "wet", 0.0f, 1.0f, 0.2f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
+        "FX_REVERB_ROOM_SIZE", "Room size", 0.0f, 1.0f, 0.4f));
 
     // Modulators parameters
     parameters.push_back (std::make_unique<juce::AudioParameterFloat> (
